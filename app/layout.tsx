@@ -10,6 +10,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleAnalytics } from "@/lib/analytics/google-analytics";
 import { siteConfig } from "@/lib/site-config";
+import { Script } from "next/script";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -111,7 +112,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+  // Always load Google Analytics with the hardcoded measurement ID
+  const GA_MEASUREMENT_ID = "G-YRF852BZP5";
 
   return (
     <html lang="he" dir="rtl" suppressHydrationWarning>
@@ -158,6 +160,19 @@ export default function RootLayout({
         <meta name="msapplication-TileImage" content="/apple-icon-144x144.png" />
         <meta name="msapplication-TileImage" content="/apple-icon-152x152.png" />
         <meta name="msapplication-TileImage" content="/apple-icon-180x180.png" />
+        {/* Google Analytics (gtag.js) - always loaded */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}');
+          `}
+        </Script>
       </head>
       <body className={`${poppins.variable} ${inter.variable} font-sans antialiased`}>
         <ThemeProvider
@@ -175,7 +190,6 @@ export default function RootLayout({
               <Footer />
             </div>
             <Toaster position="bottom-right" />
-            {gaId && <GoogleAnalytics measurementId={gaId} />}
             <Analytics />
             <SpeedInsights />
           </QueryProvider>
