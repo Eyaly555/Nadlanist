@@ -11,7 +11,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "hsl(var(--background))",
+        primary: "#008080",      // Teal
+        secondary: "#588395",    // Blue-grey
+        dark: "#121B28",         // Brand dark
+        light: "#F0F8F8",        // Brand light
+        "primary-10": "rgba(0,166,162,0.10)", // 10% opacity turquoise
+        background: "#F5F7F9",
+        white: "#FFFFFF",
         foreground: "hsl(var(--foreground))",
         card: {
           DEFAULT: "hsl(var(--card))",
@@ -20,14 +26,6 @@ const config: Config = {
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
-        },
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",

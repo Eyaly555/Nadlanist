@@ -4,8 +4,8 @@ import * as React from "react";
 import { Card } from "@/components/ui/card";
 import * as SiIcons from "react-icons/si";
 import { useFrameworks, useWebFrameworks } from "@/lib/hooks/use-frameworks";
+import type { Framework } from "@/lib/store/project-config";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Framework } from "@/lib/supabase/services/framework-service";
 import { FrameworkSkeleton } from "@/components/ui/framework-skeleton";
 import { Input } from "@/components/ui/input";
 import { Search, X } from "lucide-react";
@@ -36,7 +36,7 @@ export function TechStackSelector({
   const filteredFrameworks = React.useMemo(() => {
     if (!frameworks) return [];
     return frameworks.filter(
-      (framework) =>
+      (framework: Framework) =>
         framework.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         framework.description.toLowerCase().includes(searchQuery.toLowerCase())
     );

@@ -9,6 +9,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    direction: rtl; /* RTL direction */
   }
 
   body {
@@ -16,35 +17,41 @@
     font-size: 1.125rem; /* 18px base body size */
     line-height: 1.6;
     font-weight: 400;
+    background-color: var(--background);
+    color: var(--foreground);
   }
 
   /* Improved heading scale */
   h1 {
-    font-size: 2.5rem; /* 40px */
+    font-size: 3rem; /* 48px */
     line-height: 1.2;
     font-weight: 700;
     margin-bottom: 1.5rem;
+    color: var(--foreground);
   }
 
   h2 {
-    font-size: 2rem; /* 32px */
+    font-size: 2.25rem; /* 36px */
     line-height: 1.3;
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 1.25rem;
+    color: var(--foreground);
   }
 
   h3 {
     font-size: 1.75rem; /* 28px */
     line-height: 1.4;
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 1rem;
+    color: var(--foreground);
   }
 
   h4 {
     font-size: 1.5rem; /* 24px */
     line-height: 1.4;
-    font-weight: 500;
+    font-weight: 700;
     margin-bottom: 1rem;
+    color: var(--foreground);
   }
 
   p {
@@ -53,8 +60,17 @@
 
   /* Better link accessibility */
   a {
+    color: hsl(var(--primary));
+    text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.2em;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  a:hover, a:focus {
+    color: hsl(var(--secondary));
+    text-decoration-thickness: 2px;
   }
 
   /* Focus states for accessibility */
@@ -71,27 +87,59 @@
 
   /* Project config specific typography */
   .config-section-title {
-    @apply text-2xl font-semibold tracking-tight mb-2;
+    @apply text-2xl font-bold tracking-tight mb-2;
+    color: var(--foreground);
   }
 
   .config-section-description {
     @apply text-lg text-muted-foreground mb-6;
+    color: hsl(var(--secondary));
   }
 
   .config-label {
     @apply text-base font-medium mb-2;
+    color: hsl(var(--secondary));
   }
 
   .config-helper-text {
     @apply text-sm text-muted-foreground mt-1.5;
+    color: hsl(var(--secondary));
   }
 
   .config-card-title {
-    @apply text-lg font-medium;
+    @apply text-lg font-bold;
+    color: var(--foreground);
   }
 
   .config-card-description {
     @apply text-base text-muted-foreground;
+    color: hsl(var(--secondary));
+  }
+
+  /* Card styles with rounded corners and subtle shadow */
+  .card {
+    @apply rounded-xl shadow-sm;
+    background-color: var(--card);
+    color: var(--card-foreground);
+    border: 1px solid hsl(var(--border));
+    border-radius: 12px;
+  }
+
+  /* Fade-in animation */
+  .fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .container {
+    margin-inline: auto;
+    max-width: 1200px;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 
@@ -104,58 +152,61 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 84.8 85.2% 34.5%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 84.8 85.2% 34.5%;
-    --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    /* Brand palette: Light mode */
+    --background: 0 0% 100%;            /* #FFFFFF */
+    --foreground: 221 40% 13%;          /* #121828 */
+    --card: 0 0% 100%;                  /* #FFFFFF */
+    --card-foreground: 221 40% 13%;     /* #121828 */
+    --popover: 0 0% 100%;               /* #FFFFFF */
+    --popover-foreground: 221 40% 13%;  /* #121828 */
+    --primary: 177 100% 65%;            /* #00A6A2 */
+    --primary-foreground: 0 0% 100%;    /* #FFFFFF */
+    --secondary: 207 22% 46%;           /* #588395 */
+    --secondary-foreground: 0 0% 100%;  /* #FFFFFF */
+    --muted: 180 38% 89%;               /* #DBEDED */
+    --muted-foreground: 207 22% 46%;    /* #588395 */
+    --accent: 177 100% 65%;             /* #00A6A2 */
+    --accent-foreground: 0 0% 100%;     /* #FFFFFF */
+    --destructive: 0 84% 60%;           /* Unchanged */
+    --destructive-foreground: 0 0% 98%; /* Unchanged */
+    --border: 180 38% 89%;              /* #DBEDED */
+    --input: 0 0% 100%;                 /* #FFFFFF */
+    --ring: 177 100% 65%;               /* #00A6A2 */
+    --radius: 0.75rem;                  /* 12px border radius */
+    /* Chart colors (unchanged or update as needed) */
+    --chart-1: 177 100% 65%;            /* #00A6A2 */
+    --chart-2: 207 22% 46%;             /* #588395 */
+    --chart-3: 197 37% 24%;             /* Unchanged */
+    --chart-4: 43 74% 66%;              /* Unchanged */
+    --chart-5: 27 87% 67%;              /* Unchanged */
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 82.7 78% 55.5%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 82.7 78% 55.5%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    /* Brand palette: Dark mode */
+    --background: 221 40% 13%;          /* #121828 */
+    --foreground: 0 0% 100%;            /* #FFFFFF */
+    --card: 221 36% 17%;                /* #1A243A */
+    --card-foreground: 0 0% 100%;       /* #FFFFFF */
+    --popover: 221 36% 17%;             /* #1A243A */
+    --popover-foreground: 0 0% 100%;    /* #FFFFFF */
+    --primary: 177 100% 65%;            /* #00A6A2 */
+    --primary-foreground: 0 0% 100%;    /* #FFFFFF */
+    --secondary: 207 22% 46%;           /* #588395 */
+    --secondary-foreground: 0 0% 100%;  /* #FFFFFF */
+    --muted: 221 40% 18%;               /* Slightly lighter than background */
+    --muted-foreground: 180 38% 89%;    /* #DBEDED */
+    --accent: 177 100% 65%;             /* #00A6A2 */
+    --accent-foreground: 0 0% 100%;     /* #FFFFFF */
+    --destructive: 0 62.8% 30.6%;       /* Unchanged */
+    --destructive-foreground: 0 0% 98%; /* Unchanged */
+    --border: 207 22% 46%;              /* #588395 */
+    --input: 221 36% 17%;               /* #1A243A */
+    --ring: 177 100% 65%;               /* #00A6A2 */
+    --chart-1: 177 100% 65%;            /* #00A6A2 */
+    --chart-2: 207 22% 46%;             /* #588395 */
+    --chart-3: 197 37% 40%;             /* Unchanged */
+    --chart-4: 43 74% 66%;              /* Unchanged */
+    --chart-5: 27 87% 67%;              /* Unchanged */
   }
 }
 
@@ -166,5 +217,34 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Increase spacing according to brand guidelines (1.25x) */
+@layer utilities {
+  .p-brand {
+    padding: calc(1.25 * 1rem);
+  }
+  .px-brand {
+    padding-left: calc(1.25 * 1rem);
+    padding-right: calc(1.25 * 1rem);
+  }
+  .py-brand {
+    padding-top: calc(1.25 * 1rem);
+    padding-bottom: calc(1.25 * 1rem);
+  }
+  .m-brand {
+    margin: calc(1.25 * 1rem);
+  }
+  .mx-brand {
+    margin-left: calc(1.25 * 1rem);
+    margin-right: calc(1.25 * 1rem);
+  }
+  .my-brand {
+    margin-top: calc(1.25 * 1rem);
+    margin-bottom: calc(1.25 * 1rem);
+  }
+  .gap-brand {
+    gap: calc(1.25 * 1rem);
   }
 }

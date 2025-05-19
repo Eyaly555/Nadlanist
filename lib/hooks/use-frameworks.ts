@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { FrameworkService } from "../supabase/services/framework-service";
 
 export function useFrameworks(platform: string) {
   return useQuery({
     queryKey: ["frameworks", platform],
-    queryFn: () => FrameworkService.getInstance().getFrameworks(platform),
+    queryFn: async () => [], // TODO: החלף למקור נתונים חדש
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 24 * 60 * 60 * 1000, // 24 hours since frameworks rarely change
     refetchOnWindowFocus: false,
@@ -17,7 +16,7 @@ export function useFrameworks(platform: string) {
 export function useWebFrameworks(type: "frontend" | "backend") {
   return useQuery({
     queryKey: ["frameworks", "web", type],
-    queryFn: () => FrameworkService.getInstance().getWebFrameworks(type),
+    queryFn: async () => [], // TODO: החלף למקור נתונים חדש
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 24 * 60 * 60 * 1000, // 24 hours since frameworks rarely change
     refetchOnWindowFocus: false,

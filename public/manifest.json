@@ -1,11 +1,13 @@
 {
-  "name": "cursor.new",
-  "short_name": "cursor.new",
-  "description": "Intelligent Project Scaffolding for Cursor AI",
+  "name": "נדלניסט AI",
+  "short_name": "נדלניסט",
+  "description": "קונים? מוכרים? נדלניסט - המערכת החכמה לנדל\"ן",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "theme_color": "#00A6A2",
+  "dir": "rtl",
+  "lang": "he",
   "icons": [
     {
       "src": "/favicon.ico",
@@ -13,8 +15,33 @@
       "type": "image/x-icon"
     },
     {
+      "src": "/mark-black.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
       "src": "/apple-icon-72x72.png",
       "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-icon-144x144.png",
+      "sizes": "144x144",
       "type": "image/png"
     },
     {

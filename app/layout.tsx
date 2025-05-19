@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins } from "next/font/google";
+import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { MainNav } from "@/components/nav/main-nav";
@@ -9,6 +9,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleAnalytics } from "@/lib/analytics/google-analytics";
+import { siteConfig } from "@/lib/site-config";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -17,12 +18,15 @@ const poppins = Poppins({
   display: "swap",
 });
 
+// Use Inter as fallback
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "#000" },
+    { media: "(prefers-color-scheme: light)", color: "#F5F7F9" },
+    { media: "(prefers-color-scheme: dark)", color: "#1B1F23" },
   ],
 };
 
@@ -31,13 +35,26 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_APP_URL || "https://cursor.new"
   ),
   title: {
-    default: "cursor.new - Intelligent Project Scaffolding for Cursor AI",
-    template: "%s | cursor.new",
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
   },
-  description:
-    "Transform your development workflow with cursor.new. Generate production-ready projects with AI-powered tech stack selection, automated documentation, and industry best practices.",
-  authors: [{ name: "Cursor New" }],
-  creator: "Cursor New",
+  description: siteConfig.description,
+  keywords: [
+    "cursor.new",
+    "cursor",
+    "cursor ai",
+    "project",
+    "scaffolding",
+    "templates",
+    "boilerplate",
+  ],
+  authors: [
+    {
+      name: "cursor.new",
+      url: "https://cursor.new",
+    },
+  ],
+  creator: "cursor.new",
   publisher: "Cursor New",
   robots: {
     index: true,
@@ -51,37 +68,38 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
+      { url: "/mark-black.svg", sizes: "any", type: "image/svg+xml" },
+    ],
     apple: [
-      { url: "/apple-icon.png" },
       { url: "/apple-icon-72x72.png", sizes: "72x72", type: "image/png" },
       { url: "/apple-icon-192x192.png", sizes: "192x192", type: "image/png" },
     ],
   },
-  manifest: "/manifest.json",
+  manifest: `${siteConfig.url}/manifest.json`,
   openGraph: {
     type: "website",
-    title: "cursor.new - Intelligent Project Scaffolding for Cursor AI",
-    description:
-      "Generate production-ready projects with AI-powered tech stack selection and automated documentation.",
-    siteName: "cursor.new",
-    url: "https://cursor.new",
+    locale: "en_US",
+    url: siteConfig.url,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
     images: [
       {
-        url: "/og-image.png",
+        url: `${siteConfig.url}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "cursor.new preview",
+        alt: "cursor.new - Intelligent Project Scaffolding",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "cursor.new - Intelligent Project Scaffolding",
-    description:
-      "Generate production-ready projects with AI-powered tech stack selection",
-    creator: "@cursor_ai",
-    images: ["/twitter-image.png"],
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [`${siteConfig.url}/twitter-image.png`],
+    creator: "@cursor_new",
   },
   alternates: {
     canonical: "https://cursor.new",
@@ -96,11 +114,52 @@ export default function RootLayout({
   const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${poppins.variable} antialiased min-h-screen flex flex-col`}
-        role="document"
-      >
+    <html lang="he" dir="rtl" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="48x48" />
+        <link rel="icon" href="/mark-black.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/apple-icon-72x72.png" sizes="72x72" />
+        <link rel="apple-touch-icon" href="/apple-icon-192x192.png" sizes="192x192" />
+        <meta name="theme-color" content="#00A6A2" />
+        <meta name="msapplication-TileColor" content="#00A6A2" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content={metadata.description || ""} />
+        <meta name="keywords" content={
+          Array.isArray(metadata.keywords)
+            ? metadata.keywords.join(", ")
+            : (typeof metadata.keywords === "string" ? metadata.keywords : "")
+        } />
+        <meta
+          name="author"
+          content={
+            Array.isArray(metadata.authors)
+              ? metadata.authors.map(author => typeof author === "string" ? author : author.name).join(", ")
+              : (typeof metadata.authors === "string" ? metadata.authors : "")
+          }
+        />
+        <meta name="creator" content={metadata.creator || ""} />
+        <meta name="publisher" content={metadata.publisher || ""} />
+        <meta name="robots" content={
+          typeof metadata.robots === "object" && metadata.robots !== null && "index" in metadata.robots
+            ? (metadata.robots.index ? "index" : "noindex")
+            : "noindex"
+        } />
+        <meta name="googlebot" content={
+          typeof metadata.robots === "object" && metadata.robots !== null && "googleBot" in metadata.robots
+            ? "index, follow"
+            : "noindex, nofollow"
+        } />
+        <meta name="google-site-verification" content="google-site-verification=google-site-verification" />
+        <meta name="msvalidate.01" content="MS_VALIDATION_CODE" />
+        <meta name="yandex-verification" content="YANDEX_VERIFICATION_CODE" />
+        <meta name="alexaVerifyID" content="Alexa_Verify_ID" />
+        <meta name="msapplication-TileImage" content="/apple-icon-144x144.png" />
+        <meta name="msapplication-TileImage" content="/apple-icon-152x152.png" />
+        <meta name="msapplication-TileImage" content="/apple-icon-180x180.png" />
+      </head>
+      <body className={`${poppins.variable} ${inter.variable} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -108,18 +167,20 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <QueryProvider>
-            <MainNav />
-            <main id="main-content" className="flex-1">
-              {children}
-            </main>
-            <Footer />
-            <Toaster />
+            <div className="relative min-h-screen flex flex-col">
+              <MainNav />
+              <main className="container mx-auto px-4 pb-8 pt-6">
+                {children}
+              </main>
+              <Footer />
+            </div>
+            <Toaster position="bottom-right" />
+            {gaId && <GoogleAnalytics measurementId={gaId} />}
+            <Analytics />
+            <SpeedInsights />
           </QueryProvider>
         </ThemeProvider>
-        <Analytics />
-        <SpeedInsights />
-        {gaId && <GoogleAnalytics measurementId={gaId} />}
       </body>
     </html>
   );
-}
+} 

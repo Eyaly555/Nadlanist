@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { packageService } from "../supabase/services/package-service";
-import type { Package } from "../supabase/services/package-service";
+import type { Package } from "@/lib/store/project-config";
 
 export function usePackages(frameworkId: string) {
   return useQuery<Package[]>({
     queryKey: ["packages", frameworkId],
-    queryFn: () => packageService.getPackagesByFramework(frameworkId),
+    queryFn: async () => [], // TODO: החלף למקור נתונים חדש
     enabled: !!frameworkId,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 30 * 60 * 1000, // 30 minutes

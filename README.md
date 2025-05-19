@@ -1,128 +1,94 @@
-# cursor.new
+# נדלניסט AI
 
-Generate production-ready projects with automated documentation and industry best practices.
+המערכת החכמה לחיפוש וניהול נכסי נדל"ן
 
-## Features
+## לוגואים ותמונות
 
-- 🤖 **AI-Powered Setup**
+נדלניסט AI כוללת מספר לוגואים ותמונות לשימוש באתר:
 
-  - Intelligent tech stack recommendations
-  - Framework selection for web, mobile, and desktop
-  - Testing tools and configuration
-  - Project-specific optimizations
+### קבצי לוגו
 
-- 📚 **Smart Documentation**
+- **לוגו מילולי (logo-*.svg)**: לוגו עם טקסט לשימוש בכותרות גדולות ואזורי תוכן.
+  - `logo-black.svg` - לרקע בהיר
+  - `logo-white.svg` - לרקע כהה
+  - `logo-teal.svg` - גרסת צבע המותג
 
-  - Automated PRD & technical specs
-  - Development guidelines generation
-  - Code style documentation
-  - AI-optimized prompts and rules
+- **אייקון (mark-*.svg)**: לוגו קומפקטי לשימוש בפאביקון ואזורים קטנים.
+  - `mark-black.svg` - לרקע בהיר
+  - `mark-white.svg` - לרקע כהה
+  - `mark-teal.svg` - גרסת צבע המותג
 
-- ⚡ **Modern Development Standards**
+### הנחיות שימוש
 
-  - TypeScript configuration
-  - ESLint and Prettier setup
-  - Pre-commit hooks
-  - CI/CD templates for GitHub Actions
+| קובץ | מיקום באתר | מטרה | alt-text מומלץ |
+|------|------------|------|-------------|
+| mark-*.svg | Header (בפינה הימנית), Favicon, כל אייקון קטן בתפריטים וב-Footer | ייצוג איקוני קומפקטי של המותג | "לוגו נדלניסט AI – אייקון בית מחייך" |
+| Linkedin Cover.png | תמונת Hero במסך הבית, תמונת שיתוף ברשתות (Open Graph / Twitter Card), באנר בדפי נחיתה | ייצוג מילולי מלא עם המסר "קונים? מוכרים? נדלניסט" | "באנר נדלניסט AI – קונים? מוכרים? נדלניסט" |
 
-- 🔄 **Smart Dependencies**
+#### כללים עיצוביים
 
-  - Curated package selection
-  - Automatic security scanning
-  - Version management
-  - Dependency conflict resolution
+- **יחס logo-mark מומלץ**: 56×56 px ב-Header, 32×32 px לפאביקון.
+- **logo-cover** להשתמש ברוחב מלא (100 vw), גובה ≈ 300 px במובייל ו-450 px בדסקטופ.
+- **ריווח**: שמור ריווח מינימלי סביב logo-mark: ‎8 px מכל צד.
+- **ניגודיות**: ב-Header על רקע לבן; ב-Footer וב-Hero ניתן להציג על רקע כהה או רך (Soft).
+- **נגישות**: ודא ניגודיות AA: אם logo-cover מוצג כ-Hero, הטקסט הלבן מעליו חייב להיות #FFFFFF.
 
-- 🛠️ **Developer Tooling**
-
-  - Custom Cursor AI rules
-  - Project presets
-  - Team workflow templates
-  - Code review prompts
-
-- 🎨 **Technology Support**
-  - Frontend: React, Vue, Next.js, TypeScript
-  - Backend: Node.js, Python, Go
-  - Mobile: React Native, Flutter, Kotlin, Swift
-  - Desktop: Electron, Tauri, macOS, Windows
-
-## Tech Stack
-
-- **Frontend**: Next.js 15+ with TypeScript
-- **Backend**: Supabase
-- **UI**: Tailwind CSS + shadcn/ui
-- **State Management**: Zustand
-- **Data Fetching**: React Query
-- **Authentication**: Supabase Auth
-- **Database**: Supabase PostgreSQL
-- **Analytics**: Vercel Analytics
-- **Performance**: Vercel Speed Insights
-
-## Prerequisites
+## דרישות מערכת
 
 - Node.js 18+
 - pnpm
-- Supabase CLI (for local development)
 
-## Getting Started
+## התחלה מהירה
 
-1. Clone the repository:
+1. שכפל את הפרויקט:
 
 ```bash
-git clone https://github.com/yavuzyalcintas/cursornew.git
-cd cursornew
+git clone https://github.com/your-username/nadlanist-ai.git
+cd nadlanist-ai
 ```
 
-2. Install dependencies:
+2. התקן את החבילות הנדרשות:
 
 ```bash
 pnpm install
 ```
 
-3. Set up environment variables:
+3. הגדר משתני סביבה:
 
 ```bash
 cp .env.example .env.local
 ```
 
-4. Start the development server:
+4. הפעל את שרת הפיתוח:
 
 ```bash
 pnpm dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+5. פתח את [http://localhost:3000](http://localhost:3000) בדפדפן שלך.
 
-## Available Scripts
-
-- `pnpm dev` - Start development server
-- `pnpm build` - Build production bundle
-- `pnpm start` - Start production server
-- `pnpm lint` - Run ESLint
-- `pnpm supabase:generate` - Generate Supabase types
-- `pnpm generate:og` - Generate OG images
-
-## Project Structure
+## מבנה הפרויקט
 
 ```
-app/                  # Next.js 13+ app directory
-  (auth)/            # Authentication routes
-  api/               # API routes
-  projects/          # Project-related pages
-components/          # React components
-  ui/               # UI components
-  forms/            # Form components
-  projects/         # Project-specific components
-  shared/           # Shared components
-lib/                # Utilities and services
-  supabase/        # Supabase services
-  store/           # State management
-  hooks/           # Custom hooks
-  utils/           # Helper functions
-public/             # Static assets
-scripts/            # Build and utility scripts
-supabase/           # Supabase configuration
-  migrations/      # Database migrations
-docs/               # Documentation
+app/                  # תיקיית האפליקציה Next.js 13+
+  (auth)/            # נתיבי אימות
+  api/               # נתיבי API
+  project/           # דפים ספציפיים לפרויקט
+components/          # רכיבי React
+  ui/               # רכיבי ממשק משתמש
+  forms/            # רכיבי טפסים
+  projects/         # רכיבים ספציפיים לפרויקט
+  shared/           # רכיבים משותפים
+lib/                # שירותים וכלים
+  supabase/        # שירותי Supabase
+  store/           # ניהול מצב
+  hooks/           # Hooks מותאמים
+  utils/           # פונקציות עזר
+public/             # נכסים סטטיים
+scripts/            # סקריפטים לבנייה ושירות
+supabase/           # הגדרות Supabase
+  migrations/      # הגירות מסד נתונים
+docs/               # תיעוד
 ```
 
 ## Development Guidelines

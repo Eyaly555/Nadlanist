@@ -1,5 +1,27 @@
 import { create } from "zustand";
-import { Framework } from "../supabase/services/framework-service";
+
+export interface Framework {
+  id: string;
+  name: string;
+  value: string;
+  description: string;
+  icon: string;
+  type?: 'frontend' | 'backend';
+  platform: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface Package {
+  id: string;
+  name: string;
+  value: string;
+  description: string;
+  icon: string;
+  framework_id: string;
+  created_at?: string;
+  updated_at?: string;
+}
 
 export interface ProjectConfig {
   name: string;

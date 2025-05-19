@@ -12,6 +12,14 @@ const PLATFORM_ICONS: Record<string, LucideIcon> = {
   desktop: Computer,
 };
 
+interface Platform {
+  id: string;
+  name: string;
+  description: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 interface PlatformSelectorProps {
   onSelect: (platform: string) => void;
   selectedPlatform?: string;
@@ -21,7 +29,8 @@ export function PlatformSelector({
   onSelect,
   selectedPlatform,
 }: PlatformSelectorProps) {
-  const { data: platforms, isLoading } = usePlatforms();
+  const { data, isLoading } = usePlatforms();
+  const platforms = (data ?? []) as Platform[];
 
   if (isLoading) {
     return (

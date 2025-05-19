@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { platformService } from "@/lib/supabase/services/platform-service";
 
 export function usePlatforms() {
   return useQuery({
     queryKey: ["platforms"],
-    queryFn: () => platformService.getPlatforms(),
+    queryFn: async () => [], // TODO: החלף למקור נתונים חדש
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 24 * 60 * 60 * 1000, // 24 hours since platforms rarely change
     refetchOnWindowFocus: false,

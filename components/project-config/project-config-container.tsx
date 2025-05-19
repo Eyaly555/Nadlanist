@@ -7,7 +7,7 @@ import { TechStackSelector } from "./tech-stack-selector";
 import { PackageSelector } from "./package-selector";
 import { ProjectBreadcrumb } from "./project-breadcrumb";
 import { useProjectConfig } from "@/lib/store/project-config";
-import { Framework } from "@/lib/supabase/services/framework-service";
+import type { Framework } from "@/lib/store/project-config";
 import PromptListContainer from "./prompt-list-container";
 
 type ConfigStep =
