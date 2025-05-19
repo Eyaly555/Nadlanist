@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Logo } from "../ui/logo";
 import { usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ContactButton } from "@/components/shared";
 
 export function MainNav() {
   const pathname = usePathname();
@@ -60,12 +60,11 @@ export function MainNav() {
           ))}
         </nav>
         <div className="hidden md:block">
-          <Button
-            variant="default"
+          <ContactButton
+            buttonText="דברו איתנו"
+            variant="primary"
             className="rounded-2xl px-6 py-2 shadow-md font-semibold focus-visible:outline-primary/70"
-          >
-            דברו איתנו
-          </Button>
+          />
         </div>
       </header>
     );
@@ -98,15 +97,11 @@ export function MainNav() {
         </nav>
       </header>
       <div className="h-[60px]" />
-      <Button
-        asChild
+      <ContactButton
+        buttonText="דברו איתנו"
+        variant="primary"
         className="fixed bottom-6 right-6 z-50 shadow-lg rounded-full px-6 py-3 text-lg font-bold"
-        size="lg"
-      >
-        <Link href="/contact">
-          דברו איתנו
-        </Link>
-      </Button>
+      />
     </>
   );
 }

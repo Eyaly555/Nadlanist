@@ -114,7 +114,7 @@ export function ContactForm({
       <div className={`w-full max-w-[1280px] mx-auto px-4 md:px-8 ${className}`} dir="rtl">
         <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
           <h3 className="text-green-700 text-lg font-medium">הפרטים נשלחו בהצלחה!</h3>
-          <p className="text-green-600 mt-2">נציג שלנו יחזור אליך בהקדם</p>
+          <p className="text-green-600 mt-2">תוך שניות תקבלו הודעת וואטסאפ מהסוכן החכם של נדלניסט</p>
         </div>
       </div>
     );
