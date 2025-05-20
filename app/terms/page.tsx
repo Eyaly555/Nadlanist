@@ -1,98 +1,61 @@
 import { Metadata } from "next";
+import { Card, CardContent } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions",
-  description: "Terms and Conditions for using cursor.new",
+  title: "תנאי שימוש באתר נדלניסט AI",
+  description: "תנאי שימוש והגבלת אחריות באתר נדלניסט AI",
 };
 
 export default function TermsAndConditions() {
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl prose prose-invert">
-      <h1>Terms and Conditions</h1>
-      <p>Last updated: January 17, 2025</p>
+    <div className="container mx-auto max-w-4xl px-4 py-8">
+      <Card className="prose prose-invert md:prose-lg lg:prose-xl w-full" dir="rtl" lang="he">
+        <CardContent className="p-6 md:p-10">
+          <h1>תנאי שימוש באתר נדלניסט AI</h1>
+          <p>ברוכים הבאים ל-נדלניסט AI (&quot;האתר&quot; או &quot;הפלטפורמה&quot;). השימוש באתר ובכל השירותים הניתנים דרכו (&quot;השירותים&quot;) כפוף להסכמתך לתנאים אלה. אנא קרא/י בעיון. השימוש באתר מהווה הסכמה מלאה לכל תנאי השימוש המפורטים להלן.</p>
 
-      <h2>1. Acceptance of Terms</h2>
-      <p>
-        By accessing and using cursor.new (&ldquo;the Service&rdquo;), you
-        accept and agree to be bound by these Terms and Conditions and Privacy
-        Policy.
-      </p>
+          <h2>1. כללי</h2>
+          <ul>
+            <li>1.1. נדלניסט AI היא פלטפורמה חכמה לאיתור, חיבור וניהול עסקאות נדל&quot;ן, תוך שילוב טכנולוגיות בינה מלאכותית (&quot;AI&quot;) ואוטומציה.</li>
+            <li>1.2. השירות ניתן למשתמשים פרטיים ועסקיים, ומטרתו להקל, לייעל ולשפר את תהליך חיפוש, מכירה ורכישת נכסי נדל&quot;ן.</li>
+          </ul>
 
-      <h2>2. Description of Service</h2>
-      <p>
-        cursor.new is a web-based tool for project initialization and
-        configuration. The service is provided &ldquo;as is&rdquo; and &ldquo;as
-        available&rdquo; without any warranties. All project generation happens
-        in your browser, and we do not store any of your project information or
-        ideas.
-      </p>
+          <h2>2. הצהרת אחריות בנוגע ל-AI</h2>
+          <ul>
+            <li>2.1. חלק מהמידע, ההמלצות, התשובות, ההתאמות וההצעות הניתנות בפלטפורמה נוצרות או מסופקות על-ידי מערכות בינה מלאכותית.</li>
+            <li>2.2. השימוש בבינה מלאכותית (AI) בפלטפורמה מבוסס על נתונים, אלגוריתמים, ניתוחים ו/או מידע שהוזן או נאסף ממקורות שונים, לרבות צדדים שלישיים.</li>
+            <li>2.3. יש לשים לב כי תשובות, המלצות, ניתוחים או מידע שניתן ע&quot;י מערכות ה-AI עשויים להיות לא מדויקים, לא שלמים, לא עדכניים או לא תואמים את המציאות, ולפעמים אף לכלול טעויות.</li>
+            <li>2.4. נדלניסט AI אינה מתחייבת לדיוק, שלמות, עדכניות או התאמה של המידע שניתן ע&quot;י מערכות ה-AI לכל מטרה שהיא, והאחריות על השימוש בתשובות ובמידע היא על המשתמש בלבד.</li>
+            <li>2.5. מומלץ לבצע בדיקה עצמאית של כל מידע ו/או ייעוץ לפני קבלת החלטות משמעותיות.</li>
+          </ul>
 
-      <h2>3. User Obligations</h2>
-      <ul>
-        <li>
-          You must use the Service in accordance with applicable laws and
-          regulations
-        </li>
-        <li>You agree not to misuse or attempt to disrupt the Service</li>
-      </ul>
+          <h2>3. אחריות מוגבלת</h2>
+          <ul>
+            <li>3.1. נדלניסט AI ו/או מי מטעמה אינם אחראים לנזק ישיר או עקיף, כספי או אחר, שייגרם כתוצאה מהסתמכות על מידע, תשובות או שירותים באתר, לרבות כאלה שסופקו באמצעות AI.</li>
+            <li>3.2. השירות באתר אינו מהווה תחליף לייעוץ מקצועי פרטני (למשל: ייעוץ משפטי, פיננסי, תיווך מורשה וכד&apost;), ואין לראות בו התחייבות, חוות דעת מקצועית מחייבת או הבטחה לתוצאה.</li>
+          </ul>
 
-      <h2>4. Intellectual Property</h2>
-      <p>
-        The Service and its original content, features, and functionality are
-        owned by cursor.new and are protected by international copyright,
-        trademark, and other intellectual property laws. Your project ideas and
-        configurations remain entirely yours, as we do not store or process them
-        in any way.
-      </p>
+          <h2>4. פרטיות ואבטחת מידע</h2>
+          <ul>
+            <li>4.1. נדלניסט AI שומרת על פרטיות המשתמשים ומתחייבת לפעול לפי כל דין בנושא אבטחת מידע.</li>
+            <li>4.2. פרטים מלאים במדיניות הפרטיות של האתר.</li>
+          </ul>
 
-      <h2>5. Analytics and Tracking</h2>
-      <p>We use third-party analytics services including:</p>
-      <ul>
-        <li>Vercel Analytics for performance monitoring</li>
-        <li>Google Analytics for usage tracking</li>
-      </ul>
-      <p>
-        These services collect anonymous usage data and are subject to their own
-        privacy policies. We do not use this data for commercial purposes or AI
-        training.
-      </p>
+          <h2>5. שינויים ועדכונים</h2>
+          <ul>
+            <li>5.1. נדלניסט AI רשאית לעדכן, לשנות, להפסיק או להוסיף לתנאים אלה בכל עת, לפי שיקול דעתה הבלעדי. עדכון ייכנס לתוקף עם פרסומו באתר.</li>
+          </ul>
 
-      <h2>6. Limitation of Liability</h2>
-      <p>
-        To the maximum extent permitted by law, cursor.new shall not be liable
-        for any indirect, incidental, special, consequential, or punitive
-        damages resulting from your use of the Service.
-      </p>
+          <h2>6. דין וסמכות שיפוט</h2>
+          <ul>
+            <li>6.1. תנאים אלו כפופים לדין הישראלי בלבד.</li>
+            <li>6.2. הסמכות הבלעדית לכל עניין הנוגע לשימוש באתר נתונה לבתי המשפט המוסמכים במחוז תל-אביב.</li>
+          </ul>
 
-      <h2>7. Service Modifications</h2>
-      <p>
-        We reserve the right to modify or discontinue the Service at any time
-        without notice. We shall not be liable to you or any third party for any
-        modification, suspension, or discontinuance of the Service.
-      </p>
-
-      <h2>8. Termination</h2>
-      <p>
-        We reserve the right to terminate or suspend your access to the Service
-        immediately, without prior notice, for any reason including breach of
-        these Terms.
-      </p>
-
-      <h2>9. Governing Law</h2>
-      <p>
-        These Terms shall be governed by and construed in accordance with the
-        laws of the jurisdiction in which cursor.new operates, without regard to
-        its conflict of law provisions.
-      </p>
-
-      <h2>10. Changes to Terms</h2>
-      <p>
-        We reserve the right to modify these Terms at any time. We will notify
-        users of any material changes by posting the new Terms on this page.
-      </p>
-
-      <h2>11. Contact Information</h2>
-      <p>For any questions about these Terms, please contact us.</p>
+          <h2>לתשומת ליבך:</h2>
+          <p className="font-bold text-red-700">השימוש באתר ובשירותים מהווה הסכמה מלאה לתנאים אלה. במידה ואינך מסכים/מה – אנא הימנע/י משימוש בפלטפורמה.</p>
+        </CardContent>
+      </Card>
     </div>
   );
 }
