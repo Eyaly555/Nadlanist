@@ -8,7 +8,6 @@ import { QueryProvider } from "@/lib/providers/query-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { siteConfig } from "@/lib/site-config";
 import Script from "next/script";
 
 const poppins = Poppins({
@@ -32,30 +31,32 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || "https://cursor.new"
+    process.env.NEXT_PUBLIC_APP_URL || "https://nadlanist.ai"
   ),
   title: {
-    default: siteConfig.name,
-    template: `%s | ${siteConfig.name}`,
+    default: "נדלניסט AI",
+    template: "%s | נדלניסט AI",
   },
-  description: siteConfig.description,
+  description: "נדלניסט AI הופכת קנייה ומכירה של נכסים לשיחה אחת בWhatsApp: אלגוריתם AI חכם + ליווי אנושי מקצועי, 0 ₪ עמלות לקונים ורק 0.5% למוכרים.",
   keywords: [
-    "cursor.new",
-    "cursor",
-    "cursor ai",
-    "project",
-    "scaffolding",
-    "templates",
-    "boilerplate",
+    "נדלניסט",
+    "נדלניסט AI",
+    "נדלן בישראל",
+    "קניית דירה",
+    "מכירת דירה",
+    "תיווך",
+    "סוכן נדלן",
+    "יזמות נדלן",
+    "השקעות נדלן",
   ],
   authors: [
     {
-      name: "cursor.new",
-      url: "https://cursor.new",
+      name: "נדלניסט AI",
+      url: "https://nadlanist.ai",
     },
   ],
-  creator: "cursor.new",
-  publisher: "Cursor New",
+  creator: "נדלניסט AI",
+  publisher: "נדלניסט AI",
   robots: {
     index: true,
     follow: true,
@@ -77,32 +78,32 @@ export const metadata: Metadata = {
       { url: "/apple-icon-192x192.png", sizes: "192x192", type: "image/png" },
     ],
   },
-  manifest: `${siteConfig.url}/manifest.json`,
+  manifest: `https://nadlanist.ai/manifest.json`,
   openGraph: {
     type: "website",
-    locale: "en_US",
-    url: siteConfig.url,
-    title: siteConfig.name,
-    description: siteConfig.description,
-    siteName: siteConfig.name,
+    locale: "he_IL",
+    url: "https://nadlanist.ai",
+    title: "נדלניסט AI",
+    description: "נדלניסט AI הופכת קנייה ומכירה של נכסים לשיחה אחת בWhatsApp. 0 ₪ עמלות לקונים, 0.5% למוכרים.",
+    siteName: "נדלניסט AI",
     images: [
       {
-        url: `${siteConfig.url}/og-image.png`,
+        url: "/mark-teal.svg",
         width: 1200,
         height: 630,
-        alt: "cursor.new - Intelligent Project Scaffolding",
+        alt: "נדלניסט AI",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: siteConfig.name,
-    description: siteConfig.description,
-    images: [`${siteConfig.url}/twitter-image.png`],
-    creator: "@cursor_new",
+    title: "נדלניסט AI - נדלן חכם, שקוף וללא עמלות מיותרות",
+    description: "נדלניסט AI הופכת קנייה ומכירה של נכסים לשיחה אחת בWhatsApp. 0 ₪ עמלות לקונים, 0.5% למוכרים.",
+    images: ["/mark-teal.svg"],
+    creator: "@nadlanist_ai",
   },
   alternates: {
-    canonical: "https://cursor.new",
+    canonical: "https://nadlanist.ai",
   },
 };
 
