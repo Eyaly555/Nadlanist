@@ -205,4 +205,9 @@ export default function SellersPage() {
       </section>
     </main>
   );
-} 
+}
+
+export const metadata = {
+  title: "מוכרים ",
+  description: "מכרו את הנכס שלכם מהר ובשקיפות עם נדלניסט AI - ליווי מקצועי, סריקת 3D ועמלה מינימלית."
+}; 

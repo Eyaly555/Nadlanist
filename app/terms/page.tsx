@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | cursor.new",
+  title: "Terms & Conditions",
   description: "Terms and Conditions for using cursor.new",
 };
 

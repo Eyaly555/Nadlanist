@@ -49,6 +49,11 @@ const VISION_VALUES = [
   },
 ];
 
+export const metadata = {
+  title: "החזון שלנו",
+  description: "החזון של נדלניסט AI - להפוך את שוק הנדל\"ן לשקוף, חכם ונגיש לכל אחד."
+};
+
 export default function VisionPage() {
   return (
     <main className="flex flex-col gap-16 pb-16 bg-white text-right" dir="rtl">

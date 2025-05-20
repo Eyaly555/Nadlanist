@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "Cursor New",
+  name: "נדלניסט AI",
   description: "Intelligent Project Scaffolding",
   url: process.env.NEXT_PUBLIC_APP_URL || "https://cursor.new",
   ogImage: "/og-image.png",

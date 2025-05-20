@@ -208,4 +208,9 @@ export default function BuyersPage() {
       </section>
     </main>
   );
-} 
+}
+
+export const metadata = {
+  title: "קונים ",
+  description: "מצאו את הבית הבא שלכם עם נדלניסט AI - חיפוש חכם, ליווי אישי וללא עמלות."
+}; 

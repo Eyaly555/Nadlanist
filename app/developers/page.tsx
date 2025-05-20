@@ -183,4 +183,9 @@ export default function DevelopersPage() {
       </section>
     </main>
   );
-} 
+}
+
+export const metadata = {
+  title: "יזמים ",
+  description: "שיווק חכם לפרויקטים חדשים עם נדלניסט AI - AI מתקדם, חיסכון בעלויות וללא בלעדיות."
+}; 
