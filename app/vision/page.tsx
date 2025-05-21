@@ -232,7 +232,7 @@ export default function VisionPage() {
           />
         </div>
         <a
-          href="https://wa.me/972555555555"
+          href={`https://wa.link/nadlanist?text=${encodeURIComponent('הסוכן החכם שלנו יישלח לכם הודעה תוך שניות')}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-primary underline text-lg mt-2"

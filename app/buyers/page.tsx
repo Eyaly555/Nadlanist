@@ -89,7 +89,7 @@ export default function BuyersPage() {
           </p>
           {/* WhatsApp Button - Large, Centered, Clickable, Icon Only */}
           <a
-            href="https://wa.me/972542171198"
+            href={`https://wa.link/nadlanist?text=${encodeURIComponent('הסוכן החכם שלנו יישלח לכם הודעה תוך שניות')}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center rounded-full bg-green-500 shadow-lg hover:bg-green-600 transition-colors duration-100 focus:outline-none focus:ring-2 focus:ring-green-400 mb-4"
@@ -198,7 +198,7 @@ export default function BuyersPage() {
           </div>
         </div>
         <a
-          href="https://wa.me/972542171198"
+          href={`https://wa.link/nadlanist?text=${encodeURIComponent('הסוכן החכם שלנו יישלח לכם הודעה תוך שניות')}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-primary underline text-lg mt-2"

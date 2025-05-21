@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function TermsAndConditions() {
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
-      <Card className="prose prose-invert md:prose-lg lg:prose-xl w-full" dir="rtl" lang="he">
+      <Card className="prose prose-invert md:prose-lg lg:prose-xl w-full prose-headings:text-black" dir="rtl" lang="he">
         <CardContent className="p-6 md:p-10">
           <h1>תנאי שימוש באתר נדלניסט AI</h1>
           <p>ברוכים הבאים ל-נדלניסט AI (&quot;האתר&quot; או &quot;הפלטפורמה&quot;). השימוש באתר ובכל השירותים הניתנים דרכו (&quot;השירותים&quot;) כפוף להסכמתך לתנאים אלה. אנא קרא/י בעיון. השימוש באתר מהווה הסכמה מלאה לכל תנאי השימוש המפורטים להלן.</p>

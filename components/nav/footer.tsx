@@ -119,7 +119,7 @@ export function Footer() {
               
               {/* WhatsApp CTA Button */}
               <a 
-                href="https://wa.me/972542171198" 
+                href={`https://wa.link/nadlanist?text=${encodeURIComponent('הסוכן החכם שלנו יישלח לכם הודעה תוך שניות')}`}
                 className="mt-6 bg-[#008080] text-white py-3 px-6 rounded-xl shadow-[0_2px_2px_rgba(0,0,0,0.2)] w-full md:w-auto text-center transition-all duration-100 hover:bg-[#006666]"
                 aria-label="פתח צ'אט WhatsApp"
               >

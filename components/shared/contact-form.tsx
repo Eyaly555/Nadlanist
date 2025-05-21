@@ -309,7 +309,7 @@ export function ContactForm({
               >
                 אני מסכים ל
                 <Link
-                  href="https://nadlanist.ai/terms-and-conditions"
+                  href="https://nadlanist.ai/terms"
                   className="text-[#008080] hover:underline mx-1"
                   target="_blank"
                 >
