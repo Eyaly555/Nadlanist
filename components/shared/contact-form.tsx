@@ -154,6 +154,14 @@ export function ContactForm({
             phone: "",
             terms: false,
           });
+          // Trigger Google Ads conversion event for compact forms
+          if (typeof window !== "undefined" && (window as WindowWithUtmData).gtag) {
+            (window as WindowWithUtmData).gtag!(
+              'event',
+              'conversion',
+              { send_to: 'AW-17084618003/rzb3CM2Kp8kaEJOqytI_' }
+            );
+          }
         } else {
           window.location.href = "https://www.nadlanist.ai/thank-you/";
         }
@@ -333,4 +341,5 @@ export function ContactForm({
 // Add the UTM data to the Window interface
 interface WindowWithUtmData extends Window {
   utmData?: Record<string, string>;
+  gtag?: (...args: unknown[]) => void;
 }

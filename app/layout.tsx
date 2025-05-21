@@ -160,7 +160,7 @@ export default function RootLayout({
         <meta name="msapplication-TileImage" content="/apple-icon-144x144.png" />
         <meta name="msapplication-TileImage" content="/apple-icon-152x152.png" />
         <meta name="msapplication-TileImage" content="/apple-icon-180x180.png" />
-        {/* Google Analytics (gtag.js) - always loaded */}
+        {/* Google Analytics & Google Ads (gtag.js) - always loaded */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
           strategy="afterInteractive"
@@ -171,6 +171,7 @@ export default function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${GA_MEASUREMENT_ID}');
+            gtag('config', 'AW-17084618003');
           `}
         </Script>
         <Script
