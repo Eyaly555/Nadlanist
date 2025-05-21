@@ -47,7 +47,7 @@ export function ProjectBasicsForm({ onSubmit }: ProjectBasicsFormProps) {
             onFocus={() => setIsFocused("name")}
             onBlur={() => setIsFocused(null)}
             placeholder="my-awesome-project"
-            className="text-lg transition-all duration-200 hover:border-primary/50"
+            className="text-lg transition-all duration-100 hover:border-primary/50"
             required
           />
           <p className="config-helper-text">
@@ -73,7 +73,7 @@ export function ProjectBasicsForm({ onSubmit }: ProjectBasicsFormProps) {
             onFocus={() => setIsFocused("description")}
             onBlur={() => setIsFocused(null)}
             placeholder="A modern web application for..."
-            className="min-h-[120px] text-lg transition-all duration-200 hover:border-primary/50"
+            className="min-h-[120px] text-lg transition-all duration-100 hover:border-primary/50"
             maxLength={MAX_DESC_LENGTH}
             required
           />
@@ -90,7 +90,7 @@ export function ProjectBasicsForm({ onSubmit }: ProjectBasicsFormProps) {
         <Button
           type="submit"
           size="lg"
-          className="w-full text-lg transition-all duration-200 hover:scale-[1.02]"
+          className="w-full text-lg transition-all duration-100 hover:scale-[1.02]"
           disabled={!name.trim() || !description.trim()}
         >
           Continue to Next Step →

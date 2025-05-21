@@ -46,7 +46,7 @@ export function ProjectBreadcrumb({
                   disabled={!accessible}
                   className={cn(
                     "flex items-center px-3 py-1 rounded-md text-sm font-medium",
-                    "transition-colors duration-200",
+                    "transition-colors duration-100",
                     isCurrent && "bg-primary text-primary-foreground",
                     !isCurrent && accessible && "hover:bg-muted cursor-pointer",
                     !accessible && "opacity-50 cursor-not-allowed",

@@ -20,7 +20,7 @@ export function FeatureCard({ icon, title, desc, delay = 0 }: FeatureCardProps) 
       transition={{ duration: 0.5, delay }}
       className="h-full" //  נוסיף h-full גם על ה-motion.div כדי שימלא את תא הגריד
     >
-      <Card className="flex flex-col items-center text-center rounded-2xl shadow-md h-full p-6 gap-2 transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 hover:border-primary/30 border border-transparent bg-white">
+      <Card className="flex flex-col items-center text-center rounded-2xl shadow-md h-full p-6 gap-2 transition-all duration-100 ease-in-out hover:shadow-xl hover:-translate-y-1 hover:border-primary/30 border border-transparent bg-white">
         {/* הסרנו justify-between מה-Card כדי שה-CardContent יקבע את חלוקת המקום */}
         {/* הסרנו min-h-[320px] כדי לתת ל-Grid ול-h-full לשלוט יותר, או שנשאיר אותו אם רוצים גובה מינימלי מובטח */}
         <div className="w-12 h-12 mb-3 rounded-lg bg-primary/10 flex items-center justify-center text-primary text-2xl">

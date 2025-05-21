@@ -92,7 +92,7 @@ export default function BuyersPage() {
             href="https://wa.me/972542171198"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center rounded-full bg-green-500 shadow-lg hover:bg-green-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 mb-4"
+            className="flex items-center justify-center rounded-full bg-green-500 shadow-lg hover:bg-green-600 transition-colors duration-100 focus:outline-none focus:ring-2 focus:ring-green-400 mb-4"
             style={{ width: 80, height: 80 }}
             aria-label="צ'אט וואטסאפ עם נדלניסט"
           >

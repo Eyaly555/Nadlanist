@@ -73,7 +73,7 @@ export function PainSolutionCards({ items }: PainSolutionCardsProps) {
           {/* Solution Card */}
           <div
             tabIndex={0}
-            className="flex-1 bg-[#DBEDED] text-[#121B28] rounded-[32px] rounded-tl-[32px] rounded-tr-none md:rounded-tr-[32px] md:rounded-tl-none shadow-md p-6 md:p-8 flex flex-col items-center md:items-start justify-between min-h-[180px] md:min-h-[160px] border-2 border-[#00A6A2] transition-all duration-200 focus:border-4 focus:shadow-lg hover:border-4 hover:shadow-lg outline-none"
+            className="flex-1 bg-[#DBEDED] text-[#121B28] rounded-[32px] rounded-tl-[32px] rounded-tr-none md:rounded-tr-[32px] md:rounded-tl-none shadow-md p-6 md:p-8 flex flex-col items-center md:items-start justify-between min-h-[180px] md:min-h-[160px] border-2 border-[#00A6A2] transition-all duration-100 focus:border-4 focus:shadow-lg hover:border-4 hover:shadow-lg outline-none"
             style={{ boxShadow: "0 4px 16px 0 rgba(0,166,162,0.15)" }}
           >
             <Check size={48} className="text-[#00A6A2] mb-2" aria-label="פתרון" />

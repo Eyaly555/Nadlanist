@@ -42,7 +42,7 @@ export function HeroSection() {
             href="https://wa.me/972542171198"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-8 py-3 mt-8 rounded-xl bg-transparent text-white font-semibold shadow-lg hover:bg-transparent border border-white hover:border-opacity-75 transition-colors duration-300 text-lg"
+            className="flex items-center gap-2 px-8 py-3 mt-8 rounded-xl bg-transparent text-white font-semibold shadow-lg hover:bg-transparent border border-white hover:border-opacity-75 transition-colors duration-100 text-lg"
             aria-label="פתחו צ&apos;אט חכם ב-WhatsApp"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true">

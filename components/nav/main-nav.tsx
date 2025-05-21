@@ -44,7 +44,7 @@ export function MainNav() {
         {/* Logo right (RTL) */}
         <div className="flex items-center order-1 rtl:order-1">
           <Link href="/" className="flex items-center focus-visible:outline-primary/70" aria-label="לדף הבית">
-            <Logo width={200} height={40} className="transition-all duration-200" isInsideLink={true} />
+            <Logo width={200} height={40} className="transition-all duration-100" isInsideLink={true} />
           </Link>
         </div>
         {/* Desktop nav center */}
@@ -120,7 +120,7 @@ export function MainNav() {
         {/* Logo right (RTL) */}
         <div className="flex items-center order-1 rtl:order-1">
           <Link href="/" className="flex items-center focus-visible:outline-primary/70" aria-label="לדף הבית">
-            <Logo width={160} height={32} className="transition-all duration-200" isInsideLink={true} />
+            <Logo width={160} height={32} className="transition-all duration-100" isInsideLink={true} />
           </Link>
         </div>
         {/* Desktop nav center */}
