@@ -41,8 +41,41 @@ export function MainNav() {
   if (!scrolled) {
     return (
       <header className="w-full bg-white/80 border-b h-[80px] flex items-center justify-between px-4 md:px-8">
+        {/* Logo right (RTL) */}
+        <div className="flex items-center order-1 rtl:order-1">
+          <Link href="/" className="flex items-center focus-visible:outline-primary/70" aria-label="לדף הבית">
+            <Logo width={200} height={40} className="transition-all duration-200" isInsideLink={true} />
+          </Link>
+        </div>
+        {/* Desktop nav center */}
+        <nav className="hidden md:flex items-center gap-x-6 text-right rtl flex-1 justify-center order-2 rtl:order-2">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "whitespace-nowrap min-w-fit text-base font-medium transition-colors relative py-1 px-3 rounded focus-visible:outline-primary/70 text-right",
+                isActive(item.href)
+                  ? "text-primary font-bold after:content-[''] after:absolute after:bottom-0 after:right-0 after:w-full after:h-[2px] after:bg-primary"
+                  : "hover:text-primary text-dark"
+              )}
+              dir="rtl"
+              aria-current={isActive(item.href) ? "page" : undefined}
+            >
+              {item.name}
+            </Link>
+          ))}
+        </nav>
+        {/* Contact button left (RTL) */}
+        <div className="hidden md:block order-3 rtl:order-3">
+          <ContactButton
+            buttonText="דברו איתנו"
+            variant="primary"
+            className="rounded-2xl px-6 py-2 shadow-md font-semibold focus-visible:outline-primary/70"
+          />
+        </div>
         {/* Hamburger menu for mobile (left side) */}
-        <div className="md:hidden order-3 rtl:order-1">
+        <div className="md:hidden order-4 rtl:order-4">
           <Drawer>
             <DrawerTrigger asChild>
               <Button variant="ghost" size="icon" aria-label="פתח תפריט">
@@ -76,12 +109,22 @@ export function MainNav() {
             </DrawerContent>
           </Drawer>
         </div>
-        {/* Logo center (order-2 on mobile for RTL) */}
-        <Link href="/" className="flex items-center focus-visible:outline-primary/70 order-2 rtl:order-2 mx-auto" aria-label="לדף הבית">
-          <Logo width={200} height={40} className="transition-all duration-200" />
-        </Link>
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-x-6 text-right rtl flex-1 justify-center">
+      </header>
+    );
+  }
+
+  // בגלילה: תפריט עליון מינימלי + כפתור צף
+  return (
+    <>
+      <header className="sticky top-0 z-50 w-full bg-white/90 border-b h-[60px] flex items-center justify-between px-4 md:px-8 shadow-md">
+        {/* Logo right (RTL) */}
+        <div className="flex items-center order-1 rtl:order-1">
+          <Link href="/" className="flex items-center focus-visible:outline-primary/70" aria-label="לדף הבית">
+            <Logo width={160} height={32} className="transition-all duration-200" isInsideLink={true} />
+          </Link>
+        </div>
+        {/* Desktop nav center */}
+        <nav className="hidden md:flex items-center gap-x-6 text-right rtl flex-1 justify-center order-2 rtl:order-2">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -99,24 +142,16 @@ export function MainNav() {
             </Link>
           ))}
         </nav>
-        {/* Desktop contact button */}
-        <div className="hidden md:block order-4">
+        {/* Contact button left (RTL) */}
+        <div className="hidden md:block order-3 rtl:order-3">
           <ContactButton
             buttonText="דברו איתנו"
             variant="primary"
             className="rounded-2xl px-6 py-2 shadow-md font-semibold focus-visible:outline-primary/70"
           />
         </div>
-      </header>
-    );
-  }
-
-  // בגלילה: תפריט עליון מינימלי + כפתור צף
-  return (
-    <>
-      <header className="sticky top-0 z-50 w-full bg-white/90 border-b h-[60px] flex items-center justify-between px-4 md:px-8 shadow-md">
         {/* Hamburger menu for mobile (left side) */}
-        <div className="md:hidden order-3 rtl:order-1">
+        <div className="md:hidden order-4 rtl:order-4">
           <Drawer>
             <DrawerTrigger asChild>
               <Button variant="ghost" size="icon" aria-label="פתח תפריט">
@@ -150,28 +185,6 @@ export function MainNav() {
             </DrawerContent>
           </Drawer>
         </div>
-        {/* Logo center (order-2 on mobile for RTL) */}
-        <Link href="/" className="flex items-center focus-visible:outline-primary/70 order-2 rtl:order-2 mx-auto" aria-label="לדף הבית">
-          <Logo width={160} height={32} className="transition-all duration-200" />
-        </Link>
-        <nav className="hidden md:flex items-center gap-x-6 text-right rtl flex-1 justify-center">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "whitespace-nowrap min-w-fit text-base font-medium transition-colors relative py-1 px-3 rounded focus-visible:outline-primary/70 text-right",
-                isActive(item.href)
-                  ? "text-primary font-bold after:content-[''] after:absolute after:bottom-0 after:right-0 after:w-full after:h-[2px] after:bg-primary"
-                  : "hover:text-primary text-dark"
-              )}
-              dir="rtl"
-              aria-current={isActive(item.href) ? "page" : undefined}
-            >
-              {item.name}
-            </Link>
-          ))}
-        </nav>
       </header>
       <div className="h-[60px]" />
       <ContactButton

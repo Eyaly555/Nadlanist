@@ -133,4 +133,4 @@ docs/               # תיעוד
 
 ## License
 
-This project is proprietary software licensed under the Cursor New Proprietary License - see the [LICENSE](LICENSE) file for details. The software is not open source and requires a valid license for use. For licensing inquiries, please contact myavuzyalcintas@gmail.com.
+This project is proprietary software licensed under the Nadlanist AI Proprietary License - see the [LICENSE](LICENSE) file for details. The software is not open source and requires a valid license for use. For licensing inquiries, please contact info@nadlanist.ai.

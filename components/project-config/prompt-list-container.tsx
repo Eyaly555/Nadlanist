@@ -26,7 +26,7 @@ function PromptListContainer() {
         <>
           <div className="text-center mb-2">
             <h2 className="text-2xl font-semibold mb-2">
-              Prompts for Cursor AI
+              Prompts for נדלניסט AI
             </h2>
             <p className="text-sm text-muted-foreground">
               Use these prompts to help you build your project

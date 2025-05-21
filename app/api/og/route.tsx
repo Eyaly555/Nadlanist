@@ -76,8 +76,8 @@ export async function GET(req: NextRequest) {
                 letterSpacing: "-0.05em",
               }}
             >
-              <span style={{ color: "white" }}>cursor</span>
-              <span style={{ color: "hsl(82.7, 78%, 55.5%)" }}>.new</span>
+              <span style={{ color: "white" }}>נדלניסט</span>
+              <span style={{ color: "hsl(82.7, 78%, 55.5%)" }}> AI</span>
             </div>
 
             <div
@@ -90,7 +90,7 @@ export async function GET(req: NextRequest) {
                 letterSpacing: "-0.025em",
               }}
             >
-              Intelligent Project Scaffolding
+              פלטפורמת נדל"ן חכמה
             </div>
 
             {/* Feature Pills */}

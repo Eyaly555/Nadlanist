@@ -9,6 +9,10 @@ interface LogoProps {
   height?: number;
   href?: string;
   variant?: 'black' | 'white';
+  /**
+   * If true, disables internal <Link> wrapping to avoid nested <a> tags.
+   */
+  isInsideLink?: boolean;
 }
 
 export function Logo({
@@ -17,6 +21,7 @@ export function Logo({
   height,
   href = '/',
   variant = 'black',
+  isInsideLink = false,
 }: LogoProps) {
   const logoSrc = variant === 'white' ? '/logo-white.svg' : '/logo-black.png';
   const logoSize = { width: width || 180, height: height || 36 };
@@ -33,7 +38,7 @@ export function Logo({
     />
   );
 
-  if (href) {
+  if (href && !isInsideLink) {
     return (
       <Link href={href} className="focus:outline-none" aria-label="לדף הבית">
         {logoComponent}

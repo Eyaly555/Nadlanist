@@ -91,40 +91,7 @@ Sitemap: ${process.env.NEXT_PUBLIC_APP_URL || 'https://nadlanist.ai'}/sitemap.xm
     // 4. Create a basic sitemap.xml if it doesn't exist
     const sitemapPath = path.join(__dirname, '../public/sitemap.xml');
     if (!fs.existsSync(sitemapPath)) {
-      console.log('📝 Creating sitemap.xml...');
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://nadlanist.ai';
-      const today = new Date().toISOString().split('T')[0];
-      
-      const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${baseUrl}/</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/contact</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/privacy</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/terms</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-</urlset>`;
-      
-      fs.writeFileSync(sitemapPath, sitemapContent);
-      console.log('✅ sitemap.xml created');
+      // הסרת יצירת sitemap.xml כי הוא דינמי
     }
     
     console.log('✅ All assets prepared successfully!');

@@ -1,14 +1,14 @@
-# Project Requirements Document (PRD) for cursor.new
+# Project Requirements Document (PRD) for נדלניסט AI
 
 ## 1. Product Overview
 
-cursor.new is a web-based project initialization tool designed to streamline the setup process for Cursor AI projects. It provides a guided, interactive experience for developers to configure their projects with standardized documentation and best practices.
+נדלניסט AI היא פלטפורמת אינטרנטית לאוטומציית תהליכי נדל"ן, המאפשרת ייעול תהליכי קנייה, מכירה, וליווי מקצועי באמצעות בינה מלאכותית.
 
 ### 1.2 Target Audience
 
-- Software developers using Cursor AI
-- Development teams seeking standardized project initialization
-- Technical leads managing multiple projects
+- רוכשי ומוכרי נדל"ן בישראל
+- יזמים, מתווכים, ומשקיעים
+- צוותי פיתוח בתחום הנדל"ן
 
 ## 2. Product Features
 
@@ -16,27 +16,20 @@ cursor.new is a web-based project initialization tool designed to streamline the
 
 #### Core Features
 
-- Project naming and description interface
-- Platform selection (web/mobile/desktop)
-- Technology stack selection based on platform choice
-- Package and tool selection interface
-- Dynamic prompt customization from boilerplate templates
+- ממשק הזנת פרטי פרויקט
+- בחירת פלטפורמה (ווב/מובייל)
+- בחירת טכנולוגיות
+- התאמה דינמית של תהליכים ומסמכים
 
 #### Documentation Assistance
 
-System maintains boilerplate prompts that are dynamically customized based on project information for:
-
-- PRD.md (Product Requirements Document)
-- CODE_STYLE_GUIDELINES.md
-- .cursorrules (Technology-specific rules)
-- TASK_LIST.md
-- PROGRESS.md
+- יצירת מסמכי PRD, קוד סטייל, חוקים, משימות ומעקב התקדמות
 
 ### 2.2 Technical Architecture
 
-- Frontend: Next.js with TypeScript
+- Frontend: Next.js עם TypeScript
 - Backend: Supabase
-- UI Framework: Tailwind CSS + ShadcN UI
+- UI: Tailwind CSS + ShadcN UI
 - Authentication: Supabase Auth
 - Database: Supabase PostgreSQL
 
@@ -44,132 +37,40 @@ System maintains boilerplate prompts that are dynamically customized based on pr
 
 ### 3.1 Project Creation Flow
 
-1. User visits cursor.new
-2. Enters project name and description
-3. Selects project platform
-4. Chooses technology stack
-5. Selects additional packages and tools
-6. Reviews and confirms selections
-7. System generates documentation
-8. User downloads or syncs with repository
+1. משתמש נכנס ל-nadlanist.ai
+2. מזין שם ותיאור פרויקט
+3. בוחר פלטפורמה וטכנולוגיות
+4. בוחר כלים נוספים
+5. מאשר ומקבל מסמכים מותאמים
 
 ### 3.2 Documentation Assistance Flow
 
-1. System loads appropriate boilerplate prompts
-2. Processes user inputs and project configuration
-3. Dynamically customizes prompts with project-specific information
-4. Provides preview of customized prompts
-5. Allows manual prompt refinement
-6. Facilitates user documentation creation
+1. טעינת תבניות מסמכים
+2. התאמה דינמית לפי קלט המשתמש
+3. תצוגה מקדימה
+4. אפשרות לעריכה ידנית
+5. הורדה/סנכרון
 
 ## 4. Feature Requirements
 
 ### 4.1 Project Configuration
 
-- **Project Basics**
-
-  - Project name (required)
-  - Project description (required)
-  - Version control preferences
-  - License selection
-
-- **Platform Selection**
-
-  - Web (React, Angular, Vue, etc.)
-  - Mobile (React Native, Flutter, etc.)
-  - Desktop (Electron, Tauri, etc.)
-
-- **Technology Stack**
-  - Framework selection
-  - Language selection
-  - Database selection
-  - UI library selection
+- שם ותיאור פרויקט
+- בחירת פלטפורמה וטכנולוגיה
+- בחירת רישיון
 
 ### 4.2 Documentation Assistance
 
-The system maintains boilerplate prompts that are dynamically customized with:
-
-- **Base Prompt Structure**
-
-  - Standard sections and formatting
-  - Best practices templates
-  - Industry-standard guidelines
-  - Common patterns and conventions
-
-- **Dynamic Elements**
-  - Project name and description
-  - Selected technology stack
-  - Platform-specific requirements
-  - Chosen packages and tools
-  - Custom configurations
-
-The customized prompts will cover:
-
-- **For PRD.md**
-
-  - Product overview details
-  - Feature specifications
-  - Technical requirements
-  - User flows
-  - Integration points
-
-- **For CODE_STYLE_GUIDELINES.md**
-
-  - Language-specific conventions
-  - Formatting rules
-  - Naming conventions
-  - Documentation standards
-  - Code review checklist
-
-- **For .cursorrules**
-
-  - AI coding guidelines
-  - Technology-specific rules
-  - Code generation preferences
-  - Integration settings
-
-- **For TASK_LIST.md**
-
-  - Feature breakdown
-  - Development phases
-  - Priority levels
-  - Effort estimates
-  - Dependencies
-
-- **For PROGRESS.md**
-  - Task status structure
-  - Milestone tracking format
-  - Blockers and issues template
-  - Timeline update format
+- תבניות מסמכים דינמיות
+- התאמה לפי פרטי הפרויקט
 
 ## 5. Non-Functional Requirements
 
 ### 5.1 Performance
 
-- Page load time < 2 seconds
-- Boilerplate prompt loading < 1 second
-- Dynamic customization < 3 seconds
-- Real-time preview updates
-
-### 5.2 Security
-
-- Secure user authentication
-- Data encryption
-- Safe repository integration
-
-### 5.3 Usability
-
-- Intuitive navigation
-- Responsive design
-- Clear error messaging
-- Helpful tooltips and guides
-
-### 5.4 Reliability
-
-- 99.9% uptime
-- Automatic saving
-- Error recovery
-- Backup generation
+- טעינה מהירה
+- עדכון דינמי של מסמכים
+- תמיכה במובייל ודסקטופ
 
 ## 6. Future Considerations
 

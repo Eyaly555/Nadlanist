@@ -92,11 +92,11 @@ async function generateImage(type: "og" | "twitter") {
         <div class="gradient-orb"></div>
         <div class="container">
           <div class="logo">
-            <span>cursor</span>
-            <span class="logo-accent">.new</span>
+            <span>נדלניסט</span>
+            <span class="logo-accent"> AI</span>
           </div>
           <div class="title">
-            Intelligent Project Scaffolding
+            פלטפורמת נדל"ן חכמה
           </div>
           <div class="pills">
             <div class="pill">AI-Powered</div>

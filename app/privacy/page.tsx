@@ -1,9 +1,8 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | cursor.new",
-  description:
-    "Privacy Policy for cursor.new - Learn how we collect, use, and protect your data",
+  title: "מדיניות פרטיות | נדלניסט AI",
+  description: "מדיניות פרטיות עבור נדלניסט AI - למד כיצד אנו אוספים, משתמשים ומגנים על המידע שלך.",
 };
 
 export default function PrivacyPolicy() {

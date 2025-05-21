@@ -2,8 +2,8 @@ import { ProjectConfigContainer } from "@/components/project-config/project-conf
 import { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
-  title: "New Project - cursor.new",
-  description: "Create a new project with cursor.new",
+  title: "פרויקט חדש - נדלניסט AI",
+  description: "צור פרויקט חדש עם נדלניסט AI",
 };
 
 export const viewport: Viewport = {
