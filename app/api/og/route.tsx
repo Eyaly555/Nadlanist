@@ -90,7 +90,7 @@ export async function GET(req: NextRequest) {
                 letterSpacing: "-0.025em",
               }}
             >
-              פלטפורמת נדל"ן חכמה
+              פלטפורמת נדל&quot;ן חכמה
             </div>
 
             {/* Feature Pills */}
