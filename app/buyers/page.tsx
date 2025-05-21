@@ -80,7 +80,7 @@ export default function BuyersPage() {
       <section className="relative w-full flex flex-col items-center justify-center gap-8 py-16 px-4 bg-primary-10 overflow-hidden border-b border-primary/10">
         <div className="flex flex-col items-center text-center z-10 w-full max-w-2xl mx-auto font-sans">
           <h1 className="text-4xl md:text-5xl text-primary mb-4 leading-tight font-sans">
-            הבית הבא שלכם מתחיל פה – בלי כאבי ראש, בלי עמלות, ועם חיוך!
+            הדירה הבאה שלך – חכם, אישי וללא עמלה
           </h1>
           <p className="text-lg md:text-2xl text-gray-700 mb-6 max-w-xl mx-auto font-sans">
             נמאס ממרוץ הדירות? אצלנו תמצאו את הבית הבא שלכם, בקלות שלא הכרתם: <b className="text-primary">נדלניסט AI</b> הופכת את החיפוש לסופר-חכם, מהיר ונטול עמלות. בלי מתווכים שלוחצים, בלי לוחות מבלבלים, ובלי לבזבז ימים על דירות שלא מתאימות. כאן, השאלות שואלים אתכם, לא להפך – ובתוך דקות, תמצאו את מה שתמיד רציתם – דרך וואטסאפ.
@@ -211,6 +211,9 @@ export default function BuyersPage() {
 }
 
 export const metadata = {
-  title: "קונים ",
-  description: "מצאו את הבית הבא שלכם עם נדלניסט AI - חיפוש חכם, ליווי אישי וללא עמלות."
+  title: "הדירה הבאה שלך – חכם, אישי וללא עמלה",
+  description: "גלו 3–5 התאמות נכסים מדויקות בזמן אמת עם AI – ללא עמלת תיווך. ההזדמנות הדיגיטלית לקניית דירה שטובה בדיוק לכם.",
+  alternates: {
+    canonical: (process.env.NEXT_PUBLIC_APP_URL || 'https://nadlanist.ai') + '/buyers',
+  },
 }; 

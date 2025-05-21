@@ -35,6 +35,7 @@ export function Logo({
       height={logoSize.height}
       className={cn('object-contain', className)}
       priority
+      style={{ height: logoSize.height, width: 'auto' }}
     />
   );
 

@@ -96,7 +96,7 @@ export default function SellersPage() {
         </div>
         <div className="relative z-10 max-w-2xl mx-auto text-center text-white px-4 flex flex-col items-center">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white font-poppins drop-shadow-xl mb-4">
-            מוכרים נכס? תנו ל-AI ולמומחים שלנו לדאוג שיימכר – מהר, חכם, וברווח מקסימלי!
+            מכירה חכמה, עמלה נמוכה - רק 0.5%
           </h1>
           <p className="mt-4 text-lg md:text-2xl text-white/90 max-w-2xl mb-6">
             נמאס מהבטחות ריקות, עמלות גבוהות ומתעניינים לא רציניים? עם Nadlanist AI, תהליך המכירה הופך לחוויה חדשה:
@@ -208,6 +208,9 @@ export default function SellersPage() {
 }
 
 export const metadata = {
-  title: "מוכרים ",
-  description: "מכרו את הנכס שלכם מהר ובשקיפות עם נדלניסט AI - ליווי מקצועי, סריקת 3D ועמלה מינימלית."
+  title: "מכירה חכמה, עמלה נמוכה - רק 0.5%",
+  description: "מוכרים מהר ובביטחון מלא: עמלה 0.5% בלבד בהצלחה, סינון קונים חכם ופרסום ב-AI. הגיע הזמן למכור בלי פשרות.",
+  alternates: {
+    canonical: (process.env.NEXT_PUBLIC_APP_URL || 'https://nadlanist.ai') + '/sellers',
+  },
 }; 

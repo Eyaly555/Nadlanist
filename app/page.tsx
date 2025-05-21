@@ -16,35 +16,35 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "נדלניסט AI - נדלן חכם, שקוף וללא עמלות מיותרות",
+  title: 'נדלניסט AI – תיווך נדל"ן חכם, בלי עמלה',
   description:
-    "נדלניסט AI הופכת קנייה ומכירה של נכסים לשיחה אחת בWhatsApp: אלגוריתם AI חכם + ליווי אנושי מקצועי, 0 ₪ עמלות לקונים ורק 0.5% למוכרים.",
+    'השירות החכם שמשדרג את תיווך הנדל"ן: קונים חוסכים עמלה, מוכרים נהנים מתשואה מרבית – הכל בממשק AI זורם וידידותי. התחילו חיפוש בקליק!',
   keywords:
-    "נדלניסט, נדלניסט AI, נדלן בישראל, קניית דירה, מכירת דירה, תיווך, סוכן נדלן, יזמות נדלן, השקעות נדלן",
+    'נדלניסט, נדלניסט AI, נדלן בישראל, קניית דירה, מכירת דירה, תיווך, סוכן נדלן, יזמות נדלן, השקעות נדלן',
   openGraph: {
-    title: "נדלניסט AI - נדלן חכם, שקוף וללא עמלות מיותרות",
-    description: "נדלניסט AI הופכת קנייה ומכירה של נכסים לשיחה אחת בWhatsApp. 0 ₪ עמלות לקונים, 0.5% למוכרים.",
-    type: "website",
-    url: "https://nadlanist.ai",
+    title: 'נדלניסט AI – תיווך נדל"ן חכם, בלי עמלה',
+    description: 'השירות החכם שמשדרג את תיווך הנדל"ן: קונים חוסכים עמלה, מוכרים נהנים מתשואה מרבית – הכל בממשק AI זורם וידידותי. התחילו חיפוש בקליק!',
+    type: 'website',
+    url: 'https://nadlanist.ai',
     images: [
       {
-        url: "/og-image.png",
+        url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: "נדלניסט AI",
+        alt: 'נדלניסט AI',
       },
     ],
-    siteName: "נדלניסט AI",
+    siteName: 'נדלניסט AI',
   },
   twitter: {
-    card: "summary_large_image",
-    title: "נדלניסט AI - נדלן חכם, שקוף וללא עמלות מיותרות",
-    description: "נדלניסט AI הופכת קנייה ומכירה של נכסים לשיחה אחת בWhatsApp. 0 ₪ עמלות לקונים, 0.5% למוכרים.",
-    images: ["/twitter-image.png"],
-    creator: "@nadlanist_ai",
+    card: 'summary_large_image',
+    title: 'נדלניסט AI – תיווך נדל"ן חכם, בלי עמלה',
+    description: 'השירות החכם שמשדרג את תיווך הנדל"ן: קונים חוסכים עמלה, מוכרים נהנים מתשואה מרבית – הכל בממשק AI זורם וידידותי. התחילו חיפוש בקליק!',
+    images: ['/twitter-image.png'],
+    creator: '@nadlanist_ai',
   },
   alternates: {
-    canonical: "https://nadlanist.ai",
+    canonical: process.env.NEXT_PUBLIC_APP_URL || 'https://nadlanist.ai',
   },
 };
 

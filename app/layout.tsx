@@ -30,9 +30,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || "https://nadlanist.ai"
-  ),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://nadlanist.ai"),
   title: {
     default: "נדלניסט AI",
     template: "%s | נדלניסט AI",
@@ -78,7 +76,7 @@ export const metadata: Metadata = {
       { url: "/apple-icon-192x192.png", sizes: "192x192", type: "image/png" },
     ],
   },
-  manifest: `https://nadlanist.ai/manifest.json`,
+  manifest: `/manifest.json`,
   openGraph: {
     type: "website",
     locale: "he_IL",
@@ -103,7 +101,7 @@ export const metadata: Metadata = {
     creator: "@nadlanist_ai",
   },
   alternates: {
-    canonical: "https://nadlanist.ai",
+    canonical: process.env.NEXT_PUBLIC_APP_URL || "https://nadlanist.ai",
   },
 };
 
@@ -168,7 +166,7 @@ export default function RootLayout({
         <Script id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
+            function gtag(){window.dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${GA_MEASUREMENT_ID}');
             gtag('config', 'AW-17084618003');

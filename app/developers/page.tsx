@@ -91,7 +91,7 @@ export default function DevelopersPage() {
         </div>
         <div className="relative z-10 max-w-2xl mx-auto text-center text-white px-4 flex flex-col items-center">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white font-poppins drop-shadow-xl mb-4">
-            יזם נדל&quot;ן? תתמקד בבנייה – אנחנו נדאג שכל הדירות יימכרו.
+            יזמים – שיווק פרויקטים מנצח ב-AI
           </h1>
           <p className="mt-4 text-lg md:text-2xl text-white/90 max-w-2xl mb-6">
             נמאס מבזבוז זמן על שיווק לא ממוקד, מתווכים שלא מביאים תוצאות והוצאות ענק על לידים לא רלוונטיים?
@@ -186,6 +186,6 @@ export default function DevelopersPage() {
 }
 
 export const metadata = {
-  title: "יזמים ",
-  description: "שיווק חכם לפרויקטים חדשים עם נדלניסט AI - AI מתקדם, חיסכון בעלויות וללא בלעדיות."
+  title: "יזמים – שיווק פרויקטים מנצח ב-AI",
+  description: "לבעלי פרויקטים: חשיפה ממוקדת לקונים רציניים, לידים איכותיים וייעול מלא בליווי בינה מלאכותית. הצעד הבא בפרויקט שלכם מתחיל כאן.",
 }; 
