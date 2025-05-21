@@ -4,6 +4,9 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: 'צרו קשר – נדלניסט AI מזמינים אתכם',
   description: 'השאירו פרטים או פתחו צ\'אט ב-AI – נדלניסט AI כאן כדי להפוך תיווך נדל"ן לחוויה חכמה וקלה. נדבר?',
+  alternates: {
+    canonical: 'https://www.nadlanist.ai/contact',
+  },
 };
 
 export default function ContactPage() {

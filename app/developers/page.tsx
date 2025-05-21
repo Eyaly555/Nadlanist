@@ -188,4 +188,7 @@ export default function DevelopersPage() {
 export const metadata = {
   title: "יזמים – שיווק פרויקטים מנצח ב-AI",
   description: "לבעלי פרויקטים: חשיפה ממוקדת לקונים רציניים, לידים איכותיים וייעול מלא בליווי בינה מלאכותית. הצעד הבא בפרויקט שלכם מתחיל כאן.",
+  alternates: {
+    canonical: "https://www.nadlanist.ai/developers",
+  },
 }; 

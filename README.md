@@ -73,7 +73,6 @@ pnpm dev
 app/                  # תיקיית האפליקציה Next.js 13+
   (auth)/            # נתיבי אימות
   api/               # נתיבי API
-  project/           # דפים ספציפיים לפרויקט
 components/          # רכיבי React
   ui/               # רכיבי ממשק משתמש
   forms/            # רכיבי טפסים

@@ -51,7 +51,10 @@ const VISION_VALUES = [
 
 export const metadata = {
   title: "החזון שלנו",
-  description: "החזון של נדלניסט AI - להפוך את שוק הנדל\"ן לשקוף, חכם ונגיש לכל אחד."
+  description: "החזון של נדלניסט AI - להפוך את שוק הנדל\"ן לשקוף, חכם ונגיש לכל אחד.",
+  alternates: {
+    canonical: "https://www.nadlanist.ai/vision",
+  },
 };
 
 export default function VisionPage() {
@@ -232,7 +235,7 @@ export default function VisionPage() {
           />
         </div>
         <a
-          href={`https://wa.link/nadlanist?text=${encodeURIComponent('הסוכן החכם שלנו יישלח לכם הודעה תוך שניות')}`}
+          href={`https://api.whatsapp.com/send?phone=972542171198&text=${encodeURIComponent('הסוכן החכם שלנו יישלח לכם הודעה תוך שניות')}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-primary underline text-lg mt-2"

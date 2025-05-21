@@ -89,7 +89,7 @@ export default function BuyersPage() {
           </p>
           {/* WhatsApp Button - Large, Centered, Clickable, Icon Only */}
           <a
-            href={`https://wa.link/nadlanist?text=${encodeURIComponent('הסוכן החכם שלנו יישלח לכם הודעה תוך שניות')}`}
+            href={`https://api.whatsapp.com/send?phone=972542171198&text=${encodeURIComponent('הסוכן החכם שלנו יישלח לכם הודעה תוך שניות')}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center rounded-full bg-green-500 shadow-lg hover:bg-green-600 transition-colors duration-100 focus:outline-none focus:ring-2 focus:ring-green-400 mb-4"
@@ -193,12 +193,12 @@ export default function BuyersPage() {
             />
           </div>
           <div className="flex items-center gap-2 mt-2">
-            <Image src="/General images/two-happy-excited-fan-friends-euphoria-mood-after-winning-bet-with-smartphone-hand.jpg" alt="קונים שמחים מחזיקים מפתח" width={64} height={64} className="rounded-full border-2 border-primary/20" />
+            <Image src="/General images/two-happy-excited-fan-friends-euphoria-mood-after-winning-bet-with-smartphone-hand.jpg" alt="קונים שמחים מחזיקים מפתח" width={64} height={64} className="rounded-full border-2 border-primary/20" loading="lazy" />
             <span className="text-primary font-bold text-lg">הצטרפו למהפכת הקנייה החכמה</span>
           </div>
         </div>
         <a
-          href={`https://wa.link/nadlanist?text=${encodeURIComponent('הסוכן החכם שלנו יישלח לכם הודעה תוך שניות')}`}
+          href={`https://api.whatsapp.com/send?phone=972542171198&text=${encodeURIComponent('הסוכן החכם שלנו יישלח לכם הודעה תוך שניות')}`}
           target="_blank"
           rel="noopener noreferrer"
           className="text-primary underline text-lg mt-2"
@@ -214,6 +214,6 @@ export const metadata = {
   title: "הדירה הבאה שלך – חכם, אישי וללא עמלה",
   description: "גלו 3–5 התאמות נכסים מדויקות בזמן אמת עם AI – ללא עמלת תיווך. ההזדמנות הדיגיטלית לקניית דירה שטובה בדיוק לכם.",
   alternates: {
-    canonical: (process.env.NEXT_PUBLIC_APP_URL || 'https://nadlanist.ai') + '/buyers',
+    canonical: 'https://www.nadlanist.ai/buyers',
   },
 }; 

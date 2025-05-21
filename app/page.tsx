@@ -1,6 +1,6 @@
 import { Metadata, Viewport } from "next";
-import { JsonLd } from "@/components/shared";
 import HomeClient from "@/components/HomeClient";
+import Script from 'next/script';
 
 // Force static generation
 export const dynamic = "force-static";
@@ -44,31 +44,52 @@ export const metadata: Metadata = {
     creator: '@nadlanist_ai',
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_APP_URL || 'https://nadlanist.ai',
+    canonical: 'https://www.nadlanist.ai',
   },
-};
-
-const jsonLdData = { // שיניתי את שם המשתנה כדי למנוע בלבול עם הקומפוננטה JsonLd
-  "@context": "https://schema.org",
-  "@type": "RealEstateAgent",
-  name: "נדלניסט AI",
-  description: "פלטפורמת נדלן חכמה המחברת בין קונים, מוכרים ויזמים",
-  url: "https://nadlanist.ai",
-  logo: "https://nadlanist.ai/logo.png",
-  address: {
-    "@type": "PostalAddress",
-    addressCountry: "IL",
-    addressLocality: "תל אביב"
-  },
-  priceRange: "$$",
-  telephone: "+972542171198",
-  openingHours: "Mo,Tu,We,Th,Su 09:00-18:00",
 };
 
 export default function HomePage() {
   return (
     <>
-      <JsonLd data={jsonLdData} /> {/* השתמש בשם המשתנה החדש */}
+      {/* Structured Data */}
+      <Script
+        id="ld-real-estate-agent"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "RealEstateAgent",
+            "name": "Nadlanist AI",
+            "url": "https://www.nadlanist.ai/",
+            "logo": "https://www.nadlanist.ai/logo-teal.svg",
+            "telephone": "+972542171198",
+            "contactPoint": [
+              {
+                "@type": "ContactPoint",
+                "telephone": "+972543893236",
+                "contactType": "customer service",
+                "description": "נציג אנושי בווטסאפ"
+              }
+            ],
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "נצח ישראל 3",
+              "addressLocality": "תל אביב"
+            },
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": [
+                  "Sunday","Monday","Tuesday","Wednesday",
+                  "Thursday","Friday","Saturday"
+                ],
+                "opens": "00:00",
+                "closes": "23:59"
+              }
+            ]
+          })
+        }}
+      />
       <HomeClient />
     </>
   );

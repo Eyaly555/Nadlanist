@@ -39,7 +39,7 @@ export function HeroSection() {
         ברוכים הבאים לנדלניסט AI, פלטפורמת הנדל&quot;ן החכמה שמשנה את חוקי המשחק. אנו מבינים את התסכול הכרוך בחיפוש או מכירת נכס – העמלות הגבוהות, חוסר השקיפות והתהליכים המסורבלים.  לכן, בנינו עבורכם פתרון חדשני, פשוט ויעיל, המותאם אישית לצרכים שלכם.  אצלנו, הטכנולוגיה עובדת בשבילכם, עם בינה מלאכותית שמסייעת לכם בכל שלב, ישירות דרך WhatsApp.
         </p>
         <a
-            href={`https://wa.link/nadlanist?text=${encodeURIComponent('הסוכן החכם שלנו יישלח לכם הודעה תוך שניות')}`}
+            href={`https://api.whatsapp.com/send?phone=972542171198&text=${encodeURIComponent('הסוכן החכם שלנו יישלח לכם הודעה תוך שניות')}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-8 py-3 mt-8 rounded-xl bg-transparent text-white font-semibold shadow-lg hover:bg-transparent border border-white hover:border-opacity-75 transition-colors duration-100 text-lg"

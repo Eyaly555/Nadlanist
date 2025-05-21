@@ -4,6 +4,9 @@ import { Card, CardContent } from "@/components/ui/card";
 export const metadata: Metadata = {
   title: "תנאי שימוש באתר נדלניסט AI",
   description: "תנאי שימוש והגבלת אחריות באתר נדלניסט AI",
+  alternates: {
+    canonical: "https://www.nadlanist.ai/terms",
+  },
 };
 
 export default function TermsAndConditions() {

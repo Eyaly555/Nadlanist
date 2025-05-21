@@ -23,11 +23,17 @@ export async function generateMetadata({
     return {
       title: post.title,
       description: post.description,
+      alternates: {
+        canonical: `https://www.nadlanist.ai/blog/${resolvedParams.slug}`,
+      },
     };
   } catch {
     return {
       title: "Blog Post Not Found",
       description: "The requested blog post could not be found.",
+      alternates: {
+        canonical: "https://www.nadlanist.ai/blog/not-found",
+      },
     };
   }
 }

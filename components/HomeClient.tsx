@@ -31,7 +31,7 @@ const painSolutions = [
 ];
 
 const buyersFeatures = [
-  { icon: <MessageCircle className="w-6 h-6" />, title: "שיחת WhatsApp טבעית", desc: "פשוט כתבו לנו מה אתם מחפשים" },
+  { icon: <MessageCircle className="w-6 h-6" />, title: "שיחת WhatsApp טבעית", desc: "פשוט כתבו או שלחו הקלטה קולית עם מה שאתם מחפשים" },
   { icon: <Target className="w-6 h-6" />, title: "התאמה מיידית", desc: "3-5 נכסים שמתאימים בול" },
   { icon: <HomeIcon className="w-6 h-6" />, title: "סיור 3D מלא מהספה", desc: "בלי נסיעות מיותרות" },
   { icon: <Eye className="w-6 h-6" />, title: "שאלות בזמן-אמת", desc: 'מה שטח המרפסת? תקבלו תשובה מיד' },
@@ -104,7 +104,9 @@ export default function HomeClient() {
       {/* Buyers Section */}
       <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }} className="w-full bg-white rounded-t-[48px] md:rounded-t-[64px] py-20 min-h-[20rem] max-w-[1280px] mx-auto flex flex-col items-center justify-center text-center mt-16" dir="rtl">
         <div className="container mx-auto max-w-6xl flex flex-col items-center justify-center text-center">
-          <h2 className="text-3xl font-bold mb-10 text-primary text-center tracking-tight">מחפשים לרכוש נכס? תנו ל-AI למצוא לכם בית</h2>
+          <Link href="/buyers" aria-label="לעמוד הקונים" className="hover:underline focus-visible:outline-primary/70">
+            <h2 className="text-3xl font-bold mb-10 text-primary text-center tracking-tight cursor-pointer">מחפשים לרכוש נכס? תנו ל-AI למצוא לכם בית</h2>
+          </Link>
           <p className="text-lg text-dark mb-8">
             נמאס לכם ממודעות פיתיון ומתווכים שלא באמת מקשיבים? עם נדלניסט AI, התהליך פשוט ויעיל: ספרו לנו מה אתם מחפשים – השאירו פרטים בקליק או פשוט כתבו לנו בצ׳אט WhatsApp מה חשוב לכם. הצ׳אט החכם שלנו ישאל את השאלות הנכונות כדי להבין בדיוק את הצרכים והרצונות שלכם, ותוך זמן קצר תקבלו 2-5 נכסים שמתאימים בדיוק למה שחיפשתם, עם כל המידע הרלוונטי, כולל סריקות תלת-ממד. אהבתם נכס? תאמו ביקור בלחיצת כפתור. מנהל עסקה ניטרלי ילווה אתכם עד החוזה – והכל בחינם, ללא עמלות תיווך!
           </p>
@@ -138,7 +140,9 @@ export default function HomeClient() {
       {/* Sellers Section */}
       <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.3 }} className="w-full bg-white rounded-t-[48px] md:rounded-t-[64px] py-20 min-h-[20rem] max-w-[1280px] mx-auto flex flex-col items-center justify-center text-center mt-16" dir="rtl">
         <div className="container mx-auto max-w-6xl flex flex-col items-center justify-center text-center">
-          <h2 className="text-3xl font-bold mb-10 text-dark text-center tracking-tight">מוכרים נכס? חסכו אלפי שקלים ומכרו מהר יותר</h2>
+          <Link href="/sellers" aria-label="לעמוד המוכרים" className="hover:underline focus-visible:outline-primary/70">
+            <h2 className="text-3xl font-bold mb-10 text-dark text-center tracking-tight cursor-pointer">מוכרים נכס? חסכו אלפי שקלים ומכרו מהר יותר</h2>
+          </Link>
           <p className="text-lg text-dark mb-8">
             הגיע הזמן למכור את הנכס שלכם בלי כאבי ראש, עמלות מופקעות או בלעדיות כובלת. השאירו פרטים ונחזור אליכם, נבצע סריקת 3D מקצועית (חינם!), נבנה תוכנית דירה אטרקטיבית, ונחשוף את הנכס רק לקונים מסוננים על ידי AI – כאלה שמחפשים בדיוק מה שיש לכם להציע. פרטיותכם חשובה לנו: הנכס נחשף רק למתאימים. מנהל עסקה ניטרלי ילווה אתכם עד החתימה, וישמור על האינטרסים שלכם. תשלום עמלה של 0.5% בלבד ורק בהצלחה.
           </p>
@@ -157,23 +161,6 @@ export default function HomeClient() {
               />
             </div>
           </div>
-        </div>
-      </motion.section>
-      {/* Entrepreneurs Section */}
-      <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.07 }} className="w-full bg-primary-10 rounded-t-[48px] md:rounded-t-[64px] py-20 min-h-[20rem] max-w-[1280px] mx-auto flex flex-col items-center justify-center text-center mt-16" dir="rtl">
-        <div className="container mx-auto max-w-4xl flex flex-col items-center justify-center text-center">
-          <h2 className="text-3xl font-bold mb-8 text-primary text-center tracking-tight">יזמים? תתמקדו בבנייה, אנחנו נדאג למכירות</h2>
-          <p className="text-lg text-dark mb-6">
-            נדלניסט AI מספקת ליזמים פתרון כולל לניהול ומכירת פרויקטים – משיווק חכם, דרך סינון קונים איכותיים ועד ליווי אישי עד החתימה. תנו לטכנולוגיה שלנו למלא את הפרויקט בקונים מתאימים, בזמן קצר ובשקיפות מלאה. אתם תתמקדו בבנייה – אנחנו נדאג לכל השאר.
-          </p>
-        </div>
-        <div className="w-full max-w-[420px] mx-auto p-4 bg-white text-dark rounded-2xl shadow-lg mt-6">
-          <ContactForm
-            title="רוצים למכור פרויקט מהר ובשקיפות מלאה? השאירו פרטים ונחזור אליכם עם פתרון ליזמים!"
-            source="entrepreneurs_inline_form"
-            buttonText="דברו איתי על מכירות לפרויקטים"
-            compact={true}
-          />
         </div>
       </motion.section>
       {/* Why Us Section */}

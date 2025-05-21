@@ -7,7 +7,6 @@ export async function GET() {
   // נתיבים סטטיים
   const staticPaths = [
     "/",
-    "/project",
     "/blog",
     "/buyers",
     "/sellers",

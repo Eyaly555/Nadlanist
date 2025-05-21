@@ -30,7 +30,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://nadlanist.ai"),
+  metadataBase: new URL("https://www.nadlanist.ai"),
   title: {
     default: "נדלניסט AI",
     template: "%s | נדלניסט AI",
@@ -101,7 +101,7 @@ export const metadata: Metadata = {
     creator: "@nadlanist_ai",
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_APP_URL || "https://nadlanist.ai",
+    canonical: "https://www.nadlanist.ai",
   },
 };
 
@@ -116,6 +116,8 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
         <link rel="icon" href="/favicon.ico" sizes="48x48" />
         <link rel="icon" href="/mark-black.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-icon-72x72.png" sizes="72x72" />

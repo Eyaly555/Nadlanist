@@ -198,7 +198,7 @@ export default function SellersPage() {
             />
           </div>
           <div className="flex items-center gap-2 mt-2">
-            <Image src="/General images/family-showcasing-their-home.jpg" alt="מוכרים שמחים" width={64} height={64} className="rounded-full border-2 border-primary/20" />
+            <Image src="/General images/family-showcasing-their-home.jpg" alt="מוכרים שמחים" width={64} height={64} className="rounded-full border-2 border-primary/20" loading="lazy" />
             <span className="text-primary font-bold text-lg">הצטרפו למהפכת המכירה החכמה</span>
           </div>
         </div>
@@ -211,6 +211,6 @@ export const metadata = {
   title: "מכירה חכמה, עמלה נמוכה - רק 0.5%",
   description: "מוכרים מהר ובביטחון מלא: עמלה 0.5% בלבד בהצלחה, סינון קונים חכם ופרסום ב-AI. הגיע הזמן למכור בלי פשרות.",
   alternates: {
-    canonical: (process.env.NEXT_PUBLIC_APP_URL || 'https://nadlanist.ai') + '/sellers',
+    canonical: 'https://www.nadlanist.ai/sellers',
   },
 }; 
