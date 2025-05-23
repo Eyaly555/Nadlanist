@@ -133,3 +133,36 @@ docs/               # תיעוד
 ## License
 
 This project is proprietary software licensed under the Nadlanist AI Proprietary License - see the [LICENSE](LICENSE) file for details. The software is not open source and requires a valid license for use. For licensing inquiries, please contact info@nadlanist.ai.
+
+## NadlanistMap Component Usage
+
+### 1. התקנת חבילת המפות:
+
+```sh
+pnpm add @react-google-maps/api
+```
+
+### 2. הגדרת מפתח Google Maps
+
+הוסף ל-`.env.local`:
+```
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_key
+```
+
+### 3. ייבוא ושימוש ברכיב
+
+```tsx
+import { NadlanistMap } from "@/components/ui/NadlanistMap";
+
+export default function Page() {
+  return (
+    <div>
+      <h1 className="text-2xl font-bold mb-4">מפת פרויקטים</h1>
+      <NadlanistMap />
+    </div>
+  );
+}
+```
+
+- ודא שהקבצים `public/mark-teal.svg` ו-`public/logo-teal.svg` קיימים.
+- הרכיב תומך RTL, עיצוב תואם מותג, ונתוני דמו.

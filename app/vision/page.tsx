@@ -112,7 +112,7 @@ export default function VisionPage() {
         <div className="absolute inset-0 bg-black/60 z-10" />
         {/* Content */}
         <div className="relative z-20 flex flex-col gap-8 py-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary text-center text-white drop-shadow-lg">הגיע הזמן לשנות: למה שוק הנדלן הישראלי חייב להתקדם?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-primary text-center text-white drop-shadow-lg">הגיע הזמן לשנות: למה שוק הנדל&quot;ן הישראלי חייב להתקדם?</h2>
           <p className="text-lg md:text-xl text-white font-bold text-center drop-shadow-lg">
             כולנו מכירים את זה: עמלות תיווך גבוהות לשני הצדדים (של 1%-2% ואף יותר) שלא תמיד מוצדקות, מודעות &apos;פיתיון&apos; שמבזבזות זמן, בלעדיות כופה וחוסר שקיפות בתהליך, תחושה שהמתווך לא תמיד בצד שלכם, וחיפושים אינסופיים בלוחות מודעות עמוסים במידע חלקי ולא רלוונטי. התוצאה? תסכול, בזבוז זמן וכסף, ותחושה של חוסר אונים.
           </p>
