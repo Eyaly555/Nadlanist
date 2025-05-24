@@ -11,13 +11,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { NadlanistMap } from "@/components/ui/NadlanistMap";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { API_STATUS_TO_HEBREW_MAP, type ApiStatus } from "@/components/ui/status.constants";
-import { ChartByCity } from "@/components/ui/ChartByCity";
-import { ChartByStatus } from "@/components/ui/ChartByStatus";
-import { ChartHeightHistogram } from "@/components/ui/ChartHeightHistogram";
-import { ChartTop10 } from "@/components/ui/ChartTop10";
 import { ContactButton } from "@/components/shared/contact-button";
 import { ContactForm } from "@/components/shared/contact-form";
 import Script from 'next/script';
+import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { StatusTag } from "@/components/ui/ProjectInfoWindowContent";
+import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
 interface KpiData {
   totalTowers: number | null;
@@ -36,6 +35,7 @@ interface TowerData {
   tower_status: string;
   project_name: string;
   city: string;
+  full_address: string;
 }
 
 interface ApiTower {
@@ -51,7 +51,99 @@ interface ApiProject {
   id: number | string;
   project_name: string;
   city: string;
+  full_address: string;
   towers: ApiTower[];
+}
+
+interface TowerListDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  towers: TowerData[];
+  title: string;
+}
+
+function getShortName(name: string, maxWords = 5): string {
+  const words = name.split(' ');
+  if (words.length <= maxWords) return name;
+  return words.slice(0, maxWords).join(' ') + '...';
+}
+
+function TowerListDialog({ open, onOpenChange, towers, title }: TowerListDialogProps) {
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 8;
+  const sortedTowers = useMemo(() => [...towers].sort((a, b) => b.height_m - a.height_m), [towers]);
+  const totalPages = Math.ceil(sortedTowers.length / itemsPerPage);
+  const pagedTowers = sortedTowers.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+
+  useEffect(() => { setPage(1); }, [towers, open]);
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-lg w-full p-0 rounded-2xl overflow-hidden">
+        <div className="flex flex-col h-full bg-white">
+          <div className="flex items-center justify-between px-6 py-4 border-b">
+            <DialogTitle className="text-lg font-bold text-primary">{title}</DialogTitle>
+            <button
+              aria-label="סגור"
+              onClick={() => onOpenChange(false)}
+              className="text-gray-400 hover:text-gray-700 text-2xl font-bold focus:outline-none"
+            >×</button>
+          </div>
+          <div className="overflow-y-auto px-4 py-2 max-h-[60vh] min-h-[120px]">
+            {pagedTowers.length === 0 ? (
+              <div className="text-center text-gray-500 py-8">לא נמצאו מגדלים מתאימים.</div>
+            ) : (
+              <ul className="flex flex-col gap-3">
+                {pagedTowers.map((tower) => (
+                  <li key={tower.id} className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-3 rounded-lg border bg-gray-50 hover:bg-gray-100 transition-colors">
+                    <div className="flex-1 min-w-0">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="font-semibold text-base text-gray-900 break-words max-w-xs cursor-pointer text-right">{getShortName(tower.project_name)}</div>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" align="center">
+                            <span className="text-sm font-medium text-gray-900">{tower.project_name}</span>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <div className="text-sm text-gray-700 truncate">{tower.full_address}</div>
+                    </div>
+                    <div className="flex flex-row flex-wrap gap-2 items-center">
+                      <span className="text-sm text-gray-700 whitespace-nowrap"><span role="img" aria-label="קומות">🧱</span> {tower.floors} קומות</span>
+                      <span className="text-sm text-gray-700 whitespace-nowrap"><span role="img" aria-label="גובה">📏</span> {tower.height_m} מ&apos;</span>
+                      <StatusTag status={tower.tower_status as ApiStatus} />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2 py-3 border-t mt-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                disabled={page === 1}
+              >
+                הקודם
+              </Button>
+              <span className="text-sm">עמוד {page} מתוך {totalPages}</span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+                disabled={page === totalPages}
+              >
+                הבא
+              </Button>
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 }
 
 export default function DashboardClientComponent() {
@@ -78,7 +170,7 @@ export default function DashboardClientComponent() {
   const [sortBy, setSortBy] = useState<'height' | 'floors'>('height');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-  const [top10Mode, setTop10Mode] = useState<'height' | 'floors'>('height');
+  const [openTowerDialog, setOpenTowerDialog] = useState<null | number>(null); // 150, 250, 350 or null
 
   // Fetch KPI data
   useEffect(() => {
@@ -132,6 +224,7 @@ export default function DashboardClientComponent() {
               ...tower,
               project_name: project.project_name,
               city: project.city,
+              full_address: project.full_address,
             });
           });
         });
@@ -272,57 +365,87 @@ export default function DashboardClientComponent() {
                   )}
                 </CardContent>
               </Card>
-              {/* מגדלים מעל 150 מ' */}
-              <Card className="bg-white/90 border-0 shadow rounded-2xl">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-secondary">מגדלים מעל 150 מ&#39;</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {isLoadingTable ? (
-                    <Skeleton className="h-8 w-1/2" />
-                  ) : tableData.length > 0 ? (
-                    <div className="text-2xl font-bold">{tableData.filter(t => t.height_m > 150).length}</div>
-                  ) : tableError ? (
-                    <p className="text-xs text-red-500">שגיאה</p>
-                  ) : (
-                    <div className="text-2xl font-bold">-</div>
-                  )}
-                </CardContent>
-              </Card>
-              {/* מגדלים מעל 250 מ' */}
-              <Card className="bg-white/90 border-0 shadow rounded-2xl">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-secondary">מגדלים מעל 250 מ&#39;</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {isLoadingTable ? (
-                    <Skeleton className="h-8 w-1/2" />
-                  ) : tableData.length > 0 ? (
-                    <div className="text-2xl font-bold">{tableData.filter(t => t.height_m > 250).length}</div>
-                  ) : tableError ? (
-                    <p className="text-xs text-red-500">שגיאה</p>
-                  ) : (
-                    <div className="text-2xl font-bold">-</div>
-                  )}
-                </CardContent>
-              </Card>
-              {/* מגדלים מעל 350 מ' */}
-              <Card className="bg-white/90 border-0 shadow rounded-2xl">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-secondary">מגדלים מעל 350 מ&#39;</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {isLoadingTable ? (
-                    <Skeleton className="h-8 w-1/2" />
-                  ) : tableData.length > 0 ? (
-                    <div className="text-2xl font-bold">{tableData.filter(t => t.height_m > 350).length}</div>
-                  ) : tableError ? (
-                    <p className="text-xs text-red-500">שגיאה</p>
-                  ) : (
-                    <div className="text-2xl font-bold">-</div>
-                  )}
-                </CardContent>
-              </Card>
+              {/* מגדלים מעל 150 מ&apos; */}
+              <Dialog open={openTowerDialog === 150} onOpenChange={open => setOpenTowerDialog(open ? 150 : null)}>
+                <DialogTrigger asChild>
+                  <Card className="bg-white/90 border-0 shadow rounded-2xl cursor-pointer hover:shadow-lg transition" onClick={() => setOpenTowerDialog(150)}>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-medium text-secondary">מגדלים מעל 150 מ&apos;</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {isLoadingTable ? (
+                        <Skeleton className="h-8 w-1/2" />
+                      ) : tableData.length > 0 ? (
+                        <div className="text-2xl font-bold">{tableData.filter(t => t.height_m > 150).length}</div>
+                      ) : tableError ? (
+                        <p className="text-xs text-red-500">שגיאה</p>
+                      ) : (
+                        <div className="text-2xl font-bold">-</div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </DialogTrigger>
+                <TowerListDialog
+                  open={openTowerDialog === 150}
+                  onOpenChange={open => setOpenTowerDialog(open ? 150 : null)}
+                  towers={tableData.filter(t => t.height_m > 150)}
+                  title="מגדלים מעל 150 מ'"
+                />
+              </Dialog>
+              {/* מגדלים מעל 250 מ&apos; */}
+              <Dialog open={openTowerDialog === 250} onOpenChange={open => setOpenTowerDialog(open ? 250 : null)}>
+                <DialogTrigger asChild>
+                  <Card className="bg-white/90 border-0 shadow rounded-2xl cursor-pointer hover:shadow-lg transition" onClick={() => setOpenTowerDialog(250)}>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-medium text-secondary">מגדלים מעל 250 מ&apos;</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {isLoadingTable ? (
+                        <Skeleton className="h-8 w-1/2" />
+                      ) : tableData.length > 0 ? (
+                        <div className="text-2xl font-bold">{tableData.filter(t => t.height_m > 250).length}</div>
+                      ) : tableError ? (
+                        <p className="text-xs text-red-500">שגיאה</p>
+                      ) : (
+                        <div className="text-2xl font-bold">-</div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </DialogTrigger>
+                <TowerListDialog
+                  open={openTowerDialog === 250}
+                  onOpenChange={open => setOpenTowerDialog(open ? 250 : null)}
+                  towers={tableData.filter(t => t.height_m > 250)}
+                  title="מגדלים מעל 250 מ'"
+                />
+              </Dialog>
+              {/* מגדלים מעל 350 מ&apos; */}
+              <Dialog open={openTowerDialog === 350} onOpenChange={open => setOpenTowerDialog(open ? 350 : null)}>
+                <DialogTrigger asChild>
+                  <Card className="bg-white/90 border-0 shadow rounded-2xl cursor-pointer hover:shadow-lg transition" onClick={() => setOpenTowerDialog(350)}>
+                    <CardHeader className="pb-2">
+                      <CardTitle className="text-sm font-medium text-secondary">מגדלים מעל 350 מ&apos;</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {isLoadingTable ? (
+                        <Skeleton className="h-8 w-1/2" />
+                      ) : tableData.length > 0 ? (
+                        <div className="text-2xl font-bold">{tableData.filter(t => t.height_m > 350).length}</div>
+                      ) : tableError ? (
+                        <p className="text-xs text-red-500">שגיאה</p>
+                      ) : (
+                        <div className="text-2xl font-bold">-</div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </DialogTrigger>
+                <TowerListDialog
+                  open={openTowerDialog === 350}
+                  onOpenChange={open => setOpenTowerDialog(open ? 350 : null)}
+                  towers={tableData.filter(t => t.height_m > 350)}
+                  title="מגדלים מעל 350 מ'"
+                />
+              </Dialog>
             </div>
           </div>
           {/* Lead Form - מוצב בנפרד מתחת למפה, ללא התנגשות עם התוכן */}
@@ -353,7 +476,7 @@ export default function DashboardClientComponent() {
                     <div className="text-lg font-bold mb-2 truncate" title={kpiData.tallestTower.name}>{kpiData.tallestTower.name}</div>
                     <div className="flex flex-row items-center justify-between gap-4">
                       <div className="flex-1 text-right">
-                        <span className="text-base font-semibold">{kpiData.tallestTower.height} מ&#39;</span>
+                        <span className="text-base font-semibold">{kpiData.tallestTower.height} מ&apos;</span>
                       </div>
                       <div className="flex-1 text-left">
                         <span className="text-base font-semibold">{kpiData.tallestTower.floors} קומות</span>
@@ -512,28 +635,39 @@ export default function DashboardClientComponent() {
                   {isLoadingTable ? (
                     Array.from({ length: 5 }).map((_, idx) => (
                       <TableRow key={idx}>
-                        <TableCell colSpan={5}><Skeleton className="h-6 w-full" /></TableCell>
+                        <TableCell colSpan={5} className="text-right"><Skeleton className="h-6 w-full" /></TableCell>
                       </TableRow>
                     ))
                   ) : tableError ? (
                     <TableRow>
-                      <TableCell colSpan={5} className="h-24 text-center text-red-600 font-bold">
+                      <TableCell colSpan={5} className="h-24 text-right text-red-600 font-bold">
                         {tableError}
                       </TableCell>
                     </TableRow>
                   ) : currentPageData.length > 0 ? (
                     currentPageData.map(tower => (
                       <TableRow key={tower.id}>
-                        <TableCell className="text-right">{tower.project_name}</TableCell>
+                        <TableCell className="text-right break-words max-w-xs">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div className="cursor-pointer text-right">{getShortName(tower.project_name)}</div>
+                              </TooltipTrigger>
+                              <TooltipContent side="top" align="center">
+                                <span className="text-sm font-medium text-gray-900">{tower.project_name}</span>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </TableCell>
                         <TableCell className="hidden sm:table-cell text-right">{tower.city}</TableCell>
                         <TableCell className="text-right">{tower.height_m?.toFixed(1)}</TableCell>
                         <TableCell className="hidden md:table-cell text-right">{tower.floors}</TableCell>
-                        <TableCell className="hidden sm:table-cell">{translateStatus(tower.tower_status)}</TableCell>
+                        <TableCell className="hidden sm:table-cell text-right">{translateStatus(tower.tower_status)}</TableCell>
                       </TableRow>
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={5} className="h-24 text-center">
+                      <TableCell colSpan={5} className="h-24 text-right">
                         {tableData.length > 0 ? "לא נמצאו מגדלים התואמים את הסינון הנוכחי." : "לא נטענו נתונים להצגה."}
                       </TableCell>
                     </TableRow>
@@ -596,51 +730,6 @@ export default function DashboardClientComponent() {
                   ).toFixed(1)}`
                 : "-"}
             </span>
-          </div>
-        </div>
-        {/* Charts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Chart 1: Towers by City (Bar) */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg border-0">
-            <h4 className="text-md font-semibold mb-2 text-primary">התפלגות מגדלים לפי עיר</h4>
-            <ChartByCity
-              data={filteredTableData}
-              uniqueCities={uniqueCities}
-              selectedCity={selectedCity}
-              onCityClick={setSelectedCity}
-            />
-          </div>
-          {/* Chart 2: Towers by Status (Pie/Donut) */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg border-0">
-            <h4 className="text-md font-semibold mb-2 text-primary">סטטוס הפרויקטים הכולל</h4>
-            <ChartByStatus
-              data={filteredTableData}
-              selectedStatus={selectedStatus}
-              onStatusClick={setSelectedStatus}
-            />
-          </div>
-          {/* Chart 3: Height Histogram */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg border-0">
-            <h4 className="text-md font-semibold mb-2 text-primary">התפלגות גבהי המגדלים</h4>
-            <ChartHeightHistogram data={filteredTableData} />
-          </div>
-          {/* Chart 4: Top 10 Towers (toggle) */}
-          <div className="bg-white rounded-2xl p-6 shadow-lg border-0 flex flex-col">
-            <div className="flex items-center justify-between mb-2">
-              <h4 className="text-md font-semibold text-primary">עשרת המגדלים הגבוהים ביותר / עם הכי הרבה קומות</h4>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setTop10Mode((prev) => (prev === 'height' ? 'floors' : 'height'))}
-                className="ml-2 border-primary text-primary hover:bg-primary-10"
-              >
-                {top10Mode === 'height' ? 'הצג לפי קומות' : 'הצג לפי גובה'}
-              </Button>
-            </div>
-            <ChartTop10
-              data={filteredTableData}
-              mode={top10Mode}
-            />
           </div>
         </div>
       </section>

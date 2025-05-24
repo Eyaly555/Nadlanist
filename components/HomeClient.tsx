@@ -91,7 +91,6 @@ export default function HomeClient() {
       <section
         id="dashboard-promo"
         className="w-full flex justify-center items-center py-16 px-2"
-        style={{ background: 'linear-gradient(120deg, #C8F1EF 0%, #E0ECF1 100%)' }}
       >
         <div className="max-w-2xl w-full mx-auto text-center bg-white/80 rounded-3xl shadow-2xl border-4 border-white/60 backdrop-blur-xl p-10 md:p-14 flex flex-col items-center transition-transform duration-100 hover:scale-[1.025] hover:shadow-[0_8px_40px_8px_rgba(80,80,180,0.18)]">
           <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-primary tracking-tight" style={{ color: '#00A6A2' }}>

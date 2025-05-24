@@ -32,7 +32,7 @@ export interface ProjectInfoWindowContentProps {
   onClose?: () => void;
 }
 
-function StatusTag({ status }: { status: ApiStatus }) {
+export function StatusTag({ status }: { status: ApiStatus }) {
   return (
     <span
       className={`inline-flex items-center rounded px-2 py-1 text-xs font-semibold text-white ${API_STATUS_GRADIENT_MAP[status] || API_STATUS_GRADIENT_MAP[API_STATUSES.UNKNOWN]}`}

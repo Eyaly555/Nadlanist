@@ -11,6 +11,7 @@ export function Footer() {
 
   // ניווט קצר – זהה ל־Header
   const navItems = [
+    { name: "דשבורד", href: "/dashboard" },
     { name: "דף הבית", href: "/" },
     { name: "קונים", href: "/buyers" },
     { name: "מוכרים", href: "/sellers" },

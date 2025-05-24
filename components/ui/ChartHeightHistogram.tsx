@@ -14,7 +14,19 @@ const HEIGHT_BINS = [
   { min: 251, max: 9999, label: "250+" },
 ];
 
+function useWindowWidth() {
+  const [width, setWidth] = React.useState<number>(typeof window !== 'undefined' ? window.innerWidth : 1200);
+  React.useEffect(() => {
+    function handleResize() { setWidth(window.innerWidth); }
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  return width;
+}
+
 export function ChartHeightHistogram({ data }: { data: TowerData[] }) {
+  const width = useWindowWidth();
   const bins = React.useMemo(() =>
     HEIGHT_BINS.map(bin => ({
       ...bin,
@@ -23,29 +35,39 @@ export function ChartHeightHistogram({ data }: { data: TowerData[] }) {
     [data]
   );
   const barColors = ["#00A6A2", "#2ECC71", "#FF6F61", "#6A0DAD", "#FFD700"];
-
+  const tickFontSize = width < 640 ? 8 : 11;
+  const tickMaxLen = width < 640 ? 6 : 10;
+  const tickAngle = width < 640 ? -40 : 0;
   return (
     <ChartContainer config={{}}>
-      <ResponsiveContainer width="100%" height={220}>
-        <BarChart data={bins} margin={{ left: 8, right: 8, top: 8, bottom: 8 }}>
-          <XAxis dataKey="label" tick={{ fontSize: 13 }} />
-          <YAxis allowDecimals={false} />
-          <Tooltip
-            content={({ active, payload }) =>
-              active && payload && payload[0] ? (
-                <div className="bg-white p-2 rounded shadow text-xs">
-                  {`${payload[0].payload.count} מגדלים בגובה ${payload[0].payload.label} מ'`}
-                </div>
-              ) : null
-            }
-          />
-          <Bar dataKey="count" radius={[8, 8, 0, 0]}>
-            {bins.map((entry, idx) => (
-              <Cell key={entry.label} fill={barColors[idx % barColors.length]} />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+      <div className="w-full h-[220px] sm:h-[320px] md:h-[400px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={bins} margin={{ left: 12, right: 12, top: 8, bottom: 24 }}>
+            <XAxis
+              dataKey="label"
+              tick={{ fontSize: tickFontSize, fontFamily: 'inherit' }}
+              angle={tickAngle}
+              textAnchor="end"
+              tickFormatter={label => label.length > tickMaxLen ? label.slice(0, tickMaxLen) + '…' : label}
+            />
+            <YAxis tick={{ fontSize: tickFontSize, fontFamily: 'inherit' }} allowDecimals={false} />
+            <Tooltip
+              content={({ active, payload }) =>
+                active && payload && payload[0] ? (
+                  <div className="bg-white p-2 rounded shadow text-xs sm:text-sm">
+                    {`${payload[0].payload.count} מגדלים בגובה ${payload[0].payload.label} מ'`}
+                  </div>
+                ) : null
+              }
+            />
+            <Bar dataKey="count" radius={[8, 8, 0, 0]}>
+              {bins.map((entry, idx) => (
+                <Cell key={entry.label} fill={barColors[idx % barColors.length]} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </ChartContainer>
   );
 } 

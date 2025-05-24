@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     url: 'https://nadlanist.ai/dashboard',
     images: [
       {
-        url: '/og-image.png',
+        url: '/marker_logo.png',
         width: 1200,
         height: 630,
         alt: 'הדשבורד החכם של נדלניסט AI',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'הדשבורד החכם של נדלניסט AI',
     description: 'הדשבורד החדשני והמקיף בישראל למעקב חכם אחר פרויקטי נדל"ן בבנייה ובביצוע.',
-    images: ['/twitter-image.png'],
+    images: ['/logo.png'],
     creator: '@nadlanist_ai',
   },
   alternates: {

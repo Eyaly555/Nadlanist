@@ -28,6 +28,7 @@ export function MainNav() {
   }, [scrolled]);
 
   const navItems = [
+    { name: "דשבורד", href: "/dashboard" },
     { name: "דף הבית", href: "/" },
     { name: "קונים", href: "/buyers" },
     { name: "מוכרים", href: "/sellers" },

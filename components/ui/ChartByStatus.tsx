@@ -1,6 +1,24 @@
 import * as React from "react";
-import { ChartContainer } from "./chart";
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Label,
+} from "recharts";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import { API_STATUS_TO_HEBREW_MAP, ApiStatus } from "./status.constants";
 
 interface TowerData {
@@ -27,18 +45,40 @@ const STATUS_COLORS: Record<string, string> = {
 
 const MIN_GROUP_PERCENT = 0.07; // 7%
 
-export function ChartByStatus({ data, selectedStatus, onStatusClick }: ChartByStatusProps) {
+function useWindowWidth() {
+  const [width, setWidth] = React.useState<number>(
+    typeof window !== "undefined" ? window.innerWidth : 1200
+  );
+  React.useEffect(() => {
+    function handleResize() {
+      setWidth(window.innerWidth);
+    }
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  return width;
+}
+
+export function ChartByStatus({
+  data,
+  selectedStatus,
+  onStatusClick,
+}: ChartByStatusProps) {
+  const width = useWindowWidth();
   const total = data.length;
+
   const statusCountsRaw = React.useMemo(() => {
     const counts: Record<string, number> = {};
-    data.forEach(t => {
+    data.forEach((t) => {
       counts[t.tower_status] = (counts[t.tower_status] || 0) + 1;
     });
     return Object.entries(counts).map(([status, count]) => ({ status, count }));
   }, [data]);
 
   const [mainStatuses, otherStatuses] = React.useMemo(() => {
-    const main: typeof statusCountsRaw = [], other: typeof statusCountsRaw = [];
+    const main: typeof statusCountsRaw = [],
+      other: typeof statusCountsRaw = [];
     for (const s of statusCountsRaw) {
       if (s.count / total > MIN_GROUP_PERCENT) main.push(s);
       else other.push(s);
@@ -46,160 +86,142 @@ export function ChartByStatus({ data, selectedStatus, onStatusClick }: ChartBySt
     return [main, other];
   }, [statusCountsRaw, total]);
 
-  const statusCounts = React.useMemo(() => [
-    ...mainStatuses,
-    {
-      status: "אחר",
-      count: otherStatuses.reduce((sum, s) => sum + s.count, 0),
-    },
-  ].filter(s => s.count > 0), [mainStatuses, otherStatuses]);
+  const statusCounts = React.useMemo(
+    () =>
+      [
+        ...mainStatuses,
+        {
+          status: "אחר",
+          count: otherStatuses.reduce((sum, s) => sum + s.count, 0),
+        },
+      ].filter((s) => s.count > 0),
+    [mainStatuses, otherStatuses]
+  );
+
+  const chartData = statusCounts.map((s) => {
+    const hebrew = API_STATUS_TO_HEBREW_MAP[s.status as ApiStatus] || s.status;
+    return {
+      name: hebrew,
+      value: s.count,
+      fill:
+        selectedStatus === s.status
+          ? "#00A6A2"
+          : STATUS_COLORS[hebrew] || "#CCCCCC",
+      originalStatus: s.status,
+    };
+  });
+
+  const pieInnerRadius = width < 640 ? 40 : width < 1024 ? 60 : 80;
+  const pieOuterRadius = width < 640 ? 70 : width < 1024 ? 100 : 130;
+  const tickMaxLen = width < 640 ? 6 : 10;
 
   return (
-    <ChartContainer config={{}}>
-      <div className="relative flex flex-col items-center">
-        <ResponsiveContainer width="100%" height={260}>
-          <PieChart>
-            <Pie
-              data={statusCounts}
-              dataKey="count"
-              nameKey="status"
-              cx="50%"
-              cy="50%"
-              innerRadius={60}
-              outerRadius={90}
-              paddingAngle={2}
-              isAnimationActive={false}
-              labelLine={false}
-            >
-              {statusCounts.map((entry) => {
-                const hebrew = API_STATUS_TO_HEBREW_MAP[entry.status as ApiStatus] || entry.status;
-                return (
+    <Card className="flex flex-col">
+      <CardHeader className="items-center pb-0">
+        <CardTitle>התפלגות סטטוס מגדלים</CardTitle>
+        <CardDescription>סה&quot;כ מגדלים: {total}</CardDescription>
+      </CardHeader>
+      <CardContent className="flex-1 pb-0">
+        <ChartContainer config={{}} className="mx-auto aspect-square max-h-[250px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart margin={{ left: 12, right: 12, top: 8, bottom: 24 }}>
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
+              />
+              <Pie
+                data={chartData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius={pieInnerRadius}
+                outerRadius={pieOuterRadius}
+                paddingAngle={2}
+                isAnimationActive={false}
+                labelLine={false}
+              >
+                <Label
+                  content={({ viewBox }) => {
+                    if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                      return (
+                        <text
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                        >
+                          <tspan
+                            x={viewBox.cx}
+                            y={viewBox.cy}
+                            className="fill-foreground text-3xl font-bold"
+                          >
+                            {total.toLocaleString()}
+                          </tspan>
+                          <tspan
+                            x={viewBox.cx}
+                            y={(viewBox.cy || 0) + 24}
+                            className="fill-muted-foreground"
+                          >
+                            {"סה\"כ מגדלים"}
+                          </tspan>
+                        </text>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+                {chartData.map((entry) => (
                   <Cell
-                    key={entry.status}
-                    fill={selectedStatus === entry.status ? "#00A6A2" : STATUS_COLORS[hebrew] || "#CCCCCC"}
+                    key={entry.originalStatus}
+                    fill={entry.fill}
                     cursor="pointer"
-                    onClick={() => onStatusClick(selectedStatus === entry.status ? "" : entry.status)}
+                    onClick={() =>
+                      onStatusClick(
+                        selectedStatus === entry.originalStatus
+                          ? ""
+                          : entry.originalStatus
+                      )
+                    }
                   />
-                );
-              })}
-            </Pie>
-            <Tooltip
-              contentStyle={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: 8, color: '#222D3A', fontWeight: 600, fontSize: 15 }}
-              itemStyle={{ color: '#222D3A', fontWeight: 700 }}
-              formatter={(_, name, props: unknown) => {
-                const entry = (props as { payload: { status: string; count: number } }).payload;
-                const percent = total ? Math.round((entry.count / total) * 100) : 0;
-                const hebrew = API_STATUS_TO_HEBREW_MAP[entry.status as ApiStatus] || entry.status;
-                return [`${entry.count} מגדלים (${percent}%)`, hebrew];
-              }}
-            />
-          </PieChart>
-        </ResponsiveContainer>
-        {/* מרכז הגרף */}
-        <div
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-            textAlign: "center",
-            pointerEvents: "none",
-            whiteSpace: "nowrap",
-          }}
-        >
-          <div style={{ fontWeight: 700, fontSize: 20, color: '#222D3A' }}>{total}</div>
-          <div style={{ fontSize: 14, color: '#222D3A' }}>{`סה"כ מגדלים`}</div>
-        </div>
-        {/* אגדה */}
-        <ul
-          className="legend flex flex-wrap gap-7 justify-center mt-6"
-          style={{ listStyle: 'none', padding: 0, margin: 0 }}
-        >
-          {statusCounts.map(s => {
-            const hebrew = API_STATUS_TO_HEBREW_MAP[s.status as ApiStatus] || s.status;
-            return (
-              <li key={s.status} className="flex flex-col items-center min-w-[60px]">
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </ChartContainer>
+      </CardContent>
+      <CardFooter className="flex-col gap-2 text-sm">
+        <div className="w-full mt-2">
+          <ul className="legend flex flex-wrap gap-3 sm:gap-7 justify-center mt-3 sm:mt-6">
+            {chartData.map((s) => (
+              <li
+                key={s.originalStatus}
+                className="flex flex-col items-center min-w-[44px] sm:min-w-[60px]"
+              >
                 <span
-                  className="color"
+                  className="inline-block w-[14px] h-[14px] sm:w-[20px] sm:h-[20px] rounded-full"
                   style={{
-                    display: 'inline-block',
-                    width: 20,
-                    height: 20,
-                    borderRadius: '50%',
-                    background: STATUS_COLORS[hebrew] || '#888',
-                    boxShadow: '0 0 0 2px #FFF',
+                    background: s.fill,
+                    boxShadow: "0 0 0 2px #FFF",
                   }}
                 />
                 <span
-                  className="status"
-                  style={{
-                    fontWeight: 700,
-                    fontSize: 15,
-                    color: '#222D3A',
-                    marginTop: 4,
-                  }}
+                  className="font-bold text-[12px] sm:text-[15px] text-[#222D3A] mt-1"
+                  title={s.name}
                 >
-                  {hebrew}
+                  {s.name.length > tickMaxLen
+                    ? s.name.slice(0, tickMaxLen) + "…"
+                    : s.name}
                 </span>
-                <span
-                  className="count"
-                  style={{
-                    fontSize: 13,
-                    color: '#666',
-                    fontWeight: 600,
-                    marginTop: 2,
-                  }}
-                >
-                  <span style={{ fontWeight: 600 }}>{s.count}</span> <span style={{ fontWeight: 400 }}>מגדלים</span>
+                <span className="text-[11px] sm:text-[13px] text-[#666] font-semibold mt-0.5">
+                  <span className="font-semibold">{s.value}</span>{" "}
+                  <span className="font-normal">מגדלים</span>
                 </span>
               </li>
-            );
-          })}
-        </ul>
-        <style>{`
-          ul.legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 28px;
-            justify-content: center;
-            margin-top: 32px;
-          }
-          ul.legend li {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 60px;
-          }
-          ul.legend .color {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            box-shadow: 0 0 0 2px #fff;
-          }
-          ul.legend .status {
-            font-weight: 700;
-            font-size: 15px;
-            color: #222D3A;
-            margin-top: 4px;
-          }
-          ul.legend .count {
-            font-size: 13px;
-            color: #666;
-            font-weight: 600;
-            margin-top: 2px;
-          }
-          @media (max-width: 600px) {
-            ul.legend {
-              gap: 14px;
-              margin-top: 12px;
-            }
-            ul.legend .color { width: 14px; height: 14px; }
-            ul.legend li { min-width: 44px; }
-            ul.legend .status { font-size: 12px; }
-            ul.legend .count { font-size: 11px; }
-          }
-        `}</style>
-      </div>
-    </ChartContainer>
+            ))}
+          </ul>
+        </div>
+      </CardFooter>
+    </Card>
   );
-} 
+}

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     url: 'https://nadlanist.ai/dashboard',
     images: [
       {
-        url: '/og-image.png',
+        url: '/marker_logo.png',
         width: 1200,
         height: 630,
         alt: 'הדשבורד החכם של נדלניסט AI',
