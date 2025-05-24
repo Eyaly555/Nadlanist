@@ -18,6 +18,7 @@ export async function GET() {
     "/terms",
     "/thank-you",
     "/vision",
+    "/dashboard",
   ];
 
   // שליפת כל הסלגים של הבלוג

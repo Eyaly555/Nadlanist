@@ -609,9 +609,6 @@ export default function DashboardClientComponent() {
                   <TableRow>
                     <TableHead className="text-right" style={{ color: "#222D3A" }}>פרויקט</TableHead>
                     <TableHead className="hidden sm:table-cell text-right" style={{ color: "#222D3A" }}>עיר</TableHead>
-                    <TableHead className="hidden md:table-cell text-right" style={{ color: "#222D3A" }}>סטטוס פרויקט</TableHead>
-                    <TableHead className="hidden md:table-cell text-right" style={{ color: "#222D3A" }}>מס׳ מגדלים</TableHead>
-                    <TableHead className="hidden md:table-cell text-right" style={{ color: "#222D3A" }}>כתובת מלאה</TableHead>
                     <TableHead
                       className="text-right cursor-pointer hover:bg-muted/50"
                       onClick={() => handleSort('height')}
@@ -672,9 +669,6 @@ export default function DashboardClientComponent() {
                           </TooltipProvider>
                         </TableCell>
                         <TableCell className="hidden sm:table-cell text-right">{tower.city}</TableCell>
-                        <TableCell className="hidden md:table-cell text-right">{tower.project_status}</TableCell>
-                        <TableCell className="hidden md:table-cell text-right">{tower.num_towers}</TableCell>
-                        <TableCell className="hidden md:table-cell text-right">{tower.full_address}</TableCell>
                         <TableCell className="text-right">{tower.height_m?.toFixed(1)}</TableCell>
                         <TableCell className="hidden md:table-cell text-right">{tower.floors}</TableCell>
                         <TableCell className="hidden sm:table-cell text-right">{translateStatus(tower.tower_status)}</TableCell>
@@ -682,7 +676,7 @@ export default function DashboardClientComponent() {
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={10} className="h-24 text-right">
+                      <TableCell colSpan={9} className="h-24 text-right">
                         {tableData.length > 0 ? "לא נמצאו מגדלים התואמים את הסינון הנוכחי." : "לא נטענו נתונים להצגה."}
                       </TableCell>
                     </TableRow>
