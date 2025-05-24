@@ -9,6 +9,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import Script from "next/script";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -111,28 +112,42 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <body dir="rtl" suppressHydrationWarning className={`${poppins.variable} ${inter.variable} font-sans antialiased`}>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        <TooltipProvider>
-          <QueryProvider>
-            <div className="relative min-h-screen flex flex-col">
-              <MainNav />
-              <main className="container mx-auto px-4 pb-8 pt-6">
-                {children}
-              </main>
-              <Footer />
-            </div>
-            <Toaster position="bottom-right" />
-            <Analytics />
-            <SpeedInsights />
-          </QueryProvider>
-        </TooltipProvider>
-      </ThemeProvider>
-    </body>
+    <>
+      <Script id="hotjar-tracking" strategy="afterInteractive">
+        {`
+          (function(h,o,t,j,a,r){
+              h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+              h._hjSettings={hjid:6409846,hjsv:6};
+              a=o.getElementsByTagName('head')[0];
+              r=o.createElement('script');r.async=1;
+              r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+              a.appendChild(r);
+          })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+        `}
+      </Script>
+      <body dir="rtl" suppressHydrationWarning className={`${poppins.variable} ${inter.variable} font-sans antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <TooltipProvider>
+            <QueryProvider>
+              <div className="relative min-h-screen flex flex-col">
+                <MainNav />
+                <main className="container mx-auto px-4 pb-8 pt-6">
+                  {children}
+                </main>
+                <Footer />
+              </div>
+              <Toaster position="bottom-right" />
+              <Analytics />
+              <SpeedInsights />
+            </QueryProvider>
+          </TooltipProvider>
+        </ThemeProvider>
+      </body>
+    </>
   );
 }

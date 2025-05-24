@@ -87,6 +87,30 @@ export default function HomeClient() {
       <div className="w-full mt-0">
         <HeroSection />
       </div>
+      {/* Dashboard Promo Section */}
+      <section
+        id="dashboard-promo"
+        className="w-full flex justify-center items-center py-16 px-2"
+        style={{ background: 'linear-gradient(120deg, #C8F1EF 0%, #E0ECF1 100%)' }}
+      >
+        <div className="max-w-2xl w-full mx-auto text-center bg-white/80 rounded-3xl shadow-2xl border-4 border-white/60 backdrop-blur-xl p-10 md:p-14 flex flex-col items-center transition-transform duration-100 hover:scale-[1.025] hover:shadow-[0_8px_40px_8px_rgba(80,80,180,0.18)]">
+          <h2 className="text-3xl md:text-4xl font-extrabold mb-4 text-primary tracking-tight" style={{ color: '#00A6A2' }}>
+            גלו את הדשבורד החכם שמשנה את כללי המשחק בנדל&quot;ן!
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto font-medium">
+            כל מה שצריך לדעת על 100 הפרויקטים המובילים בישראל: <span className="font-semibold text-primary">מפות אינטראקטיביות</span>, <span className="font-semibold text-primary">נתונים עדכניים בזמן אמת</span>, <span className="font-semibold text-primary">סטטיסטיקות מתקדמות</span> ותובנות שיעזרו לכם לקבל החלטות חכמות יותר – הכל במקום אחד.
+          </p>
+          <Link
+            href="/dashboard"
+            className="inline-block px-8 py-4 bg-primary text-white font-bold text-lg rounded-xl shadow-lg hover:bg-primary-dark transition-colors focus-visible:outline-2 focus-visible:outline-primary"
+            style={{ backgroundColor: '#00A6A2', transition: 'background-color 0.3s' }}
+            aria-label="גלו את הדשבורד החכם של נדלניסט AI"
+          >
+            צללו לדשבורד עכשיו ותתחילו לחקור!
+          </Link>
+        </div>
+      </section>
+      {/* End Dashboard Promo Section */}
       {/* Our Vision Section */}
       <motion.section initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.05 }} 
         className="w-full bg-gradient-to-br from-primary via-secondary to-primary-foreground rounded-t-[48px] md:rounded-t-[64px] rounded-b-[48px] md:rounded-b-[64px] py-20 min-h-[20rem] max-w-[1280px] mx-auto flex flex-col items-center justify-center text-center mt-16 text-dark" dir="rtl">

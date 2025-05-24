@@ -10,6 +10,7 @@ import {
   API_STATUS_ORDER,
   API_STATUS_MARKER_MAP
 } from "./status.constants";
+import { Expand, Minimize } from "lucide-react";
 
 interface TowerData {
   id: number | string;
@@ -62,6 +63,7 @@ export function NadlanistMap() {
   const [hasError, setHasError] = useState<string | null>(null);
   const [selected, setSelected] = useState<ProjectData | null>(null);
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(function fetchProjects() {
     let isMounted = true;
@@ -109,14 +111,44 @@ export function NadlanistMap() {
     : MAP_CENTER;
 
   return (
-    <div className="relative w-full h-[70vh] rounded-2xl overflow-hidden bg-light shadow-lg">
+    <div
+      className={[
+        // Base styles not dependent on fullscreen
+        "flex flex-col w-full rounded-2xl overflow-hidden bg-light shadow-lg transition-all duration-300",
+        // Position and size styles depending on isFullscreen
+        isFullscreen
+          ? "fixed inset-0 w-screen h-screen z-[9999] rounded-none !m-0 !p-0"
+          : "relative h-[70vh]",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
+      {/* Fullscreen Toggle Button - always inside the visible map area */}
+      <div className="pointer-events-none absolute top-4 right-4 z-50">
+        <button
+          type="button"
+          aria-label={isFullscreen ? "צא ממסך מלא" : "הצג מסך מלא"}
+          onClick={() => setIsFullscreen((v) => !v)}
+          className="pointer-events-auto bg-white/95 hover:bg-gray-100 rounded-full p-2 sm:p-3 shadow-xl border border-gray-300 flex items-center justify-center transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary"
+          style={{ boxShadow: '0 4px 24px 0 rgba(0,0,0,0.18)' }}
+        >
+          {isFullscreen ? (
+            <Minimize className="w-6 h-6 text-teal-700" />
+          ) : (
+            <Expand className="w-6 h-6 text-teal-700" />
+          )}
+        </button>
+      </div>
       {/* Branding */}
       <div className="absolute top-6 left-6 z-10 bg-white/90 rounded-xl px-4 py-2 flex items-center gap-3 shadow-md border border-[#DBEDED]">
         <Image src="/mark-teal.svg" alt="סמל נדלניסט" width={32} height={32} />
         <Image src="/logo-teal.svg" alt="לוגו נדלניסט" width={80} height={32} />
       </div>
       <GoogleMap
-        mapContainerClassName="w-full h-full"
+        mapContainerClassName={[
+          "w-full h-full",
+          isFullscreen && "min-h-screen min-w-screen",
+        ].filter(Boolean).join(" ")}
         center={mapCenter}
         zoom={12}
         onLoad={setMapRef}

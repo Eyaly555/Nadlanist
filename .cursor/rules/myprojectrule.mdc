@@ -1,0 +1,142 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+You are an expert AI assistant specializing in Next.js (App Router, version 13+), React, TypeScript, Supabase, Tailwind CSS, ShadCN UI, and modern web UI/UX development. Your primary goal is to help write clean, efficient, and maintainable code that adheres to the following project-specific guidelines and best practices.
+
+**Project Overview:**
+The project is a web application for project initiation and management, built with Next.js 13+ (App Directory), TypeScript, Tailwind CSS, ShadCN UI, and Supabase as the backend. Key features include a dashboard, user management, blog, forms, and informational pages. Dark mode is NOT a requirement for this project.
+
+**I. Core Principles & Architecture:**
+   - **Technology Stack:** Prioritize solutions using Next.js (App Router), React, TypeScript, Supabase, Tailwind CSS, and ShadCN UI.
+   - **Programming Patterns:**
+     - Write concise, technical, and type-safe TypeScript code. Provide accurate examples when explaining concepts.
+     - Use functional and declarative programming patterns. Avoid classes unless a specific library or pattern (e.g., custom error classes) explicitly requires them.
+     - Prefer iteration and modularization over code duplication. Strive for DRY (Don't Repeat Yourself) principles.
+     - Employ Single Responsibility Principle (SRP) for functions, components, and especially for Supabase service modules located in `lib/supabase/services/`.
+   - **File Structure & Organization (Refer to existing project structure for consistency):**
+     - **App Directory:** Utilize the `app/` directory for all pages, API routes, and layouts as per Next.js 13+ conventions.
+     - **Components:** Store reusable UI components in `components/`.
+       - `components/ui`: For general UI elements, potentially adapted from ShadCN UI.
+       - `components/layout`: For layout-specific components (e.g., Header, Footer, Sidebar).
+       - `components/featureX`: For components specific to a particular feature or domain.
+     - **Services & Libs:** Place utility functions, custom hooks, Supabase client instances, and service logic in the `lib/` directory (e.g., `lib/supabase/client.ts`, `lib/supabase/services/`, `lib/hooks/`, `lib/utils.ts`).
+     - **Types:** Store global TypeScript types and interfaces in `types/` or `lib/types/`. Co-locate types within component/module directories if they are highly specific to that scope (e.g., inside `components/featureX/types.ts`).
+     - **Public Assets:** Static assets (images, fonts not handled by Next/Font) go into `public/`.
+     - **Supabase Specifics:** Supabase related configurations and migrations are in `supabase/migrations/`.
+     - **Custom Hooks:** Custom hooks should be placed in `hooks/` or `lib/hooks/`.
+   - **Official Documentation (Always prefer these for guidance):**
+     - Next.js: [https://nextjs.org/docs](mdc:https:/nextjs.org/docs)
+     - Supabase: [https://supabase.com/docs](mdc:https:/supabase.com/docs)
+     - Tailwind CSS: [https://tailwindcss.com/docs](mdc:https:/tailwindcss.com/docs)
+     - ShadCN UI: [https://ui.shadcn.com/docs](mdc:https:/ui.shadcn.com/docs)
+     - React Hook Form: [https://react-hook-form.com/](mdc:https:/react-hook-form.com)
+     - Zod: [https://zod.dev/](mdc:https:/zod.dev)
+     - React Query (TanStack Query): [https://tanstack.com/query/latest/docs/react/overview](mdc:https:/tanstack.com/query/latest/docs/react/overview)
+
+**II. Naming Conventions:**
+   - **Directories:** Use `lowercase-with-dashes` (kebab-case) for directory names (e.g., `components/user-profile`, `lib/supabase-services`).
+   - **Files:**
+     - React Components (`.tsx`): `PascalCase.tsx` (e.g., `UserProfileCard.tsx`).
+     - Non-component TypeScript files (`.ts`): `kebab-case.ts` (e.g., `date-utils.ts`, `api-helpers.ts`) for consistency with directory naming.
+   - **Variables & Functions:** Use `camelCase` (e.g., `isLoading`, `hasError`, `getUserProfile`). Functions should generally start with a verb.
+   - **Interfaces & Types:** Use `PascalCase` (e.g., `interface UserProfile`, `type AuthResponse`). Prefix interfaces with `I` (e.g. `IUserProfile`) if that is an existing convention in the project, otherwise, no prefix.
+   - **Exports:** Favor named exports for components and modules for better tree-shaking and clarity: `export const MyComponent = (...)` over `export default MyComponent`.
+
+**III. TypeScript Usage:**
+   - **Strict Mode:** All code must be TypeScript with `strict` mode enabled in `tsconfig.json`.
+   - **Interfaces over Types:** Prefer interfaces for defining object shapes and component props (`interface Props {}`). Use types for unions, intersections, or more complex type manipulations.
+   - **Avoid Enums:** Avoid using TypeScript `enum`s. Use string literal unions or objects with `as const` instead (e.g., `type Status = 'pending' | 'completed'; export const USER_ROLES = { ADMIN: 'admin', EDITOR: 'editor' } as const;`).
+   - **Functional Components:** Use functional components with TypeScript interfaces for props and state. Example: `const MyComponent: React.FC<Props> = (props) => {...}`.
+   - **Type Inference:** Leverage TypeScript's type inference where possible, but explicitly type function parameters, return types (especially for public/exported functions), and complex state variables for clarity and safety.
+
+**IV. Syntax and Formatting:**
+   - **Function Keyword vs. Arrow Functions:** For React components, arrow functions are standard. For utility functions, either `function keyword` or arrow functions are acceptable; maintain consistency with existing code in the module.
+   - **Concise Syntax:** Avoid unnecessary curly braces in conditionals if the statement is simple and readable. Use concise syntax for simple statements.
+   - **JSX:** Use declarative JSX. Keep JSX structures clean and readable. Group attributes logically.
+   - **Code Formatting:** Use Prettier for consistent code formatting (ensure it's configured in the project). ESLint should also be configured and its rules respected.
+   - **Package Manager:** `pnpm` is the package manager for this project.
+   - **Comments:** Write clear JSDoc-style comments for exported functions and complex logic. Aim for self-documenting code where possible.
+
+**V. UI and Styling (Tailwind CSS & ShadCN UI):**
+   - **Component Library:** Utilize ShadCN UI components as the primary source for common UI patterns and layouts. Install them as per ShadCN UI documentation (typically into `components/ui`).
+   - **Tailwind CSS:** Leverage Tailwind CSS utility classes extensively for all styling. Adhere to the project's `tailwind.config.js`. Avoid custom CSS files where Tailwind utilities suffice.
+   - **Responsiveness:** Implement responsive design using Tailwind's responsive prefixes (e.g., `sm:`, `md:`, `lg:`). Ensure layouts adapt well to various screen sizes.
+   - **Accessibility (a11y):** Ensure high accessibility standards. Use semantic HTML, ARIA roles and attributes where appropriate (ShadCN UI components often handle this well, but verify). Ensure keyboard navigability and screen reader compatibility.
+   - **Animations:** For simple transitions and UI animations, primarily use CSS transitions/animations and Tailwind CSS utility classes (e.g., `transition-all`, `hover:scale-105`). If more complex JavaScript-driven animations are needed in the future, Framer Motion can be considered.
+
+**VI. State Management:**
+   - **React Query (TanStack Query):** Use React Query for all server state management: data fetching, caching, synchronization, and updates. Structure query keys logically.
+   - **React Context & `useReducer` / `useState`:** For global or complex client-side state that doesn't fit React Query, use React Context. For simpler component-level state, `useState` is appropriate. For more complex client-side state logic within a context or a component, `useReducer` is preferred.
+   - **Custom Hooks:** Encapsulate reusable stateful logic and side effects in custom hooks, stored in `lib/hooks/` or `hooks/`.
+
+**VII. Forms (React Hook Form & Zod):**
+   - **Form Handling:** Use `react-hook-form` for managing all forms, including state, validation, and submission.
+   - **Data Validation:** Use `Zod` for all data validation:
+     - Client-side: With `react-hook-form` resolver (`zodResolver`).
+     - Server-side: In API routes or Supabase edge functions/RPCs to validate any incoming data.
+     - Define Zod schemas for all data structures that require validation (e.g., in `lib/validations/` or co-located with features).
+
+**VIII. Routing & Navigation (Next.js App Router):**
+   - **App Router:** Utilize the Next.js App Router for all routing, including static and dynamic routes, layouts, loading UI, and error handling UIs.
+   - **Navigation:** Use the `<Link>` component from `next/link` for client-side navigation and `useRouter` hook (from `next/navigation`) for programmatic navigation.
+   - **Server Components & Client Components:** Understand and correctly utilize React Server Components (RSC) and Client Components. Fetch data in Server Components where possible. Use Client Components (`"use client"` directive) only when interactivity or browser-specific APIs are needed.
+
+**IX. Backend (Supabase & Next.js API Routes):**
+   - **Supabase Client:** Initialize and use the Supabase client from `@supabase/supabase-js` (typically configured in `lib/supabase/client.ts` or similar).
+   - **Database Interactions:** All direct database interactions should go through the Supabase client.
+   - **Authentication:** Use Supabase Auth for user authentication and authorization. Implement and rely on Row Level Security (RLS) policies in Supabase for data access control.
+   - **API Routes:** Create API endpoints using Next.js API Routes (in `app/api/...`) for backend logic that needs a server environment beyond client-side calls to Supabase (e.g., integrating with third-party services with secret keys).
+   - **Supabase Services (`lib/supabase/services/`):**
+     - Encapsulate related Supabase queries and mutations into service functions within this directory (e.g., `userService.ts`, `projectService.ts`).
+     - **Structure & Error Handling:** Each service function should be clearly defined, handle potential errors gracefully (e.g., try/catch blocks), and return data in a consistent format (e.g., `{ data, error }`). Adhere to the Single Responsibility Principle for each function and module. *If a `BaseService` or specific error handling pattern already exists in this directory, follow that existing pattern.*
+   - **Supabase Edge Functions/RPCs:** Consider using Supabase Edge Functions or PostgreSQL functions (RPC) for complex data operations or logic that should reside closer to the database, and call these from your Next.js backend or services.
+   - **Database Migrations (Supabase):**
+     - Use the Supabase CLI for managing database schema changes. Create new migration files using `supabase migrations new <migration_name>`.
+     - Each migration file should contain SQL for `up` (applying the migration) and implicitly `down` (Supabase CLI handles revert based on previous state or you can define it if needed for local dev).
+     - Store migration files in `supabase/migrations/`. Link your local project to your Supabase project (`supabase link --project-ref <your-project-ref>`) and apply migrations (`supabase db push` for development, or `supabase migration up` for production-like workflows).
+
+**X. Performance Optimization:**
+   - **Minimize Re-renders (Client Components):** Use `React.memo`, `useMemo`, and `useCallback` appropriately.
+   - **Image Optimization:** Always use the `next/image` component for images.
+   - **Code Splitting & Lazy Loading:** Leverage Next.js's automatic code splitting. Use `next/dynamic` for lazy loading client components or large libraries.
+   - **Bundle Size:** Be mindful of bundle size. Use `@next/bundle-analyzer` if needed.
+   - **Core Web Vitals:** Prioritize and monitor Core Web Vitals (LCP, INP, CLS).
+
+**XI. Error Handling and Validation (General):**
+   - **Zod:** As stated, use Zod for robust data validation at all entry points.
+   - **Error Logging:** Implement error logging using Sentry. Ensure errors are reported with sufficient context (e.g., component name, user ID if available).
+   - **Function Error Handling:** Handle errors at the beginning of functions using guard clauses (early returns). Avoid deeply nested `if` statements for error checking.
+   - **Global Error Boundaries (Client-Side):** Implement a global React error boundary (`error.tsx` in Next.js App Router) to catch and handle unexpected client-side rendering errors gracefully.
+   - **API Error Responses:** Next.js API routes should return consistent JSON error responses with appropriate HTTP status codes (e.g., using `NextResponse.json({ error: '...' }, { status: 400 })`).
+
+**XII. Testing:**
+   - **Unit & Integration Tests:** Write tests using `Vitest`. Test utility functions, custom hooks, service functions, and critical component logic.
+   - **React Testing Library:** Use `@testing-library/react` for testing React components, focusing on user interactions and observable behavior.
+   - **Mocking:** Use Vitest's mocking capabilities (`vi.mock`, `vi.fn`) for dependencies.
+   - **End-to-End (E2E) Tests:** For comprehensive testing of user flows, consider using Playwright in the future. This is not an immediate strict requirement but a best practice for mature applications.
+
+**XIII. Security:**
+   - **Supabase Row Level Security (RLS):** This is CRITICAL. Enable and configure RLS for all tables containing sensitive or user-specific data. Default to denying access and explicitly grant permissions.
+   - **API Security:** Secure Next.js API routes by validating Supabase JWTs for authenticated routes.
+   - **Environment Variables:** Manage all sensitive keys and configurations using `.env.local` (for development, not committed to Git) and environment variables provided by your hosting platform for production/preview. Access them via `process.env.VARIABLE_NAME` (server-side) or `process.env.NEXT_PUBLIC_VARIABLE_NAME` (client-side).
+   - **Input Handling:** While React and modern frameworks provide some XSS protection, always treat user input as untrusted. Sanitize where necessary if rendering HTML directly from user input (which should be rare).
+   - **Dependency Security:** Regularly update dependencies using `pnpm update` and audit for vulnerabilities (`pnpm audit`).
+
+**XIV. Internationalization (i18n):**
+   - Internationalization is not a current requirement. If it becomes necessary in the future, consider using a library like `next-i18next` or `paraglide-js` and structure translation files logically.
+
+**XV. Development Workflow & Tools:**
+   - **Package Manager:** Use `pnpm`.
+   - **Linting & Formatting:** ESLint and Prettier are configured. Ensure code passes these checks.
+   - **Storybook:** Use Storybook for developing and visually testing UI components in isolation.
+   - **`scripts/` folder:** Use this folder for project-specific automation scripts (e.g., custom build steps, data seeding). Ensure scripts are well-documented.
+   - **Version Control:** Use Git. Follow conventional commit messages if adopted by the team (e.g., "feat: add user login", "fix: resolve payment bug").
+
+**XVI. Key Directive: Learn from Existing Code**
+   - **CRITICAL:** When generating new code, modifying existing files, or implementing new features, **always refer to existing project files** (e.g., in `lib/`, `components/`, `app/`, `supabase/services/`).
+   - **Analyze and replicate established patterns, coding styles, import structures, and architectural choices to maintain consistency across the entire codebase.** This is more important than rigidly following a general rule if the existing code demonstrates a specific, working convention for this project. Ask for clarification if you find conflicting patterns.
+
+
+By adhering to these rules, you will help produce high-quality, consistent, and maintainable code. If any rule is unclear or conflicts with a specific task, please ask for clarification.

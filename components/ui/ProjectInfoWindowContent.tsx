@@ -127,17 +127,10 @@ export function ProjectInfoWindowContent({ project, onClose }: ProjectInfoWindow
       <div className={`flex flex-col gap-2 mb-4 transition-all duration-300 ${isExpanded ? 'mb-2' : 'mb-4'}`}>
         <span className="text-2xl font-bold text-gray-900 tracking-tight">{project.project_name}</span>
         {!isExpanded && (
-          <>
-            <TowerStatusTagsList towers={project.towers} />
-            <div className="flex items-center gap-2 text-lg font-medium text-gray-700">
-              <span role="img" aria-label="מיקום">📍</span>
-              <span>{project.full_address}</span>
-            </div>
-            <div className="flex items-center gap-2 text-lg font-medium text-gray-700">
-              <span>מספר מגדלים:</span>
-              <span className="font-semibold">{project.num_towers}</span>
-            </div>
-          </>
+          <div className="flex items-center gap-2 text-lg font-medium text-gray-700">
+            <span role="img" aria-label="מיקום">📍</span>
+            <span>{project.full_address}</span>
+          </div>
         )}
         {isExpanded && (
           <div className="flex items-center gap-2 text-lg font-medium text-gray-700">
