@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { GoogleMap, Marker, InfoWindow, useJsApiLoader, type LoadScriptProps } from "@react-google-maps/api";
 import Image from "next/image";
 import { ProjectInfoWindowContent } from "./ProjectInfoWindowContent";
@@ -20,7 +20,7 @@ interface TowerData {
   tower_status: ApiStatus | string;
 }
 
-interface ProjectData {
+export interface ProjectData {
   id: number | string;
   project_name: string;
   latitude: number;
@@ -33,7 +33,7 @@ interface ProjectData {
   towers: TowerData[];
 }
 
-const MAP_CENTER = { lat: 31.771959, lng: 35.217018 };
+const MAP_CENTER = { lat: 32.0749425, lng: 34.800611 };
 const MAPS_LIBRARIES: NonNullable<LoadScriptProps["libraries"]> = ["places"];
 
 function getMostAdvancedStatus(towers: TowerData[]): ApiStatus {
@@ -49,7 +49,13 @@ function getMostAdvancedStatus(towers: TowerData[]): ApiStatus {
   return API_STATUSES.UNKNOWN;
 }
 
-export function NadlanistMap() {
+interface NadlanistMapProps {
+  projects: ProjectData[];
+  isLoading: boolean;
+  error: string | null;
+}
+
+export function NadlanistMap({ projects, isLoading, error }: NadlanistMapProps) {
   const { isLoaded } = useJsApiLoader({
     id: "nadlanist-map-script",
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
@@ -58,50 +64,21 @@ export function NadlanistMap() {
     region: "IL",
   });
 
-  const [projects, setProjects] = useState<ProjectData[]>([]);
-  const [isLoadingProjects, setIsLoadingProjects] = useState(true);
-  const [hasError, setHasError] = useState<string | null>(null);
   const [selected, setSelected] = useState<ProjectData | null>(null);
   const [mapRef, setMapRef] = useState<google.maps.Map | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  useEffect(function fetchProjects() {
-    let isMounted = true;
-    async function getProjects() {
-      setIsLoadingProjects(true);
-      setHasError(null);
-      try {
-        const res = await fetch("/api/projects");
-        if (!res.ok) throw new Error("שגיאה בטעינת פרויקטים");
-        const data = await res.json();
-        if (isMounted) setProjects(data || []);
-      } catch (error: unknown) {
-        if (typeof error === "object" && error !== null && "message" in error && typeof (error as { message?: unknown }).message === "string") {
-          setHasError((error as { message: string }).message);
-        } else {
-          setHasError("שגיאה בטעינת פרויקטים");
-        }
-      } finally {
-        if (isMounted) setIsLoadingProjects(false);
-      }
-    }
-    getProjects();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  if (!isLoaded || isLoadingProjects)
+  if (!isLoaded || isLoading)
     return (
       <div className="flex items-center justify-center h-96 text-secondary">
         { !isLoaded ? "טוען מפה..." : "טוען פרויקטים..." }
       </div>
     );
 
-  if (hasError)
+  if (error)
     return (
       <div className="flex items-center justify-center h-96 text-red-600 font-bold">
-        {hasError}
+        {error}
       </div>
     );
 
@@ -113,9 +90,7 @@ export function NadlanistMap() {
   return (
     <div
       className={[
-        // Base styles not dependent on fullscreen
         "flex flex-col w-full rounded-2xl overflow-hidden bg-light shadow-lg transition-all duration-300",
-        // Position and size styles depending on isFullscreen
         isFullscreen
           ? "fixed inset-0 w-screen h-screen z-[9999] rounded-none !m-0 !p-0"
           : "relative h-[70vh]",
@@ -123,7 +98,7 @@ export function NadlanistMap() {
         .filter(Boolean)
         .join(" ")}
     >
-      {/* Fullscreen Toggle Button - always inside the visible map area */}
+      {/* Fullscreen Toggle Button */}
       <div className="pointer-events-none absolute top-4 right-4 z-50">
         <button
           type="button"

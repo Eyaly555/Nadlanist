@@ -8,7 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { NadlanistMap } from "@/components/ui/NadlanistMap";
+import { NadlanistMap, ProjectData } from "@/components/ui/NadlanistMap";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { API_STATUS_TO_HEBREW_MAP, type ApiStatus } from "@/components/ui/status.constants";
 import { ContactButton } from "@/components/shared/contact-button";
@@ -48,14 +48,6 @@ interface ApiTower {
   floors: number;
   height_m: number;
   tower_status: string;
-}
-
-interface ApiProject {
-  id: number | string;
-  project_name: string;
-  city: string;
-  full_address: string;
-  towers: ApiTower[];
 }
 
 interface TowerListDialogProps {
@@ -175,6 +167,8 @@ export default function DashboardClientComponent() {
 
   const [openTowerDialog, setOpenTowerDialog] = useState<null | number>(null); // 150, 250, 350 or null
 
+  const [projectsWithTowers, setProjectsWithTowers] = useState<ProjectData[]>([]);
+
   // Fetch KPI data
   useEffect(() => {
     let isMounted = true;
@@ -219,17 +213,29 @@ export default function DashboardClientComponent() {
         ]);
         if (!projectsRes.ok) throw new Error('שגיאה בטעינת פרויקטים');
         if (!towersRes.ok) throw new Error('שגיאה בטעינת מגדלים');
-        const projectsData: ApiProject[] = await projectsRes.json();
+        const projectsData: Partial<ProjectData>[] = await projectsRes.json();
         const towersData: ApiTower[] = await towersRes.json();
         if (isMounted) {
-          // מיפוי מגדלים לפרויקטים
+          // מיפוי מגדלים לפרויקטים עם כל השדות הנדרשים
+          const projectsWithTowers: ProjectData[] = projectsData.map(project => ({
+            id: project.id ?? '',
+            project_name: project.project_name ?? '',
+            latitude: Number(project.latitude) || 0,
+            longitude: Number(project.longitude) || 0,
+            num_towers: towersData.filter(t => t.project_id === project.id).length,
+            towers: towersData.filter(t => t.project_id === project.id),
+            project_description: project.project_description || '',
+            full_address: project.full_address || '',
+            city: project.city || '',
+            overall_project_status: project.overall_project_status || '',
+          }));
+          setProjectsWithTowers(projectsWithTowers);
           const towersByProjectId = towersData.reduce((acc, tower) => {
             (acc[String(tower.project_id)] = acc[String(tower.project_id)] || []).push(tower);
             return acc;
           }, {} as Record<string, ApiTower[]>);
-          // טבלת מגדלים עם מידע מהפרויקט
           const table: TowerData[] = towersData.map(tower => {
-            const project = projectsData.find(p => p.id === tower.project_id);
+            const project = projectsData.find((p) => p.id === tower.project_id);
             return {
               ...tower,
               project_name: project?.project_name || '',
@@ -246,6 +252,7 @@ export default function DashboardClientComponent() {
         if (isMounted) {
           setTableError('אירעה שגיאה בטעינת נתוני הטבלה.');
           setTableData([]);
+          setProjectsWithTowers([]);
         }
       } finally {
         if (isMounted) setIsLoadingTable(false);
@@ -350,7 +357,11 @@ export default function DashboardClientComponent() {
                 </CardHeader>
                 <CardContent className="p-0">
                   <div className="h-[400px] w-full rounded-b-3xl overflow-hidden bg-muted">
-                    <NadlanistMap />
+                    <NadlanistMap
+                      projects={projectsWithTowers}
+                      isLoading={isLoadingTable}
+                      error={tableError}
+                    />
                   </div>
                 </CardContent>
               </Card>
