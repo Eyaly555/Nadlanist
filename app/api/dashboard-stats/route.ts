@@ -1,6 +1,7 @@
 // app/api/dashboard-stats/route.ts
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient'; // ודא שהנתיב ל-client נכון
+import { getAllProjects } from '@/lib/supabase/services/projectService';
+import { getAllTowers } from '@/lib/supabase/services/towerService';
 import { API_STATUSES } from '@/components/ui/status.constants';
 
 // ממשק לנתוני מגדל כפי שהם יתקבלו מקוננים בתוך הפרויקט
@@ -28,15 +29,8 @@ interface TowerWithComputedName extends TowerRow {
 
 export async function GET() {
   try {
-    // 1. שליפת כל הפרויקטים
-    const { data: projects, error: projectsError } = await supabase
-      .from('projects')
-      .select('id, project_name');
-
-    if (projectsError) {
-      console.error('Supabase error fetching projects:', projectsError);
-      throw projectsError;
-    }
+    const projects = await getAllProjects();
+    const towers = await getAllTowers();
     if (!projects || projects.length === 0) {
       return NextResponse.json({
         totalTowers: 0,
@@ -46,20 +40,7 @@ export async function GET() {
         towersCompleted: 0,
       });
     }
-
-    // 2. שליפת כל הטאורים
-    const projectIds = projects.map((p: { id: number | string }) => p.id);
-    const { data: towers, error: towersError } = await supabase
-      .from('towers')
-      .select('id, project_id, tower_id, floors, height_m, tower_status')
-      .in('project_id', projectIds);
-
-    if (towersError) {
-      console.error('Supabase error fetching towers:', towersError);
-      throw towersError;
-    }
-
-    // 3. שיוך טאורים לפרויקטים
+    // שיוך טאורים לפרויקטים
     const towersByProject: Record<string | number, TowerRow[]> = {};
     (towers || []).forEach((tower: TowerRow) => {
       if (!towersByProject[tower.project_id]) towersByProject[tower.project_id] = [];
@@ -133,6 +114,6 @@ export async function GET() {
         { status: 500 }
       );
     }
-    return NextResponse.json({ message: (error instanceof Error ? error.message : 'An unexpected server error occurred') }, { status: 500 });
+    return NextResponse.json({ error: (error as Error).message }, { status: 500 });
   }
 }

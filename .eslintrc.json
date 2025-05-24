@@ -3,5 +3,24 @@
     "next/core-web-vitals",
     "next/typescript",
     "plugin:storybook/recommended"
-  ]
+  ],
+  "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "@/lib/supabase/serverClient",
+            "message": "מותר לייבא רק בקוד שרת/API, לא בקוד לקוח."
+          }
+        ],
+        "patterns": [
+          {
+            "group": ["@/lib/supabase/serverClient"],
+            "message": "אין לייבא serverClient.ts בצד לקוח."
+          }
+        ]
+      }
+    ]
+  }
 }

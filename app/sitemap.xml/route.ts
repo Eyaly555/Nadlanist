@@ -1,6 +1,7 @@
 import { getAllPostSlugs } from "@/lib/blog";
 import { NextResponse } from "next/server";
 import { ApiProject } from "../projects/api-project.types";
+import { getAllProjects } from '@/lib/supabase/services/projectService';
 
 export async function GET() {
   const baseUrl = "https://nadlanist.ai";
@@ -26,8 +27,10 @@ export async function GET() {
   // =============================================================================
   // הוספת הפרויקטים ל-sitemap (100 הראשונים)
   // =============================================================================
-  const projectsRes = await fetch(`${baseUrl}/api/projects`);
-  const projects: ApiProject[] = await projectsRes.json();
+  let projects: ApiProject[] = [];
+  try {
+    projects = await getAllProjects();
+  } catch {}
   const projectPaths = projects.slice(0, 100).map((p) => `/projects/${p.id}`);
   // =============================================================================
 

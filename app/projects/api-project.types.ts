@@ -4,9 +4,17 @@ export interface ApiProject {
   city: string;
   latitude: number;
   longitude: number;
-  towers: Array<{
-    floors: number;
-    height_m: number;
-    tower_status: string;
-  }>;
+  project_status: string;
+  num_towers: number;
+  full_address: string;
+  project_description: string;
+}
+
+export interface ApiTower {
+  id: number | string;
+  project_id: number | string;
+  tower_id?: string;
+  floors: number;
+  height_m: number;
+  tower_status: string;
 } 

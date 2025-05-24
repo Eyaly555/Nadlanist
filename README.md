@@ -166,3 +166,12 @@ export default function Page() {
 
 - ודא שהקבצים `public/mark-teal.svg` ו-`public/logo-teal.svg` קיימים.
 - הרכיב תומך RTL, עיצוב תואם מותג, ונתוני דמו.
+
+## גישה ל-Supabase ואבטחת קוד שרת
+
+- כל גישה ל-Supabase מתבצעת אך ורק דרך Service Layer (lib/supabase/services/).
+- אין לייבא '@/lib/supabase/serverClient' בקוד לקוח (components, hooks, app/pages וכו').
+- כלל ESLint אוכף זאת אוטומטית (ראה .eslintrc.json).
+- יש להפעיל Row Level Security (RLS) על כל הטבלאות ב-Supabase.
+- API רגישים מחויבים בבדיקת session/token.
+- מומלץ להוסיף בדיקות אוטומטיות (unit/integration) לכל Service ול-API.

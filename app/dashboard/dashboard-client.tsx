@@ -36,6 +36,9 @@ interface TowerData {
   project_name: string;
   city: string;
   full_address: string;
+  project_status: string;
+  num_towers: number;
+  project_description: string;
 }
 
 interface ApiTower {
@@ -206,43 +209,49 @@ export default function DashboardClientComponent() {
   // Fetch table data (towers)
   useEffect(() => {
     let isMounted = true;
-    async function fetchTableData() {
+    async function fetchProjectsAndTowers() {
       setIsLoadingTable(true);
       setTableError(null);
       try {
-        const res = await fetch("/api/projects");
-        if (!res.ok) {
-          const errorData = await res.json().catch(() => null);
-          throw new Error(errorData?.error || `שגיאה בטעינת נתוני טבלה: ${res.status}`);
-        }
-        const projects: ApiProject[] = await res.json();
-        // Flatten towers with project info
-        const towers: TowerData[] = [];
-        projects.forEach((project) => {
-          (project.towers || []).forEach((tower) => {
-            towers.push({
-              ...tower,
-              project_name: project.project_name,
-              city: project.city,
-              full_address: project.full_address,
-            });
-          });
-        });
-        if (isMounted) setTableData(towers);
-      } catch (error: unknown) {
+        const [projectsRes, towersRes] = await Promise.all([
+          fetch('/api/projects'),
+          fetch('/api/towers'),
+        ]);
+        if (!projectsRes.ok) throw new Error('שגיאה בטעינת פרויקטים');
+        if (!towersRes.ok) throw new Error('שגיאה בטעינת מגדלים');
+        const projectsData: ApiProject[] = await projectsRes.json();
+        const towersData: ApiTower[] = await towersRes.json();
         if (isMounted) {
-          if (typeof error === "object" && error !== null && "message" in error && typeof (error as { message?: unknown }).message === "string") {
-            setTableError((error as { message: string }).message);
-          } else {
-            setTableError("אירעה שגיאה לא צפויה בטעינת נתוני הטבלה.");
-          }
+          // מיפוי מגדלים לפרויקטים
+          const towersByProjectId = towersData.reduce((acc, tower) => {
+            (acc[String(tower.project_id)] = acc[String(tower.project_id)] || []).push(tower);
+            return acc;
+          }, {} as Record<string, ApiTower[]>);
+          // טבלת מגדלים עם מידע מהפרויקט
+          const table: TowerData[] = towersData.map(tower => {
+            const project = projectsData.find(p => p.id === tower.project_id);
+            return {
+              ...tower,
+              project_name: project?.project_name || '',
+              city: project?.city || '',
+              full_address: project?.full_address || '',
+              project_status: (project as { project_status?: string })?.project_status || '',
+              num_towers: towersByProjectId[String(tower.project_id)]?.length || 0,
+              project_description: (project as { project_description?: string })?.project_description || '',
+            };
+          });
+          setTableData(table);
+        }
+      } catch {
+        if (isMounted) {
+          setTableError('אירעה שגיאה בטעינת נתוני הטבלה.');
           setTableData([]);
         }
       } finally {
         if (isMounted) setIsLoadingTable(false);
       }
     }
-    fetchTableData();
+    fetchProjectsAndTowers();
     return () => { isMounted = false; };
   }, []);
 
@@ -600,6 +609,9 @@ export default function DashboardClientComponent() {
                   <TableRow>
                     <TableHead className="text-right" style={{ color: "#222D3A" }}>פרויקט</TableHead>
                     <TableHead className="hidden sm:table-cell text-right" style={{ color: "#222D3A" }}>עיר</TableHead>
+                    <TableHead className="hidden md:table-cell text-right" style={{ color: "#222D3A" }}>סטטוס פרויקט</TableHead>
+                    <TableHead className="hidden md:table-cell text-right" style={{ color: "#222D3A" }}>מס׳ מגדלים</TableHead>
+                    <TableHead className="hidden md:table-cell text-right" style={{ color: "#222D3A" }}>כתובת מלאה</TableHead>
                     <TableHead
                       className="text-right cursor-pointer hover:bg-muted/50"
                       onClick={() => handleSort('height')}
@@ -635,12 +647,12 @@ export default function DashboardClientComponent() {
                   {isLoadingTable ? (
                     Array.from({ length: 5 }).map((_, idx) => (
                       <TableRow key={idx}>
-                        <TableCell colSpan={5} className="text-right"><Skeleton className="h-6 w-full" /></TableCell>
+                        <TableCell colSpan={10} className="text-right"><Skeleton className="h-6 w-full" /></TableCell>
                       </TableRow>
                     ))
                   ) : tableError ? (
                     <TableRow>
-                      <TableCell colSpan={5} className="h-24 text-right text-red-600 font-bold">
+                      <TableCell colSpan={10} className="h-24 text-right text-red-600 font-bold">
                         {tableError}
                       </TableCell>
                     </TableRow>
@@ -660,6 +672,9 @@ export default function DashboardClientComponent() {
                           </TooltipProvider>
                         </TableCell>
                         <TableCell className="hidden sm:table-cell text-right">{tower.city}</TableCell>
+                        <TableCell className="hidden md:table-cell text-right">{tower.project_status}</TableCell>
+                        <TableCell className="hidden md:table-cell text-right">{tower.num_towers}</TableCell>
+                        <TableCell className="hidden md:table-cell text-right">{tower.full_address}</TableCell>
                         <TableCell className="text-right">{tower.height_m?.toFixed(1)}</TableCell>
                         <TableCell className="hidden md:table-cell text-right">{tower.floors}</TableCell>
                         <TableCell className="hidden sm:table-cell text-right">{translateStatus(tower.tower_status)}</TableCell>
@@ -667,7 +682,7 @@ export default function DashboardClientComponent() {
                     ))
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={5} className="h-24 text-right">
+                      <TableCell colSpan={10} className="h-24 text-right">
                         {tableData.length > 0 ? "לא נמצאו מגדלים התואמים את הסינון הנוכחי." : "לא נטענו נתונים להצגה."}
                       </TableCell>
                     </TableRow>
