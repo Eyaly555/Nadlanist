@@ -113,6 +113,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
+      {/* Hotjar */}
       <Script id="hotjar-tracking" strategy="afterInteractive">
         {`
           (function(h,o,t,j,a,r){
@@ -125,6 +126,23 @@ export default function RootLayout({
           })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
         `}
       </Script>
+      {/* Google Analytics */}
+      <Script
+        strategy="afterInteractive"
+        src="https://www.googletagmanager.com/gtag/js?id=G-YRF852BZP5"
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-YRF852BZP5');
+          `,
+        }}
+      />
       <body dir="rtl" suppressHydrationWarning className={`${poppins.variable} ${inter.variable} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
