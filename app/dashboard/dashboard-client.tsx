@@ -17,6 +17,7 @@ import Script from 'next/script';
 import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { StatusTag } from "@/components/ui/ProjectInfoWindowContent";
 import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { HeightVsFloorsScatter, FunFactsInfographic, CityComparisonRadar } from "@/components/ui/DashboardNewCharts";
 
 interface KpiData {
   totalTowers: number | null;
@@ -480,73 +481,14 @@ export default function DashboardClientComponent() {
           </div>
         </section>
 
-        {/* KPI Row below map */}
+        {/* Dashboard Charts Row - New */}
         <section className="w-full max-w-screen-2xl mx-auto px-4 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* המגדל הגבוה ביותר */}
-            <Card className="bg-white/90 border-0 shadow rounded-2xl">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-primary">המגדל הגבוה ביותר</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {isLoadingKpis ? (
-                  <Skeleton className="h-8 w-1/2" />
-                ) : kpiData?.tallestTower ? (
-                  <>
-                    <div className="text-lg font-bold mb-2 truncate" title={kpiData.tallestTower.name}>{kpiData.tallestTower.name}</div>
-                    <div className="flex flex-row items-center justify-between gap-4">
-                      <div className="flex-1 text-right">
-                        <span className="text-base font-semibold">{kpiData.tallestTower.height} מ&apos;</span>
-                      </div>
-                      <div className="flex-1 text-left">
-                        <span className="text-base font-semibold">{kpiData.tallestTower.floors} קומות</span>
-                      </div>
-                    </div>
-                  </>
-                ) : kpiError ? (
-                  <p className="text-xs text-red-500">שגיאה</p>
-                ) : (
-                  <div className="text-2xl font-bold">-</div>
-                )}
-              </CardContent>
-            </Card>
-            {/* מגדלים בבנייה */}
-            <Card className="bg-white/90 border-0 shadow rounded-2xl">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-primary">מגדלים בבנייה</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {isLoadingKpis ? (
-                  <Skeleton className="h-8 w-1/2" />
-                ) : kpiData?.towersUnderConstruction !== null && kpiData?.towersUnderConstruction !== undefined ? (
-                  <div className="text-2xl font-bold">{kpiData.towersUnderConstruction}</div>
-                ) : kpiError ? (
-                  <p className="text-xs text-red-500">שגיאה</p>
-                ) : (
-                  <div className="text-2xl font-bold">-</div>
-                )}
-              </CardContent>
-            </Card>
-            {/* מגדלים שהושלמו */}
-            <Card className="bg-white/90 border-0 shadow rounded-2xl">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-primary">מגדלים שהושלמו</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {isLoadingKpis ? (
-                  <Skeleton className="h-8 w-1/2" />
-                ) : kpiData?.towersCompleted !== null && kpiData?.towersCompleted !== undefined ? (
-                  <div className="text-2xl font-bold">{kpiData.towersCompleted}</div>
-                ) : kpiError ? (
-                  <p className="text-xs text-red-500">שגיאה</p>
-                ) : (
-                  <div className="text-2xl font-bold">-</div>
-                )}
-              </CardContent>
-            </Card>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <FunFactsInfographic data={filteredTableData} />
+            <CityComparisonRadar />
           </div>
         </section>
-
+ 
         {/* Filters + Table */}
         <div className="lg:col-span-5 flex flex-col lg:flex-row gap-8">
           {/* Filters */}
@@ -725,6 +667,13 @@ export default function DashboardClientComponent() {
           </div>
         </div>
       </div>
+
+        <section className="w-full max-w-screen-2xl mx-auto px-4 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <HeightVsFloorsScatter data={filteredTableData} />
+          </div>
+        </section>
+       
       {/* --- Dashboard Insights & Charts --- */}
       <section className="w-full max-w-screen-2xl mx-auto px-4 mt-8 mb-16">
         {/* Averages Row */}
