@@ -1,6 +1,6 @@
 export interface ApiProject {
   id: number;
-  project_name: string;
+  Project_name_il: string;
   city: string;
   latitude: number;
   longitude: number;

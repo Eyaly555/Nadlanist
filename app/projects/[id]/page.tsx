@@ -27,13 +27,13 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
     const towers: ApiTower[] = await getAllTowers();
     const projectTowers = towers.filter(t => t.project_id.toString() === id);
     return {
-      title: `${project.project_name} – ${project.city}`,
-      description: `פרויקט ${project.project_name} בעיר ${project.city}. סטטוס: ${projectTowers[0]?.tower_status || 'לא ידוע'}.`,
+      title: `${project.Project_name_il} – ${project.city}`,
+      description: `פרויקט ${project.Project_name_il} בעיר ${project.city}. סטטוס: ${projectTowers[0]?.tower_status || 'לא ידוע'}.`,
       alternates: {
         canonical: `https://www.nadlanist.ai/projects/${id}`
       },
       openGraph: {
-        title: project.project_name,
+        title: project.Project_name_il,
         description: `פרויקט ב${project.city}, סטטוס: ${projectTowers[0]?.tower_status}`,
         url: `https://www.nadlanist.ai/projects/${id}`,
         siteName: 'Nadlanist AI',
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
         type: 'website',
         images: [{
           url: 'https://www.nadlanist.ai/og-default-project.png',
-          width: 1200, height: 630, alt: project.project_name
+          width: 1200, height: 630, alt: project.Project_name_il
         }]
       }
     };
@@ -66,7 +66,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "RealEstateListing",
-            "name": project.project_name,
+            "name": project.Project_name_il,
             "url": `https://www.nadlanist.ai/projects/${project.id}`,
             "address": {
               "@type": "PostalAddress",
@@ -94,7 +94,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           })
         }} />
         <div className="max-w-2xl mx-auto p-6 bg-white rounded shadow mt-8" dir="rtl">
-          <h1 className="text-3xl font-bold mb-2">{project.project_name}</h1>
+          <h1 className="text-3xl font-bold mb-2">{project.Project_name_il}</h1>
           <p className="mb-1">עיר: {project.city}</p>
           <p className="mb-1">מגדלים בבנייה: {projectTowers.filter(t => t.tower_status === 'בנייה').length}</p>
           {/* ניתן להוסיף כאן מידע נוסף לפי הצורך */}

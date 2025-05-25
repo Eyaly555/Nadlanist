@@ -8,23 +8,53 @@ import {
 
 interface TowerData {
   id: number | string;
-  tower_identifier?: string;
+  created_at?: string;
+  updated_at?: string;
+  project_id?: number | string;
   floors: number;
   height_m: number;
-  tower_status: ApiStatus | string;
+  tower_specific_count_field?: number;
+  tower_status: string;
+  tower_identifier?: string;
+  project_name?: string;
+  project_name_il?: string;
+  effective_city?: string;
+  original_city?: string;
+  project_status?: string;
+  full_address?: string;
+  project_description?: string;
+  num_towers?: number;
 }
 
 interface ProjectData {
   id: number | string;
+  created_at?: string;
+  updated_at?: string;
   project_name: string;
+  project_name_il: string;
   latitude: number;
   longitude: number;
   project_description?: string;
-  city: string;
+  effective_city: string;
+  original_city?: string;
   num_towers: number;
-  full_address: string;
+  full_address?: string;
+  project_status?: string;
   overall_project_status?: string;
+  project_identifier: string;
+  source_url?: string;
   towers: TowerData[];
+}
+
+export interface MapProjectData extends ProjectData {
+  towers: Array<{
+    id: number | string;
+    project_id: number | string;
+    floors: number;
+    height_m: number;
+    tower_status: string;
+    tower_identifier?: string;
+  }>;
 }
 
 export interface ProjectInfoWindowContentProps {
@@ -125,7 +155,7 @@ export function ProjectInfoWindowContent({ project, onClose }: ProjectInfoWindow
   function renderHeader() {
     return (
       <div className={`flex flex-col gap-2 mb-4 transition-all duration-300 ${isExpanded ? 'mb-2' : 'mb-4'}`}>
-        <span className="text-2xl font-bold text-gray-900 tracking-tight">{project.project_name}</span>
+        <span className="text-2xl font-bold text-gray-900 tracking-tight">{project.project_name_il}</span>
         {!isExpanded && (
           <div className="flex items-center gap-2 text-lg font-medium text-gray-700">
             <span role="img" aria-label="מיקום">📍</span>
@@ -199,7 +229,7 @@ export function ProjectInfoWindowContent({ project, onClose }: ProjectInfoWindow
       dir="rtl"
       className="font-sans bg-gray-50 rounded-2xl shadow-xl border border-gray-200 max-w-xs p-6 relative flex flex-col transition-all duration-300 ease-in-out"
       style={{ minWidth: 300, maxHeight: 480 }}
-      aria-label={project.project_name}
+      aria-label={project.project_name_il}
     >
       {onClose && (
         <button

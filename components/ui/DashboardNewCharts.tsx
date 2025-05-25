@@ -31,8 +31,8 @@ import {
 } from "@/components/ui/card";
 
 interface TowerData {
-  project_name: string;
-  city: string;
+  project_name_il: string;
+  effective_city: string;
   height_m: number;
   floors: number;
   tower_status: string;
@@ -247,9 +247,9 @@ export function HeightVsFloorsScatter({ data }: ChartProps) {
       x: tower.floors,
       y: tower.height_m,
       z: 50,
-      name: tower.project_name,
-      city: tower.city,
-      color: CITY_COLORS[tower.city] || CITY_COLORS["אחר"],
+      name: tower.project_name_il,
+      city: tower.effective_city,
+      color: CITY_COLORS[tower.effective_city] || CITY_COLORS["אחר"],
     }));
   }, [data]);
 
@@ -575,7 +575,7 @@ export function FunFactsInfographic({ data }: ChartProps) {
       {
         icon: "🏆",
         title: "השיאן",
-        value: tallest?.project_name || "לא ידוע",
+        value: tallest?.project_name_il || "לא ידוע",
         description: `${tallest?.height_m || 0} מטר גובה, ${tallest?.floors || 0} קומות`,        color: "bg-gradient-to-br from-yellow-400 to-orange-600",
       },
       {

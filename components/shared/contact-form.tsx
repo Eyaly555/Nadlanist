@@ -111,6 +111,7 @@ export function ContactForm({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    console.log("ContactForm: handleSubmit called", formData);
     setIsSubmitting(true);
     setError(null);
     setPhoneError(null);

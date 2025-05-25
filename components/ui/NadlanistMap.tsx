@@ -14,23 +14,53 @@ import { Expand, Minimize } from "lucide-react";
 
 interface TowerData {
   id: number | string;
-  tower_identifier?: string;
+  created_at?: string;
+  updated_at?: string;
+  project_id?: number | string;
   floors: number;
   height_m: number;
-  tower_status: ApiStatus | string;
+  tower_specific_count_field?: number;
+  tower_status: string;
+  tower_identifier?: string;
+  project_name?: string;
+  project_name_il?: string;
+  effective_city?: string;
+  original_city?: string;
+  project_status?: string;
+  full_address?: string;
+  project_description?: string;
+  num_towers?: number;
 }
 
 export interface ProjectData {
   id: number | string;
+  created_at?: string;
+  updated_at?: string;
   project_name: string;
+  project_name_il: string;
   latitude: number;
   longitude: number;
   project_description?: string;
-  city: string;
+  effective_city: string;
+  original_city?: string;
   num_towers: number;
-  full_address: string;
+  full_address?: string;
+  project_status?: string;
   overall_project_status?: string;
+  project_identifier: string;
+  source_url?: string;
   towers: TowerData[];
+}
+
+export interface MapProjectData extends ProjectData {
+  towers: Array<{
+    id: number | string;
+    project_id: number | string;
+    floors: number;
+    height_m: number;
+    tower_status: string;
+    tower_identifier?: string;
+  }>;
 }
 
 const MAP_CENTER = { lat: 32.0749425, lng: 34.800611 };
@@ -151,7 +181,7 @@ export function NadlanistMap({ projects, isLoading, error }: NadlanistMapProps) 
                 url: API_STATUS_MARKER_MAP[overallApiStatus] || API_STATUS_MARKER_MAP[API_STATUSES.UNKNOWN],
                 scaledSize: new window.google.maps.Size(60, 60),
               }}
-              title={project.project_name}
+              title={project.project_name_il}
             />
           );
         })}

@@ -3,7 +3,7 @@ import { ChartContainer } from "./chart";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
 
 interface TowerData {
-  project_name: string;
+  Project_name_il: string;
   height_m: number;
   floors: number;
 }
@@ -29,11 +29,11 @@ export function ChartTop10({ data, mode }: ChartTop10Props) {
   const top10 = React.useMemo(() => {
     const valueKey = mode === "height" ? "height_m" : "floors";
     const sorted = [...data]
-      .filter(t => t.project_name && t[valueKey] !== undefined && t[valueKey] !== null)
+      .filter(t => t.Project_name_il && t[valueKey] !== undefined && t[valueKey] !== null)
       .sort((a, b) => b[valueKey] - a[valueKey])
       .slice(0, 10);
     return sorted.map((t, idx) => ({
-      name: t.project_name,
+      name: t.Project_name_il,
       value: t[valueKey],
       idx,
     }));

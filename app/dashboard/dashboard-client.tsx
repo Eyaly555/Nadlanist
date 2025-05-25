@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,7 @@ import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { NadlanistMap, ProjectData } from "@/components/ui/NadlanistMap";
+import { NadlanistMap } from "@/components/ui/NadlanistMap";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { API_STATUS_TO_HEBREW_MAP, type ApiStatus } from "@/components/ui/status.constants";
 import { ContactButton } from "@/components/shared/contact-button";
@@ -29,26 +29,42 @@ interface KpiData {
 
 interface TowerData {
   id: number | string;
+  created_at?: string;
+  updated_at?: string;
   project_id: number | string;
-  tower_id?: string;
   floors: number;
   height_m: number;
+  tower_specific_count_field?: number;
   tower_status: string;
-  project_name: string;
-  city: string;
-  full_address: string;
-  project_status: string;
-  num_towers: number;
-  project_description: string;
+  tower_identifier?: string;
+  project_name?: string;
+  project_name_il: string;
+  effective_city: string;
+  original_city?: string;
+  project_status?: string;
+  full_address?: string;
+  project_description?: string;
+  num_towers?: number;
 }
 
-interface ApiTower {
+interface ProjectData {
   id: number | string;
-  project_id: number | string;
-  tower_id?: string;
-  floors: number;
-  height_m: number;
-  tower_status: string;
+  created_at?: string;
+  updated_at?: string;
+  project_name: string;
+  project_name_il: string;
+  latitude: number;
+  longitude: number;
+  project_description?: string;
+  effective_city: string;
+  original_city?: string;
+  num_towers: number;
+  full_address?: string;
+  project_status?: string;
+  overall_project_status?: string;
+  project_identifier: string;
+  source_url?: string;
+  towers: TowerData[];
 }
 
 interface TowerListDialogProps {
@@ -56,6 +72,51 @@ interface TowerListDialogProps {
   onOpenChange: (open: boolean) => void;
   towers: TowerData[];
   title: string;
+  isLoading: boolean;
+  error: string | null;
+  page: number;
+  pageSize: number;
+  onPageChange: (newPage: number) => void;
+}
+
+// Define API types for incoming data
+interface ApiProject {
+  id: number | string;
+  created_at?: string;
+  updated_at?: string;
+  project_name: string;
+  project_name_il: string;
+  latitude: number;
+  longitude: number;
+  project_description?: string;
+  effective_city: string;
+  original_city?: string;
+  num_towers: number;
+  full_address?: string;
+  project_status?: string;
+  overall_project_status?: string;
+  project_identifier: string;
+  source_url?: string;
+}
+
+interface ApiTower {
+  id: number | string;
+  created_at?: string;
+  updated_at?: string;
+  project_id: number | string;
+  floors: number;
+  height_m: number;
+  tower_specific_count_field?: number;
+  tower_status: string;
+  tower_identifier?: string;
+  project_name?: string;
+  project_name_il: string;
+  effective_city: string;
+  original_city?: string;
+  project_status?: string;
+  full_address?: string;
+  project_description?: string;
+  num_towers?: number;
 }
 
 function getShortName(name: string, maxWords = 5): string {
@@ -64,14 +125,19 @@ function getShortName(name: string, maxWords = 5): string {
   return words.slice(0, maxWords).join(' ') + '...';
 }
 
-function TowerListDialog({ open, onOpenChange, towers, title }: TowerListDialogProps) {
-  const [page, setPage] = useState(1);
-  const itemsPerPage = 8;
+function TowerListDialog({ open, onOpenChange, towers, title, isLoading, error, page, pageSize, onPageChange }: TowerListDialogProps) {
+  const [currentPage, setCurrentPage] = useState(page);
+  const itemsPerPage = pageSize;
   const sortedTowers = useMemo(() => [...towers].sort((a, b) => b.height_m - a.height_m), [towers]);
   const totalPages = Math.ceil(sortedTowers.length / itemsPerPage);
-  const pagedTowers = sortedTowers.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const pagedTowers = sortedTowers.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-  useEffect(() => { setPage(1); }, [towers, open]);
+  useEffect(() => { setCurrentPage(page); }, [towers, open]);
+
+  function handlePageChange(newPage: number) {
+    setCurrentPage(newPage);
+    onPageChange(newPage);
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -86,7 +152,11 @@ function TowerListDialog({ open, onOpenChange, towers, title }: TowerListDialogP
             >×</button>
           </div>
           <div className="overflow-y-auto px-4 py-2 max-h-[60vh] min-h-[120px]">
-            {pagedTowers.length === 0 ? (
+            {isLoading ? (
+              <div className="text-center text-gray-500 py-8">טעינת נתונים...</div>
+            ) : error ? (
+              <div className="text-center text-red-500 py-8">{error}</div>
+            ) : pagedTowers.length === 0 ? (
               <div className="text-center text-gray-500 py-8">לא נמצאו מגדלים מתאימים.</div>
             ) : (
               <ul className="flex flex-col gap-3">
@@ -96,10 +166,10 @@ function TowerListDialog({ open, onOpenChange, towers, title }: TowerListDialogP
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <div className="font-semibold text-base text-gray-900 break-words max-w-xs cursor-pointer text-right">{getShortName(tower.project_name)}</div>
+                            <div className="font-semibold text-base text-gray-900 break-words max-w-xs cursor-pointer text-right">{getShortName(tower.project_name_il)}</div>
                           </TooltipTrigger>
                           <TooltipContent side="top" align="center">
-                            <span className="text-sm font-medium text-gray-900">{tower.project_name}</span>
+                            <span className="text-sm font-medium text-gray-900">{tower.project_name_il}</span>
                           </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
@@ -120,17 +190,17 @@ function TowerListDialog({ open, onOpenChange, towers, title }: TowerListDialogP
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                disabled={page === 1}
+                onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
+                disabled={currentPage === 1}
               >
                 הקודם
               </Button>
-              <span className="text-sm">עמוד {page} מתוך {totalPages}</span>
+              <span className="text-sm">עמוד {currentPage} מתוך {totalPages}</span>
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-                disabled={page === totalPages}
+                onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
+                disabled={currentPage === totalPages}
               >
                 הבא
               </Button>
@@ -154,8 +224,8 @@ export default function DashboardClientComponent() {
 
   // Filters state
   const [searchText, setSearchText] = useState<string>("");
-  const [selectedCity, setSelectedCity] = useState<string>("");
-  const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [selectedCity, setSelectedCity] = useState<string>("all");
+  const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [heightRange, setHeightRange] = useState<[number]>([0]);
 
   const [uniqueCities, setUniqueCities] = useState<string[]>([]);
@@ -163,12 +233,70 @@ export default function DashboardClientComponent() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(8);
+  const [totalTowers, setTotalTowers] = useState(0);
+
+  // --- State for all map projects ---
+  const [allMapProjects, setAllMapProjects] = useState<ProjectData[]>([]);
+  const [isLoadingMapProjects, setIsLoadingMapProjects] = useState(true);
+  const [mapProjectsError, setMapProjectsError] = useState<string | null>(null);
+
+  // --- State for towers above height dialog ---
+  interface TowersAboveHeightState {
+    towers: TowerData[];
+    count: number;
+    page: number;
+    pageSize: number;
+    isLoading: boolean;
+    error: string | null;
+  }
+  const [towersAboveHeight, setTowersAboveHeight] = useState<TowersAboveHeightState>({
+    towers: [],
+    count: 0,
+    page: 1,
+    pageSize: 10,
+    isLoading: false,
+    error: null,
+  });
+  const [currentDialogHeight, setCurrentDialogHeight] = useState<number | null>(null);
+
   const [sortBy, setSortBy] = useState<'height' | 'floors'>('height');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
-  const [openTowerDialog, setOpenTowerDialog] = useState<null | number>(null); // 150, 250, 350 or null
+  const fetchTowersAboveHeight = useCallback(async (minHeight: number, page = 1, pageSize = 10) => {
+    setTowersAboveHeight(prev => ({ ...prev, isLoading: true, error: null }));
+    try {
+      const res = await fetch(`/api/towers-above-height?minHeight=${minHeight}&page=${page}&pageSize=${pageSize}`);
+      if (!res.ok) throw new Error("שגיאה בטעינת מגדלים לדיאלוג");
+      const data = await res.json();
+      setTowersAboveHeight({
+        towers: data.data,
+        count: data.count,
+        page: data.page,
+        pageSize: data.pageSize,
+        isLoading: false,
+        error: null,
+      });
+    } catch (error: unknown) {
+      setTowersAboveHeight(prev => ({
+        ...prev,
+        isLoading: false,
+        error: error instanceof Error ? error.message : "שגיאה לא צפויה בטעינת מגדלים לדיאלוג",
+      }));
+    }
+  }, []);
 
-  const [projectsWithTowers, setProjectsWithTowers] = useState<ProjectData[]>([]);
+  useEffect(() => {
+    if (currentDialogHeight !== null) {
+      fetchTowersAboveHeight(currentDialogHeight, 1, towersAboveHeight.pageSize);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentDialogHeight]);
+
+  function handleDialogPageChange(newPage: number) {
+    if (currentDialogHeight !== null) {
+      fetchTowersAboveHeight(currentDialogHeight, newPage, towersAboveHeight.pageSize);
+    }
+  }
 
   // Fetch KPI data
   useEffect(() => {
@@ -209,42 +337,65 @@ export default function DashboardClientComponent() {
       setTableError(null);
       try {
         const [projectsRes, towersRes] = await Promise.all([
-          fetch('/api/projects'),
-          fetch('/api/towers'),
+          fetch(`/api/projects?page=${currentPage}&pageSize=${itemsPerPage}`),
+          fetch(`/api/towers?page=${currentPage}&pageSize=${itemsPerPage}`),
         ]);
         if (!projectsRes.ok) throw new Error('שגיאה בטעינת פרויקטים');
         if (!towersRes.ok) throw new Error('שגיאה בטעינת מגדלים');
-        const projectsData: Partial<ProjectData>[] = await projectsRes.json();
-        const towersData: ApiTower[] = await towersRes.json();
+        const projectsJson = await projectsRes.json();
+        const towersJson = await towersRes.json();
+        const projectsData: ApiProject[] = projectsJson.data;
+        const towersData: ApiTower[] = towersJson.data;
         if (isMounted) {
+          setTotalTowers(towersJson.count || 0);
           // מיפוי מגדלים לפרויקטים עם כל השדות הנדרשים
-          const projectsWithTowers: ProjectData[] = projectsData.map(project => ({
-            id: project.id ?? '',
-            project_name: project.project_name ?? '',
+          const projectsWithTowers: ProjectData[] = projectsData.map((project) => ({
+            id: project.id,
+            created_at: project.created_at,
+            updated_at: project.updated_at,
+            project_name: project.project_name,
+            project_name_il: project.project_name_il,
             latitude: Number(project.latitude) || 0,
             longitude: Number(project.longitude) || 0,
-            num_towers: towersData.filter(t => t.project_id === project.id).length,
-            towers: towersData.filter(t => t.project_id === project.id),
-            project_description: project.project_description || '',
-            full_address: project.full_address || '',
-            city: project.city || '',
-            overall_project_status: project.overall_project_status || '',
+            project_description: project.project_description,
+            effective_city: project.effective_city,
+            original_city: project.original_city,
+            num_towers: project.num_towers,
+            full_address: project.full_address ?? '',
+            project_status: project.project_status,
+            overall_project_status: project.overall_project_status,
+            project_identifier: project.project_identifier,
+            source_url: project.source_url,
+            towers: [],
           }));
-          setProjectsWithTowers(projectsWithTowers);
           const towersByProjectId = towersData.reduce((acc, tower) => {
-            (acc[String(tower.project_id)] = acc[String(tower.project_id)] || []).push(tower);
+            (acc[String(tower.project_id)] = acc[String(tower.project_id)] || []).push({
+              ...tower,
+            });
             return acc;
-          }, {} as Record<string, ApiTower[]>);
-          const table: TowerData[] = towersData.map(tower => {
-            const project = projectsData.find((p) => p.id === tower.project_id);
+          }, {} as Record<string, TowerData[]>);
+          projectsWithTowers.forEach(project => {
+            const towers = towersByProjectId[String(project.id)] || [];
+            towers.forEach(tower => {
+              tower.project_name_il = project.project_name_il;
+              tower.effective_city = project.effective_city;
+              tower.full_address = project.full_address;
+              tower.project_status = project.overall_project_status;
+              tower.project_description = project.project_description;
+              tower.num_towers = project.num_towers;
+            });
+            project.towers = towers;
+          });
+          const table: TowerData[] = towersData.map((tower) => {
+            const project = projectsWithTowers.find((p) => String(p.id) === String(tower.project_id));
             return {
               ...tower,
-              project_name: project?.project_name || '',
-              city: project?.city || '',
-              full_address: project?.full_address || '',
-              project_status: (project as { project_status?: string })?.project_status || '',
-              num_towers: towersByProjectId[String(tower.project_id)]?.length || 0,
-              project_description: (project as { project_description?: string })?.project_description || '',
+              project_name_il: project?.project_name_il || '',
+              effective_city: project?.effective_city || '',
+              full_address: project?.full_address,
+              project_status: project?.overall_project_status,
+              project_description: project?.project_description,
+              num_towers: project?.num_towers,
             };
           });
           setTableData(table);
@@ -253,7 +404,6 @@ export default function DashboardClientComponent() {
         if (isMounted) {
           setTableError('אירעה שגיאה בטעינת נתוני הטבלה.');
           setTableData([]);
-          setProjectsWithTowers([]);
         }
       } finally {
         if (isMounted) setIsLoadingTable(false);
@@ -261,12 +411,12 @@ export default function DashboardClientComponent() {
     }
     fetchProjectsAndTowers();
     return () => { isMounted = false; };
-  }, []);
+  }, [currentPage, itemsPerPage]);
 
   // Compute unique cities and statuses
   useEffect(() => {
     if (tableData.length > 0) {
-      const cities = [...new Set(tableData.map(tower => tower.city))].sort();
+      const cities = [...new Set(tableData.map(tower => tower.effective_city))].sort();
       const statuses = [...new Set(tableData.map(tower => tower.tower_status))].sort();
       setUniqueCities(cities);
       setUniqueStatuses(statuses);
@@ -281,9 +431,9 @@ export default function DashboardClientComponent() {
     return tableData.filter(tower => {
       const searchLower = searchText.toLowerCase();
       const searchMatch = searchText === "" ||
-        (tower.project_name?.toLowerCase().includes(searchLower));
-      const cityMatch = selectedCity === "" || tower.city === selectedCity;
-      const statusMatch = selectedStatus === "" || tower.tower_status === selectedStatus;
+        (tower.project_name_il?.toLowerCase().includes(searchLower));
+      const cityMatch = selectedCity === "all" || tower.effective_city === selectedCity;
+      const statusMatch = selectedStatus === "all" || tower.tower_status === selectedStatus;
       const heightMatch = tower.height_m >= heightRange[0];
       return searchMatch && cityMatch && statusMatch && heightMatch;
     });
@@ -300,16 +450,14 @@ export default function DashboardClientComponent() {
   }, [filteredTableData, sortBy, sortOrder]);
 
   // Pagination
-  const totalPages = Math.ceil(sortedData.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentPageData = sortedData.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(totalTowers / itemsPerPage);
+  const currentPageData = sortedData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   // Reset page on filter/sort change
   useEffect(() => { setCurrentPage(1); }, [searchText, selectedCity, selectedStatus, heightRange, sortBy, sortOrder]);
 
   function handleSort(column: 'height' | 'floors') {
-    if (sortBy === column) setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
+    if (sortBy === column) setSortOrder((prev: 'asc' | 'desc') => prev === 'asc' ? 'desc' : 'asc');
     else {
       setSortBy(column);
       setSortOrder('desc');
@@ -319,6 +467,30 @@ export default function DashboardClientComponent() {
   function translateStatus(status: string): string {
     return API_STATUS_TO_HEBREW_MAP[status as ApiStatus] || status;
   }
+
+  function handlePageChange(newPage: number) {
+    setCurrentPage(newPage);
+  }
+
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchAllMapProjects() {
+      setIsLoadingMapProjects(true);
+      setMapProjectsError(null);
+      try {
+        const res = await fetch("/api/map-projects");
+        if (!res.ok) throw new Error("שגיאה בטעינת כל הפרויקטים למפה");
+        const data = await res.json();
+        if (isMounted) setAllMapProjects(data);
+      } catch (error: unknown) {
+        if (isMounted) setMapProjectsError(error instanceof Error ? error.message : "שגיאה לא צפויה בטעינת פרויקטים למפה");
+      } finally {
+        if (isMounted) setIsLoadingMapProjects(false);
+      }
+    }
+    fetchAllMapProjects();
+    return () => { isMounted = false; };
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen" style={{ background: "#F6F8FB" }} dir="rtl">
@@ -359,9 +531,9 @@ export default function DashboardClientComponent() {
                 <CardContent className="p-0">
                   <div className="h-[400px] w-full rounded-b-3xl overflow-hidden bg-muted">
                     <NadlanistMap
-                      projects={projectsWithTowers}
-                      isLoading={isLoadingTable}
-                      error={tableError}
+                      projects={allMapProjects}
+                      isLoading={isLoadingMapProjects}
+                      error={mapProjectsError}
                     />
                   </div>
                 </CardContent>
@@ -387,9 +559,9 @@ export default function DashboardClientComponent() {
                 </CardContent>
               </Card>
               {/* מגדלים מעל 150 מ&apos; */}
-              <Dialog open={openTowerDialog === 150} onOpenChange={open => setOpenTowerDialog(open ? 150 : null)}>
+              <Dialog open={currentDialogHeight !== null} onOpenChange={open => setCurrentDialogHeight(open ? currentDialogHeight : null)}>
                 <DialogTrigger asChild>
-                  <Card className="bg-white/90 border-0 shadow rounded-2xl cursor-pointer hover:shadow-lg transition" onClick={() => setOpenTowerDialog(150)}>
+                  <Card className="bg-white/90 border-0 shadow rounded-2xl cursor-pointer hover:shadow-lg transition" onClick={() => setCurrentDialogHeight(150)}>
                     <CardHeader className="pb-2">
                       <CardTitle className="text-sm font-medium text-secondary">מגדלים מעל 150 מ&apos;</CardTitle>
                     </CardHeader>
@@ -407,16 +579,21 @@ export default function DashboardClientComponent() {
                   </Card>
                 </DialogTrigger>
                 <TowerListDialog
-                  open={openTowerDialog === 150}
-                  onOpenChange={open => setOpenTowerDialog(open ? 150 : null)}
+                  open={currentDialogHeight !== null}
+                  onOpenChange={open => setCurrentDialogHeight(open ? currentDialogHeight : null)}
                   towers={tableData.filter(t => t.height_m > 150)}
-                  title="מגדלים מעל 150 מ'"
+                  title={currentDialogHeight ? `מגדלים מעל ${currentDialogHeight} מ'` : ''}
+                  isLoading={towersAboveHeight.isLoading}
+                  error={towersAboveHeight.error}
+                  page={towersAboveHeight.page}
+                  pageSize={towersAboveHeight.pageSize}
+                  onPageChange={handleDialogPageChange}
                 />
               </Dialog>
               {/* מגדלים מעל 250 מ&apos; */}
-              <Dialog open={openTowerDialog === 250} onOpenChange={open => setOpenTowerDialog(open ? 250 : null)}>
+              <Dialog open={currentDialogHeight !== null} onOpenChange={open => setCurrentDialogHeight(open ? 250 : null)}>
                 <DialogTrigger asChild>
-                  <Card className="bg-white/90 border-0 shadow rounded-2xl cursor-pointer hover:shadow-lg transition" onClick={() => setOpenTowerDialog(250)}>
+                  <Card className="bg-white/90 border-0 shadow rounded-2xl cursor-pointer hover:shadow-lg transition" onClick={() => setCurrentDialogHeight(250)}>
                     <CardHeader className="pb-2">
                       <CardTitle className="text-sm font-medium text-secondary">מגדלים מעל 250 מ&apos;</CardTitle>
                     </CardHeader>
@@ -434,16 +611,21 @@ export default function DashboardClientComponent() {
                   </Card>
                 </DialogTrigger>
                 <TowerListDialog
-                  open={openTowerDialog === 250}
-                  onOpenChange={open => setOpenTowerDialog(open ? 250 : null)}
+                  open={currentDialogHeight !== null}
+                  onOpenChange={open => setCurrentDialogHeight(open ? 250 : null)}
                   towers={tableData.filter(t => t.height_m > 250)}
-                  title="מגדלים מעל 250 מ'"
+                  title={currentDialogHeight ? `מגדלים מעל ${currentDialogHeight} מ'` : ''}
+                  isLoading={towersAboveHeight.isLoading}
+                  error={towersAboveHeight.error}
+                  page={towersAboveHeight.page}
+                  pageSize={towersAboveHeight.pageSize}
+                  onPageChange={handleDialogPageChange}
                 />
               </Dialog>
               {/* מגדלים מעל 350 מ&apos; */}
-              <Dialog open={openTowerDialog === 350} onOpenChange={open => setOpenTowerDialog(open ? 350 : null)}>
+              <Dialog open={currentDialogHeight !== null} onOpenChange={open => setCurrentDialogHeight(open ? 350 : null)}>
                 <DialogTrigger asChild>
-                  <Card className="bg-white/90 border-0 shadow rounded-2xl cursor-pointer hover:shadow-lg transition" onClick={() => setOpenTowerDialog(350)}>
+                  <Card className="bg-white/90 border-0 shadow rounded-2xl cursor-pointer hover:shadow-lg transition" onClick={() => setCurrentDialogHeight(350)}>
                     <CardHeader className="pb-2">
                       <CardTitle className="text-sm font-medium text-secondary">מגדלים מעל 350 מ&apos;</CardTitle>
                     </CardHeader>
@@ -461,10 +643,15 @@ export default function DashboardClientComponent() {
                   </Card>
                 </DialogTrigger>
                 <TowerListDialog
-                  open={openTowerDialog === 350}
-                  onOpenChange={open => setOpenTowerDialog(open ? 350 : null)}
+                  open={currentDialogHeight !== null}
+                  onOpenChange={open => setCurrentDialogHeight(open ? 350 : null)}
                   towers={tableData.filter(t => t.height_m > 350)}
-                  title="מגדלים מעל 350 מ'"
+                  title={currentDialogHeight ? `מגדלים מעל ${currentDialogHeight} מ'` : ''}
+                  isLoading={towersAboveHeight.isLoading}
+                  error={towersAboveHeight.error}
+                  page={towersAboveHeight.page}
+                  pageSize={towersAboveHeight.pageSize}
+                  onPageChange={handleDialogPageChange}
                 />
               </Dialog>
             </div>
@@ -510,6 +697,7 @@ export default function DashboardClientComponent() {
                   <SelectValue placeholder="כל הערים" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="all">כל הערים</SelectItem>
                   {uniqueCities.map(city => (
                     <SelectItem key={city} value={city}>{city}</SelectItem>
                   ))}
@@ -523,6 +711,7 @@ export default function DashboardClientComponent() {
                   <SelectValue placeholder="כל הסטטוסים" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="all">כל הסטטוסים</SelectItem>
                   {uniqueStatuses.map(status => (
                     <SelectItem key={status} value={status}>{translateStatus(status)}</SelectItem>
                   ))}
@@ -546,8 +735,8 @@ export default function DashboardClientComponent() {
               className="w-full mt-4"
               onClick={() => {
                 setSearchText("");
-                setSelectedCity("");
-                setSelectedStatus("");
+                setSelectedCity("all");
+                setSelectedStatus("all");
                 setHeightRange([0]);
               }}
             >
@@ -613,15 +802,15 @@ export default function DashboardClientComponent() {
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <div className="cursor-pointer text-right">{getShortName(tower.project_name)}</div>
+                                <div className="cursor-pointer text-right">{getShortName(tower.project_name_il)}</div>
                               </TooltipTrigger>
                               <TooltipContent side="top" align="center">
-                                <span className="text-sm font-medium text-gray-900">{tower.project_name}</span>
+                                <span className="text-sm font-medium text-gray-900">{tower.project_name_il}</span>
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
                         </TableCell>
-                        <TableCell className="hidden sm:table-cell text-right">{tower.city}</TableCell>
+                        <TableCell className="hidden sm:table-cell text-right">{tower.effective_city}</TableCell>
                         <TableCell className="text-right">{tower.height_m?.toFixed(1)}</TableCell>
                         <TableCell className="hidden md:table-cell text-right">{tower.floors}</TableCell>
                         <TableCell className="hidden sm:table-cell text-right">{translateStatus(tower.tower_status)}</TableCell>
@@ -641,14 +830,14 @@ export default function DashboardClientComponent() {
             <div className="flex items-center justify-between px-4 py-3">
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground">
-                  מציג {startIndex + 1}-{Math.min(endIndex, sortedData.length)} מתוך {sortedData.length}
+                  מציג {currentPage * itemsPerPage - itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, totalTowers)} מתוך {totalTowers}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
                   disabled={currentPage === 1}
                 >
                   הקודם
@@ -657,7 +846,7 @@ export default function DashboardClientComponent() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
                   disabled={currentPage === totalPages}
                 >
                   הבא

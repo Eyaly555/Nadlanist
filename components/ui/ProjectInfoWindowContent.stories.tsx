@@ -21,10 +21,10 @@ export const Default: Story = {
   args: {
     project: {
       id: 1,
-      project_name: 'פרויקט הדגמה בסטוריבוק',
+      project_name_il: 'פרויקט הדגמה בסטוריבוק',
       latitude: 32.0853,
       longitude: 34.7818,
-      city: 'תל אביב-יפו',
+      effective_city: 'תל אביב-יפו',
       num_towers: 2,
       full_address: 'דרך מנחם בגין 123',
       project_description: 'זהו תיאור לדוגמה של הפרויקט כפי שיוצג בחלון המידע. אפשר לבדוק כאן איך טקסט מתנהג. התיאור הזה ארוך במיוחד כדי לבדוק את פונקציית קרא עוד.',
@@ -52,10 +52,10 @@ export const WithoutDescription: Story = {
   args: {
     project: {
       id: 2,
-      project_name: 'פרויקט ללא תיאור כלל',
+      project_name_il: 'פרויקט ללא תיאור כלל',
       latitude: 31.7719,
       longitude: 35.2170,
-      city: 'ירושלים',
+      effective_city: 'ירושלים',
       num_towers: 1,
       full_address: 'רחוב יפו 1',
       project_description: undefined,
@@ -76,10 +76,10 @@ export const ManyTowers: Story = {
   args: {
     project: {
       id: 3,
-      project_name: 'פרויקט עם הרבה מגדלים',
+      project_name_il: 'פרויקט עם הרבה מגדלים',
       latitude: 32.1,
       longitude: 34.8,
-      city: 'חולון',
+      effective_city: 'חולון',
       num_towers: 7,
       full_address: 'רחוב ראשי 10',
       project_description: 'פרויקט עם הרבה מגדלים לבדיקת הצגת +X נוספים.',
