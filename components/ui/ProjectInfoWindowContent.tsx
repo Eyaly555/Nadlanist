@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   API_STATUSES,
   ApiStatus,
@@ -103,7 +103,7 @@ function TowersList({ towers }: { towers: TowerData[] }) {
           className="flex items-center gap-4 p-2 rounded-lg transition-colors hover:bg-gray-50"
         >
           <span className="flex items-center gap-1 min-w-[60px] font-medium text-gray-900 text-base">
-            {tower.tower_identifier || `מגדל ${idx + 1}`}
+            {`מגדל ${idx + 1}`}
           </span>
           <StatusTag status={tower.tower_status as ApiStatus} />
           <span className="flex items-center gap-1 text-sm text-gray-700">
@@ -126,6 +126,28 @@ const TABS = [
 
 type TabKey = typeof TABS[number]['key'];
 
+const infoWindowStyles = `
+  .gm-style-iw {
+    padding: 0 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  .gm-style-iw-d {
+    overflow: visible !important;
+  }
+  
+  .gm-style-iw-t::after {
+    display: none !important;
+  }
+  
+  @media (max-width: 640px) {
+    .gm-style-iw {
+      max-width: 280px !important;
+    }
+  }
+`;
+
 /**
  * ProjectInfoWindowContent - חלונית מידע אינטראקטיבית לפרויקט במפה
  * @param {ProjectInfoWindowContentProps} props
@@ -137,6 +159,15 @@ export function ProjectInfoWindowContent({ project, onClose }: ProjectInfoWindow
   const desc = project.project_description || "אין תיאור לפרויקט זה.";
   const isLongDesc = desc.length > 90;
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const styleElement = document.createElement('style');
+    styleElement.textContent = infoWindowStyles;
+    document.head.appendChild(styleElement);
+    return () => {
+      document.head.removeChild(styleElement);
+    };
+  }, []);
 
   function handleTabChange(tab: TabKey) {
     setActiveTab(tab);
@@ -155,19 +186,11 @@ export function ProjectInfoWindowContent({ project, onClose }: ProjectInfoWindow
   function renderHeader() {
     return (
       <div className={`flex flex-col gap-2 mb-4 transition-all duration-300 ${isExpanded ? 'mb-2' : 'mb-4'}`}>
-        <span className="text-2xl font-bold text-gray-900 tracking-tight">{project.project_name_il}</span>
-        {!isExpanded && (
-          <div className="flex items-center gap-2 text-lg font-medium text-gray-700">
-            <span role="img" aria-label="מיקום">📍</span>
-            <span>{project.full_address}</span>
-          </div>
-        )}
-        {isExpanded && (
-          <div className="flex items-center gap-2 text-lg font-medium text-gray-700">
-            <span role="img" aria-label="מיקום">📍</span>
-            <span>{project.full_address}</span>
-          </div>
-        )}
+        <span className="text-lg font-bold text-gray-900 tracking-tight leading-tight">{project.project_name_il}</span>
+        <div className="flex items-start gap-2 text-sm font-medium text-gray-600">
+          <span role="img" aria-label="מיקום" className="mt-0.5">📍</span>
+          <span className="line-clamp-2">{project.full_address}</span>
+        </div>
       </div>
     );
   }
@@ -227,8 +250,13 @@ export function ProjectInfoWindowContent({ project, onClose }: ProjectInfoWindow
     <div
       ref={containerRef}
       dir="rtl"
-      className="font-sans bg-gray-50 rounded-2xl shadow-xl border border-gray-200 max-w-xs p-6 relative flex flex-col transition-all duration-300 ease-in-out"
-      style={{ minWidth: 300, maxHeight: 480 }}
+      className="font-sans bg-white rounded-lg shadow-lg border border-gray-200 max-w-sm p-4 relative flex flex-col transition-all duration-200 ease-in-out"
+      style={{ 
+        minWidth: 280, 
+        maxWidth: 320, 
+        maxHeight: 420,
+        fontSize: '14px'
+      }}
       aria-label={project.project_name_il}
     >
       {onClose && (

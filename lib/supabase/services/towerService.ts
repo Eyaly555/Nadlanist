@@ -2,7 +2,9 @@
 import { supabase } from '@/lib/supabase/serverClient';
 
 export async function getAllTowers() {
-  const { data, error } = await supabase.from('towers').select('*');
+  const { data, error } = await supabase
+    .from('towers_normalized')
+    .select('*');
   if (error) throw new Error(error.message);
   return data;
 }
@@ -16,32 +18,43 @@ export async function getTowersByProjectId(projectId: string | number) {
 export interface GetTowersPaginatedParams {
   page?: number;
   pageSize?: number;
+  search?: string;
+  city?: string;
+  status?: string;
+  minHeight?: number;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
 }
 
-export async function getTowersPaginated({ page = 1, pageSize = 8 }: GetTowersPaginatedParams = {}) {
+export async function getTowersPaginated({
+  page = 1,
+  pageSize = 8,
+  search = '',
+  city = '',
+  status = '',
+  minHeight = 0,
+  sortBy = 'height_m',
+  sortOrder = 'desc',
+}: GetTowersPaginatedParams = {}) {
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
-  const selectFields = [
-    'id',
-    'created_at',
-    'updated_at',
-    'project_id',
-    'floors',
-    'height_m',
-    'tower_specific_count_field',
-    'tower_status',
-    'tower_identifier',
-    'project_name',
-    'project_name_il',
-    'effective_city',
-    'original_city',
-    'project_status'
-  ].join(', ');
-  const { data, error, count } = await supabase
+  let query = supabase
     .from('towers_normalized')
-    .select(selectFields, { count: 'exact' })
-    .order('id')
-    .range(from, to);
+    .select('*', { count: 'exact' });
+
+  if (search) query = query.ilike('project_name_il', `%${search}%`);
+  if (city && city !== 'all') query = query.eq('effective_city', city);
+  if (status && status !== 'all') query = query.eq('tower_status', status);
+  if (minHeight) query = query.gte('height_m', minHeight);
+
+  // סינון רשומות לא תקינות (גובה, קומות, שם)
+  query = query.gt('height_m', 0).gt('floors', 0).not('project_name_il', 'is', null);
+
+  if (sortBy) query = query.order(sortBy, { ascending: sortOrder === 'asc' });
+
+  query = query.range(from, to);
+
+  const { data, error, count } = await query;
   if (error) throw new Error(error.message);
   return { data, count };
 }

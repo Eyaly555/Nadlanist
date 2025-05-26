@@ -64,7 +64,7 @@ export interface MapProjectData extends ProjectData {
 }
 
 const MAP_CENTER = { lat: 32.0749425, lng: 34.800611 };
-const MAPS_LIBRARIES: NonNullable<LoadScriptProps["libraries"]> = ["places"];
+const MAPS_LIBRARIES: NonNullable<LoadScriptProps["libraries"]> = ["places", "geometry"];
 
 function getMostAdvancedStatus(towers: TowerData[]): ApiStatus {
   if (!towers?.length) return API_STATUSES.UNKNOWN;
@@ -163,6 +163,13 @@ export function NadlanistMap({ projects, isLoading, error }: NadlanistMapProps) 
           gestureHandling: "greedy",
           clickableIcons: false,
           backgroundColor: "#F5F7F9",
+          zoomControl: true,
+          zoomControlOptions: {
+            position: 11
+          },
+          streetViewControl: false,
+          mapTypeControl: false,
+          fullscreenControl: false
         }}
       >
         {projects.map((project) => {
@@ -174,7 +181,18 @@ export function NadlanistMap({ projects, isLoading, error }: NadlanistMapProps) 
               onClick={() => {
                 setSelected(project);
                 if (mapRef) {
-                  mapRef.panTo({ lat: Number(project.latitude), lng: Number(project.longitude) });
+                  const bounds = mapRef.getBounds();
+                  const center = mapRef.getCenter();
+                  const projectLatLng = { lat: Number(project.latitude), lng: Number(project.longitude) };
+                  if (bounds && center) {
+                    const distance = window.google.maps.geometry.spherical.computeDistanceBetween(
+                      new window.google.maps.LatLng(center.lat(), center.lng()),
+                      new window.google.maps.LatLng(projectLatLng.lat, projectLatLng.lng)
+                    );
+                    if (distance > 500) {
+                      mapRef.panTo(projectLatLng);
+                    }
+                  }
                 }
               }}
               icon={{
@@ -189,7 +207,11 @@ export function NadlanistMap({ projects, isLoading, error }: NadlanistMapProps) 
           <InfoWindow
             position={{ lat: Number(selected.latitude), lng: Number(selected.longitude) }}
             onCloseClick={() => setSelected(null)}
-            options={{ pixelOffset: new window.google.maps.Size(0, -30) }}
+            options={{
+              disableAutoPan: false,
+              maxWidth: 320,
+              pixelOffset: new window.google.maps.Size(0, -10)
+            }}
           >
             <ProjectInfoWindowContent project={selected} />
           </InfoWindow>

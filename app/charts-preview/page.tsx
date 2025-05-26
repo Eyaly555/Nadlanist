@@ -156,7 +156,7 @@ export default function ChartsPreviewPage() {
             <h2 className="text-2xl font-bold text-gray-800">1. אינפוגרפיקה - עובדות מרתקות</h2>
             <p className="text-gray-600">כרטיסיות אינטראקטיביות עם מידע מעניין</p>
           </div>
-          <FunFactsInfographic data={DEMO_DATA} />
+          <FunFactsInfographic allData={DEMO_DATA} filteredData={DEMO_DATA} />
         </div>
 
         {/* Charts Grid */}

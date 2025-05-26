@@ -41,6 +41,8 @@ interface TowerData {
   num_towers?: number;
   project_description?: string;
   id?: number | string;
+  project_name?: string;
+  project_id?: number | string;
 }
 
 interface ChartProps {
@@ -240,6 +242,14 @@ const CITY_COLORS: Record<string, string> = {
     "umm-al-fahm": "#DDA0DD",// תיקון: # אחד
   };
 
+function getShortName(project_name_il?: string, project_name?: string, maxWords = 5): string {
+  const name = project_name_il || project_name || 'שם לא זמין';
+  if (!name) return 'שם לא זמין';
+  const words = name.split(' ');
+  if (words.length <= maxWords) return name;
+  return words.slice(0, maxWords).join(' ') + '...';
+}
+
 // 1. גרף פיזור - גובה מול קומות
 export function HeightVsFloorsScatter({ data }: ChartProps) {
   const scatterData = React.useMemo(() => {
@@ -428,87 +438,128 @@ export function TowerGrowthTimeline({ data }: ChartProps) {
 
 // 4. גרף ראדאר - השוואת ערים לפי מאפיינים
 export function CityComparisonRadar(): JSX.Element {
-      const radarData = React.useMemo(() => {
-        const citiesToCompare = [
-            "תל אביב", 
-            "רמת גן", 
-            "ירושלים", 
-            "חיפה", 
-            "באר שבע",
-            "ראשון לציון",
-            "נתניה",
-            // --- הערים החדשות שהוספנו ---
-            "גבעתיים", // הייתה ברשימה המקורית בגרף, אבל לא ב-citiesToCompare הקודם שלי
-            "בת ים",   // הייתה ברשימה המקורית בגרף, אבל לא ב-citiesToCompare הקודם שלי
-            "פתח תקווה",
-            "אשדוד",
-            "בני ברק",
-            "חולון",
-            "אשקלון",
-        ];
-        const metrics = ["מספר מגדלים", "גובה ממוצע (מ')", "קומות ממוצע", "אחוז הושלם (%)", "אחוז בבנייה (%)"];
-        
-        return metrics.map((metric) => ({
-          metric,
-          ...Object.fromEntries(
-            citiesToCompare.map((city) => {
-              // חשוב לוודא ששמות הערים כאן תואמים למפתחות ב-CITY_COLORS
-              // ולנתונים שתעבד בעתיד מ-data
-              // כרגע, נמשיך עם נתונים אקראיים להדגמה:
-              return [city, Math.floor(Math.random() * 100)];
-            })
-          ),
-        }));
-      }, []);
+  const radarData = React.useMemo(() => {
+    const citiesToCompare = [
+      "תל אביב", 
+      "רמת גן", 
+      "ירושלים", 
+      "חיפה", 
+      "באר שבע",
+      "ראשון לציון",
+      "נתניה",
+      "גבעתיים",
+      "בת ים",
+      "פתח תקווה",
+      "אשדוד",
+      "בני ברק",
+      "חולון",
+      "אשקלון",
+    ];
+    const metrics = ["מספר מגדלים", "גובה ממוצע (מ')", "קומות ממוצע", "אחוז הושלם (%)", "אחוז בבנייה (%)"];
     
-      const citiesInChart = React.useMemo(() => {
-        if (radarData.length > 0 && radarData[0]) {
-          return Object.keys(radarData[0]).filter(key => key !== 'metric');
-        }
-        return [];
-      }, [radarData]);
-    
-      return (
-        <Card className="col-span-full lg:col-span-2">
-          <CardHeader>
-            <CardTitle>השוואת ערים מובילות</CardTitle>
-            <CardDescription>
-              ניתוח השוואתי של מאפייני בנייה בערים מרכזיות (נתונים מדומה)
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[450px] w-full"> {/* הגדלתי מעט את הגובה */}
-              <ResponsiveContainer width="100%" height="100%">
-                <RadarChart data={radarData} outerRadius="75%"> {/* הקטנתי מעט את הרדיוס להתאמה */}
-                  <PolarGrid />
-                  <PolarAngleAxis dataKey="metric" tick={{ fontSize: 9 }} />
-                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fontSize: 8 }} />
-                    {citiesInChart.map((city) => (
-                      <Radar
-                        key={city}
-                        name={city}
-                        dataKey={city}
-                        stroke={CITY_COLORS[city] || CITY_COLORS["אחר"]}
-                        fill={CITY_COLORS[city] || CITY_COLORS["אחר"]}
-                        fillOpacity={0.2} // הפחתתי שקיפות עבור הרבה ערים
-                      />
-                    ))}
-                  <Tooltip 
-                      contentStyle={{fontSize: '11px', padding: '4px 8px'}}
-                    />
-                  <Legend 
-                      wrapperStyle={{fontSize: '10px', overflowY: 'auto', maxHeight: '80px'}} 
-                      layout="horizontal" 
-                      align="center" 
-                      verticalAlign="bottom"
-                    />
-                </RadarChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-      );
+    return metrics.map((metric) => ({
+      metric,
+      ...Object.fromEntries(
+        citiesToCompare.map((city) => {
+          return [city, Math.floor(Math.random() * 100)];
+        })
+      ),
+    }));
+  }, []);
+
+  const citiesInChart = React.useMemo(() => {
+    if (radarData.length > 0 && radarData[0]) {
+      return Object.keys(radarData[0]).filter(key => key !== 'metric');
     }
+    return [];
+  }, [radarData]);
+
+  return (
+    <Card className="col-span-full lg:col-span-2">
+      <CardHeader>
+        <CardTitle>השוואת ערים מובילות</CardTitle>
+        <CardDescription>
+          ניתוח השוואתי של מאפייני בנייה בערים מרכזיות (נתונים מדומה)
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="p-4 md:p-6">
+        {/* קונטיינר עם ריכוז */}
+        <div className="w-full flex justify-center items-center">
+          <div className="h-[350px] md:h-[400px] w-full max-w-[500px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart 
+                data={radarData} 
+                margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+                cx="50%" 
+                cy="50%"
+              >
+                <PolarGrid stroke="#e2e8f0" />
+                <PolarAngleAxis 
+                  dataKey="metric" 
+                  tick={{ 
+                    fontSize: 10, 
+                    fill: '#64748b',
+                    textAnchor: 'middle'
+                  }}
+                  className="text-xs"
+                />
+                <PolarRadiusAxis 
+                  angle={90} 
+                  domain={[0, 100]} 
+                  tick={{ 
+                    fontSize: 8, 
+                    fill: '#94a3b8' 
+                  }}
+                  tickCount={4}
+                />
+                {/* הצגת רק 5 ערים עיקריות כדי לא לעמוס */}
+                {citiesInChart.slice(0, 5).map((city) => (
+                  <Radar
+                    key={city}
+                    name={city}
+                    dataKey={city}
+                    stroke={CITY_COLORS[city] || CITY_COLORS["אחר"]}
+                    fill={CITY_COLORS[city] || CITY_COLORS["אחר"]}
+                    fillOpacity={0.1}
+                    strokeWidth={2}
+                    dot={{ fill: CITY_COLORS[city] || CITY_COLORS["אחר"], strokeWidth: 1, r: 3 }}
+                  />
+                ))}
+                <Tooltip 
+                  contentStyle={{
+                    fontSize: '12px', 
+                    padding: '8px 12px',
+                    backgroundColor: 'white',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+                  }}
+                  labelStyle={{ fontWeight: 'bold', marginBottom: '4px' }}
+                />
+                <Legend 
+                  wrapperStyle={{
+                    fontSize: '11px',
+                    paddingTop: '16px'
+                  }}
+                  layout="horizontal" 
+                  align="center" 
+                  verticalAlign="bottom"
+                  iconType="circle"
+                />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        {/* הודעה על העובדה שמוצגות רק 5 ערים */}
+        <div className="mt-4 text-center">
+          <p className="text-xs text-gray-500">
+            מוצגות 5 הערים המובילות מתוך {citiesInChart.length} ערים בסה&quot;כ
+          </p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
 
 // 5. גרף עמודות מקובצות - השוואת רבעונים
 export function QuarterlyComparison(): JSX.Element {
@@ -550,13 +601,43 @@ export function QuarterlyComparison(): JSX.Element {
   );
 }
 
-// 6. אינפוגרפיקה אינטראקטיבית - עובדות מעניינות
-export function FunFactsInfographic({ data }: ChartProps) {
+interface FunFactsInfographicProps {
+  allData: TowerData[];
+  filteredData: TowerData[];
+}
+
+export function FunFactsInfographic({ allData, filteredData }: FunFactsInfographicProps) {
+  React.useEffect(() => {
+    if (Array.isArray(allData)) {
+      const sorted = [...allData].sort((a, b) => Number(b.height_m) - Number(a.height_m));
+      console.log('--- FunFactsInfographic: כל המגדלים ---');
+      sorted.forEach(t => {
+        console.log({
+          id: t.id,
+          height_m: t.height_m,
+          project_name_il: t.project_name_il,
+          project_name: t.project_name,
+          project_id: t.project_id,
+        });
+      });
+      console.log('--- סוף רשימה ---');
+    }
+  }, [allData]);
+
   const facts = React.useMemo(() => {
-    const totalHeight = data.reduce((sum, t) => sum + t.height_m, 0);
-    const avgHeight = totalHeight / data.length || 0;
-    const tallest = data.reduce((max, t) => (t.height_m > max.height_m ? t : max), data[0]);
-    
+    // חישובים על כל המגדלים (allData)
+    const totalHeight = allData.reduce((sum, t) => sum + Number(t.height_m), 0);
+    const avgHeight = totalHeight / (allData.length || 1);
+    // חישוב השיאן על filteredData (כמו בטבלה)
+    const towersWithName = filteredData.filter(
+      t => Number(t.height_m) > 0 && (t.project_name_il || t.project_name)
+    );
+    const tallest = towersWithName.length
+      ? towersWithName.reduce((max, t) =>
+          Number(t.height_m) > Number(max.height_m) ? t : max,
+          towersWithName[0]
+        )
+      : undefined;
     return [
       {
         icon: "🏗️",
@@ -574,9 +655,14 @@ export function FunFactsInfographic({ data }: ChartProps) {
       },
       {
         icon: "🏆",
-        title: "השיאן",
-        value: tallest?.project_name_il || "לא ידוע",
-        description: `${tallest?.height_m || 0} מטר גובה, ${tallest?.floors || 0} קומות`,        color: "bg-gradient-to-br from-yellow-400 to-orange-600",
+        title: "השיאן (מתוך כל המגדלים)",
+        value: tallest
+          ? getShortName(tallest.project_name_il, tallest.project_name)
+          : "שם לא זמין",
+        description: tallest
+          ? `${tallest.height_m || 0} מטר גובה, ${tallest.floors || 0} קומות`
+          : "שם לא זמין",
+        color: "bg-gradient-to-br from-yellow-400 to-orange-600",
       },
       {
         icon: "🎯",
@@ -586,7 +672,7 @@ export function FunFactsInfographic({ data }: ChartProps) {
         color: "bg-gradient-to-br from-purple-400 to-pink-600",
       },
     ];
-  }, [data]);
+  }, [allData, filteredData]);
 
   return (
     <Card className="col-span-full">
