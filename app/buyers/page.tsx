@@ -2,6 +2,7 @@ import React from "react";
 import { ContactForm } from "@/components/shared";
 import { FeatureCard } from "@/components/ui/FeatureCard";
 import Image from "next/image";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 
 const ADVANTAGES = [
   {
@@ -76,6 +77,16 @@ const TIMELINE = [
 export default function BuyersPage() {
   return (
     <main className="flex flex-col min-h-screen bg-white text-right items-center justify-center" dir="rtl">
+      {/* Breadcrumbs */}
+      <div className="w-full max-w-7xl mx-auto px-4 pt-4">
+        <Breadcrumbs 
+          items={[
+            { label: "בית", href: "/" },
+            { label: "קונים" }
+          ]} 
+        />
+      </div>
+      
       {/* Hero Section */}
       <section className="relative w-full flex flex-col items-center justify-center gap-8 py-16 px-4 bg-primary-10 overflow-hidden border-b border-primary/10">
         <div className="flex flex-col items-center text-center z-10 w-full max-w-2xl mx-auto font-sans">

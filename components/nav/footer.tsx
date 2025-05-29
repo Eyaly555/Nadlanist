@@ -167,6 +167,12 @@ export function Footer() {
           >
             תנאים והגבלות
           </Link>
+          <Link href="/vision" className="hover:text-primary transition-colors">
+            החזון שלנו
+          </Link>
+          <Link href="/faq" className="hover:text-primary transition-colors">
+            שאלות נפוצות
+          </Link>
         </div>
       </div>
     </footer>

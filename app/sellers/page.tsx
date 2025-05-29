@@ -4,6 +4,7 @@ import { FeatureCard } from "@/components/ui/FeatureCard";
 import { Logo } from "@/components/ui/logo";
 import Image from "next/image";
 import { Camera, Lock, DollarSign, Clock, Briefcase, Target } from "lucide-react";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 
 const ADVANTAGES = [
   {
@@ -77,7 +78,17 @@ const TIMELINE = [
  */
 export default function SellersPage() {
   return (
-    <main className="flex flex-col min-h-screen bg-white text-right" dir="rtl">
+    <main className="flex flex-col min-h-screen bg-white" dir="rtl">
+      {/* Breadcrumbs */}
+      <div className="w-full max-w-7xl mx-auto px-4 pt-4">
+        <Breadcrumbs 
+          items={[
+            { label: "בית", href: "/" },
+            { label: "מוכרים" }
+          ]} 
+        />
+      </div>
+
       {/* Hero Section */}
       <section className="relative w-full bg-primary-10 rounded-[48px] md:rounded-[64px] overflow-hidden py-20 min-h-[20rem] max-w-[1280px] mx-auto flex items-center justify-center" aria-label="Hero">
         <Image

@@ -90,6 +90,69 @@ export default function HomePage() {
           })
         }}
       />
+      <Script
+        id="ld-local-business"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            "name": "נדלניסט AI - תיווך חכם בתל אביב",
+            "alternateName": "Nadlanist AI",
+            "description": "סוכנות נדל\"ן חכמה בתל אביב - 0% עמלה לקונים, 0.5% למוכרים. תיווך מבוסס AI עם סריקות 3D וליווי מקצועי.",
+            "url": "https://www.nadlanist.ai/",
+            "logo": "https://www.nadlanist.ai/logo-teal.svg",
+            "image": "https://www.nadlanist.ai/mark-teal.svg",
+            "telephone": "+972542171198",
+            "priceRange": "$$",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "נצח ישראל 3",
+              "addressLocality": "תל אביב",
+              "addressRegion": "מחוז תל אביב",
+              "postalCode": "",
+              "addressCountry": "IL"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 32.0853,
+              "longitude": 34.7818
+            },
+            "areaServed": [
+              {
+                "@type": "City",
+                "name": "תל אביב-יפו"
+              },
+              {
+                "@type": "State",
+                "name": "גוש דן"
+              }
+            ],
+            "hasOfferCatalog": {
+              "@type": "OfferCatalog",
+              "name": "שירותי תיווך",
+              "itemListElement": [
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "תיווך לקונים",
+                    "description": "שירות תיווך חינמי לקונים - 0% עמלה"
+                  }
+                },
+                {
+                  "@type": "Offer",
+                  "itemOffered": {
+                    "@type": "Service",
+                    "name": "תיווך למוכרים",
+                    "description": "תיווך למוכרים עם עמלה של 0.5% בלבד"
+                  }
+                }
+              ]
+            }
+          })
+        }}
+      />
       <HomeClient />
     </>
   );

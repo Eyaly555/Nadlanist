@@ -23,6 +23,12 @@ export function NavMenu() {
           Blogs
         </Link>
         <Link
+          href="/faq"
+          className="text-md font-medium hover:text-primary"
+        >
+          FAQ
+        </Link>
+        <Link
           href="/contact"
           className="text-md font-medium hover:text-primary"
         >
@@ -50,6 +56,11 @@ export function NavMenu() {
           <DropdownMenuItem asChild>
             <Link href="/blog" className="text-md font-medium">
               Blogs
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/faq" className="text-md font-medium">
+              FAQ
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>

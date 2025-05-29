@@ -19,6 +19,8 @@ export async function GET() {
     "/thank-you",
     "/vision",
     "/dashboard",
+    "/faq",
+    "/tel-aviv",
   ];
 
   // שליפת כל הסלגים של הבלוג

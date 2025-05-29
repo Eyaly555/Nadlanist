@@ -1,4 +1,6 @@
 import { type Metadata } from "next";
+import { Breadcrumbs } from "@/components/ui/breadcrumbs";
+import Script from "next/script";
 import DashboardClientComponent from "./dashboard-client";
 
 export const metadata: Metadata = {
@@ -33,5 +35,53 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardPage() {
-  return <DashboardClientComponent />;
+  // Structured data for Breadcrumbs
+  const breadcrumbs = [
+    { label: "בית", href: "/" },
+    { label: "דשבורד" }
+  ];
+
+  // Structured data for ItemList (placeholder, replace with real projects if available)
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "רשימת פרויקטים בדשבורד נדלניסט AI",
+    "itemListElement": [
+      // ניתן להחליף ברשימה דינמית של פרויקטים
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "מגדל עזריאלי שרונה",
+        "url": "https://www.nadlanist.ai/projects/azrieli-sarona"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "מגדלי אלון",
+        "url": "https://www.nadlanist.ai/projects/alon-towers"
+      }
+    ]
+  };
+
+  return (
+    <>
+      <Script
+        id="dashboard-itemlist-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
+      <div className="w-full max-w-7xl mx-auto px-4 pt-4 text-black">
+        <Breadcrumbs items={breadcrumbs} />
+      </div>
+      {/* קישורים פנימיים */}
+      <nav aria-label="Secondary navigation" className="mb-4 text-black">
+        <ul className="flex gap-4 text-sm">
+          <li><a href="/buyers" className="hover:underline">לקונים</a></li>
+          <li><a href="/sellers" className="hover:underline">למוכרים</a></li>
+          <li><a href="/tel-aviv" className="hover:underline">שכונות תל אביב</a></li>
+        </ul>
+      </nav>
+      <DashboardClientComponent />
+    </>
+  );
 }

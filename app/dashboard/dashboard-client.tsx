@@ -415,7 +415,7 @@ export default function DashboardClientComponent() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen" style={{ background: "#F6F8FB" }} dir="rtl">
+    <div className="flex flex-col min-h-screen text-black" style={{ background: "#F6F8FB" }} dir="rtl">
       <Script id="ld-towers-list" type="application/ld+json" dangerouslySetInnerHTML={{
         __html: JSON.stringify({
           "@context": "https://schema.org",
@@ -430,13 +430,13 @@ export default function DashboardClientComponent() {
       >
         {/* Gradient accent bar - מוסר, הגרדיאנט עכשיו ב-style */}
         <div className="relative z-10">
-          <h1 className="text-4xl md:text-5xl lg:text-[48px] font-extrabold tracking-tight mb-4 leading-tight" style={{ color: "#00A6A2" }}>
+          <h1 className="text-4xl md:text-5xl lg:text-[48px] font-extrabold tracking-tight mb-4 leading-tight text-black">
             הדשבורד החכם של נדלניסט AI
           </h1>
-          <div className="w-24 h-1 mx-auto mb-6 rounded-full" style={{ background: "#00A6A2" }}></div>
-          <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed font-medium" style={{ color: "#222D3A" }}>
+          <div className="w-24 h-1 mx-auto mb-6 rounded-full bg-black"></div>
+          <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed font-medium text-black">
             הדשבורד החדשני והמקיף בישראל למעקב חכם אחר פרויקטי נדל&quot;ן בבנייה ובביצוע. כאן תמצאו נתונים עדכניים, סטטיסטיקות מתקדמות ותצוגות ויזואליות מהמובילות בתחום – הכל במקום אחד, בפשטות ובדיוק מקסימלי.<br className="hidden md:inline" />
-            <span className="block mt-4 text-base font-semibold" style={{ color: "#222D3A" }}>בקרוב נרחיב את המערכת עם מידע ופיצ&#39;רים נוספים שישדרגו את חוויית הנדל&quot;ן הדיגיטלית בישראל.</span>
+            <span className="block mt-4 text-base font-semibold text-black">בקרוב נרחיב את המערכת עם מידע ופיצ&apos;רים נוספים שישדרגו את חוויית הנדל&quot;ן הדיגיטלית בישראל.</span>
           </p>
         </div>
       </header>
@@ -466,7 +466,7 @@ export default function DashboardClientComponent() {
               {/* סה&quot;כ בניינים */}
               <Card className="bg-white/90 border-0 shadow rounded-2xl">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium text-secondary">סה&quot;כ בניינים</CardTitle>
+                  <CardTitle className="text-sm font-medium text-black">סה&quot;כ בניינים</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {isLoadingKpis ? (
@@ -495,7 +495,7 @@ export default function DashboardClientComponent() {
                     }}
                   >
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-medium text-secondary">מגדלים מעל 150 מ&apos;</CardTitle>
+                      <CardTitle className="text-sm font-medium text-black">מגדלים מעל 150 מ&apos;</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">{towersCount150 ?? '-'}</div>
@@ -530,7 +530,7 @@ export default function DashboardClientComponent() {
                     }}
                   >
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-medium text-secondary">מגדלים מעל 250 מ&apos;</CardTitle>
+                      <CardTitle className="text-sm font-medium text-black">מגדלים מעל 250 מ&apos;</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">{towersCount250 ?? '-'}</div>
@@ -565,7 +565,7 @@ export default function DashboardClientComponent() {
                     }}
                   >
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-sm font-medium text-secondary">מגדלים מעל 350 מ&apos;</CardTitle>
+                      <CardTitle className="text-sm font-medium text-black">מגדלים מעל 350 מ&apos;</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <div className="text-2xl font-bold">{towersCount350 ?? '-'}</div>
@@ -680,10 +680,10 @@ export default function DashboardClientComponent() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="text-right" style={{ color: "#222D3A" }}>פרויקט</TableHead>
-                    <TableHead className="hidden sm:table-cell text-right" style={{ color: "#222D3A" }}>עיר</TableHead>
+                    <TableHead className="text-right text-black">פרויקט</TableHead>
+                    <TableHead className="hidden sm:table-cell text-right text-black">עיר</TableHead>
                     <TableHead
-                      className="text-right cursor-pointer hover:bg-muted/50"
+                      className="text-right cursor-pointer hover:bg-muted/50 text-black"
                       onClick={() => handleSort('height_m')}
                       aria-sort={sortBy === 'height_m' ? (sortOrder === 'asc' ? 'ascending' : 'descending') : undefined}
                       role="columnheader"
@@ -697,7 +697,7 @@ export default function DashboardClientComponent() {
                       </div>
                     </TableHead>
                     <TableHead
-                      className="hidden md:table-cell text-right cursor-pointer hover:bg-muted/50"
+                      className="hidden md:table-cell text-right cursor-pointer hover:bg-muted/50 text-black"
                       onClick={() => handleSort('floors')}
                       aria-sort={sortBy === 'floors' ? (sortOrder === 'asc' ? 'ascending' : 'descending') : undefined}
                       role="columnheader"
@@ -710,7 +710,7 @@ export default function DashboardClientComponent() {
                         )}
                       </div>
                     </TableHead>
-                    <TableHead className="hidden sm:table-cell text-right" style={{ color: "#222D3A" }}>סטטוס</TableHead>
+                    <TableHead className="hidden sm:table-cell text-right text-black">סטטוס</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -729,7 +729,7 @@ export default function DashboardClientComponent() {
                   ) : filteredTableData.length > 0 ? (
                     filteredTableData.map(tower => (
                       <TableRow key={tower.id}>
-                        <TableCell className="text-right break-words max-w-xs">
+                        <TableCell className="text-right break-words max-w-xs text-black">
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
@@ -741,10 +741,10 @@ export default function DashboardClientComponent() {
                             </Tooltip>
                           </TooltipProvider>
                         </TableCell>
-                        <TableCell className="hidden sm:table-cell text-right">{tower.effective_city}</TableCell>
-                        <TableCell className="text-right">{tower.height_m?.toFixed(1)}</TableCell>
-                        <TableCell className="hidden md:table-cell text-right">{tower.floors}</TableCell>
-                        <TableCell className="hidden sm:table-cell text-right">{translateStatus(tower.tower_status)}</TableCell>
+                        <TableCell className="hidden sm:table-cell text-right text-black">{tower.effective_city}</TableCell>
+                        <TableCell className="text-right text-black">{tower.height_m?.toFixed(1)}</TableCell>
+                        <TableCell className="hidden md:table-cell text-right text-black">{tower.floors}</TableCell>
+                        <TableCell className="hidden sm:table-cell text-right text-black">{translateStatus(tower.tower_status)}</TableCell>
                       </TableRow>
                     ))
                   ) : (
@@ -793,8 +793,8 @@ export default function DashboardClientComponent() {
         {/* Averages Row */}
         <div className="flex flex-col md:flex-row gap-6 mb-8">
           <div className="flex-1 flex items-center justify-center bg-muted/60 rounded-2xl p-6 shadow border-0">
-            <span className="text-lg font-semibold text-secondary">גובה ממוצע: </span>
-            <span className="text-lg font-bold mx-2" style={{ color: "#00A6A2" }}>
+            <span className="text-lg font-semibold text-black">גובה ממוצע: </span>
+            <span className="text-lg font-bold mx-2 text-black">
               {tableData.length > 0
                 ? `${Math.round(
                     tableData.reduce((sum, t) => sum + t.height_m, 0) /
@@ -804,8 +804,8 @@ export default function DashboardClientComponent() {
             </span>
           </div>
           <div className="flex-1 flex items-center justify-center bg-muted/60 rounded-2xl p-6 shadow border-0">
-            <span className="text-lg font-semibold text-secondary">קומות בממוצע: </span>
-            <span className="text-lg font-bold mx-2" style={{ color: "#00A6A2" }}>
+            <span className="text-lg font-semibold text-black">קומות בממוצע: </span>
+            <span className="text-lg font-bold mx-2 text-black">
               {tableData.length > 0
                 ? `${(
                     tableData.reduce((sum, t) => sum + t.floors, 0) /

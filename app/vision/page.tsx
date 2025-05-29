@@ -3,6 +3,7 @@ import { FeatureCard } from "@/components/ui/FeatureCard";
 import { ContactForm } from "@/components/shared";
 import { Logo } from "@/components/ui/logo";
 import Image from "next/image";
+import Link from "next/link";
 
 const VISION_VALUES = [
   {
@@ -51,7 +52,7 @@ const VISION_VALUES = [
 
 export const metadata = {
   title: "החזון שלנו",
-  description: "החזון של נדלניסט AI - להפוך את שוק הנדל\"ן לשקוף, חכם ונגיש לכל אחד.",
+  description: "החזון של נדלניסט AI - להפוך את שוק הנדל&quot;ן לשקוף, חכם ונגיש לכל אחד.",
   alternates: {
     canonical: "https://www.nadlanist.ai/vision",
   },
@@ -243,6 +244,13 @@ export default function VisionPage() {
           או דברו איתנו ישירות בוואטסאפ
         </a>
       </section>
+
+      <p className="text-lg md:text-xl text-dark mb-8">
+        אנחנו לא סתם עוד פלטפורמת נדל&quot;ן. אנחנו המהפכה של אנשים אמיתיים שמשנים איך קונים ומוכרים בית בישראל. נדלניסט AI נולדה מהרצון לתת לכל אחד את הכוח לקבל החלטות חכמות, מושכלות וללא פחד בשוק הנדל&quot;ן. אנחנו כאן כדי להחזיר את השליטה לידיים שלכם.
+        בין אם אתם <Link href="/buyers" className="text-primary hover:underline">מחפשים לקנות</Link> או 
+        <Link href="/sellers" className="text-primary hover:underline"> רוצים למכור</Link>, 
+        אנחנו כאן בשבילכם.
+      </p>
     </main>
   );
 } 

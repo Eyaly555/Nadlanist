@@ -119,9 +119,15 @@ export default function HomeClient() {
           </Link>
           <p className="text-lg mb-6">
           אנחנו לא עוד לוח מודעות או משרד תיווך – אנחנו מהפכת הנדלן החכם של ישראל. החזון שלנו: שוק נדלן שבו כל אחד מרגיש בטוח, עם מידע שקוף, התאמה מדויקת ותחושת שליטה. בעזרת בינה מלאכותית, שקיפות מלאה וליווי אנושי מקצועי, כל קונה, מוכר או יזם יוכל לקבל החלטות חכמות, בקלות ובביטחון.          </p>
-          <p className="text-base text-dark/70">
-            מתווכים של פעם? אנחנו העתיד. <span className="font-bold">2025 - נדלניסט.AI</span>
-          </p>
+          <div className="flex justify-center mt-6">
+            <p className="text-base text-dark/70">
+              מתווכים של פעם? אנחנו העתיד. <span className="font-bold">2025 - נדלניסט.AI</span>
+              {" | "}
+              <Link href="/tel-aviv" className="text-primary hover:underline">
+                נדל״ן בתל אביב
+              </Link>
+            </p>
+          </div>
         </div>
       </motion.section>
       {/* Buyers Section */}
@@ -131,7 +137,10 @@ export default function HomeClient() {
             <h2 className="text-3xl font-bold mb-10 text-primary text-center tracking-tight cursor-pointer">מחפשים לרכוש נכס? תנו ל-AI למצוא לכם בית</h2>
           </Link>
           <p className="text-lg text-dark mb-8">
-            נמאס לכם ממודעות פיתיון ומתווכים שלא באמת מקשיבים? עם נדלניסט AI, התהליך פשוט ויעיל: ספרו לנו מה אתם מחפשים – השאירו פרטים בקליק או פשוט כתבו לנו בצ׳אט WhatsApp מה חשוב לכם. הצ׳אט החכם שלנו ישאל את השאלות הנכונות כדי להבין בדיוק את הצרכים והרצונות שלכם, ותוך זמן קצר תקבלו 2-5 נכסים שמתאימים בדיוק למה שחיפשתם, עם כל המידע הרלוונטי, כולל סריקות תלת-ממד. אהבתם נכס? תאמו ביקור בלחיצת כפתור. מנהל עסקה ניטרלי ילווה אתכם עד החוזה – והכל בחינם, ללא עמלות תיווך!
+            נמאס לכם ממודעות פיתיון ומתווכים שלא באמת מקשיבים? עם נדלניסט AI, התהליך פשוט ויעיל: ספרו לנו מה אתם מחפשים – השאירו פרטים בקליק או פשוט כתבו לנו בצ׳אט WhatsApp מה חשוב לכם. הצ׳אט החכם שלנו ישאל את השאלות הנכונות כדי להבין בדיוק את הצרכים והרצונות שלכם, ותוך זמן קצר תקבלו 2-5 נכסים שמתאימים בדיוק למה שחיפשתם, עם כל המידע הרלוונטי, כולל סריקות תלת-ממד. אהבתם נכס? תאמו ביקור בלחיצת כפתור. מנהל עסקה ניטרלי ילווה אתכם עד החוזה – והכל בחינם, ללא עמלות תיווך! 
+            <Link href="/buyers" className="text-primary hover:underline mr-2">
+              למידע נוסף על השירות לקונים
+            </Link>
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-center mx-auto mb-10" dir="rtl">
             {buyersFeatures.map((item, idx) => (
@@ -168,6 +177,9 @@ export default function HomeClient() {
           </Link>
           <p className="text-lg text-dark mb-8">
             הגיע הזמן למכור את הנכס שלכם בלי כאבי ראש, עמלות מופקעות או בלעדיות כובלת. השאירו פרטים ונחזור אליכם, נבצע סריקת 3D מקצועית (חינם!), נבנה תוכנית דירה אטרקטיבית, ונחשוף את הנכס רק לקונים מסוננים על ידי AI – כאלה שמחפשים בדיוק מה שיש לכם להציע. פרטיותכם חשובה לנו: הנכס נחשף רק למתאימים. מנהל עסקה ניטרלי ילווה אתכם עד החתימה, וישמור על האינטרסים שלכם. תשלום עמלה של 0.5% בלבד ורק בהצלחה.
+            <Link href="/sellers" className="text-primary hover:underline mr-2">
+              גלו איך למכור מהר יותר ובעמלה נמוכה
+            </Link>
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-center mx-auto mb-10" dir="rtl">
             {sellersFeatures.map((item, idx) => (
