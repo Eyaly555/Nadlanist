@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 export function MainNav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   
   // Track scroll position to shrink header on scroll
   useEffect(() => {
@@ -77,7 +78,7 @@ export function MainNav() {
         </div>
         {/* Hamburger menu for mobile (left side) */}
         <div className="md:hidden order-4 rtl:order-4">
-          <Drawer>
+          <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
             <DrawerTrigger asChild>
               <Button variant="ghost" size="icon" aria-label="פתח תפריט">
                 <Menu className="w-12 h-12 text-black" />
@@ -89,6 +90,7 @@ export function MainNav() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={() => setIsDrawerOpen(false)}
                     className={cn(
                       "text-lg font-medium py-2 px-2 rounded text-right w-full block",
                       isActive(item.href)
@@ -153,7 +155,7 @@ export function MainNav() {
         </div>
         {/* Hamburger menu for mobile (left side) */}
         <div className="md:hidden order-4 rtl:order-4">
-          <Drawer>
+          <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
             <DrawerTrigger asChild>
               <Button variant="ghost" size="icon" aria-label="פתח תפריט">
                 <Menu className="w-7 h-7 text-black" />
@@ -165,6 +167,7 @@ export function MainNav() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={() => setIsDrawerOpen(false)}
                     className={cn(
                       "text-lg font-medium py-2 px-2 rounded text-right w-full block",
                       isActive(item.href)

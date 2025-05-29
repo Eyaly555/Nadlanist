@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import Script from "next/script";
+import Head from "next/head";
 
 /**
  * ThankYouPage - עמוד תודה
@@ -9,11 +9,12 @@ import Script from "next/script";
 export default function ThankYouPage() {
   return (
     <>
-      <Script id="google-ads-conversion" strategy="afterInteractive">
-        {`
-          gtag('event', 'conversion', {'send_to': 'AW-17084618003/rzb3CM2Kp8kaEJOqytI_'});
-        `}
-      </Script>
+      <Head>
+        {/* Google Ads Conversion Event Snippet */}
+        <script>
+          {`gtag('event', 'conversion', {'send_to': 'AW-17084618003/rzb3CM2Kp8kaEJOqytI_'});`}
+        </script>
+      </Head>
       <main className="flex flex-col min-h-screen bg-white text-right items-center justify-center" dir="rtl">
         <section className="relative w-full flex flex-col items-center justify-center gap-8 py-16 px-4 bg-primary-10 overflow-hidden border-b border-primary/10">
           <div className="flex flex-col items-center text-center z-10 w-full max-w-2xl mx-auto font-sans">

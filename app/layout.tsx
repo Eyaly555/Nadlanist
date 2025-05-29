@@ -9,6 +9,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ClarityProvider } from "@/components/shared/ClarityProvider";
 import Script from "next/script";
 
 const poppins = Poppins({
@@ -140,6 +141,7 @@ export default function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-YRF852BZP5');
+            gtag('config', 'AW-17084618003');
           `,
         }}
       />
@@ -162,6 +164,7 @@ export default function RootLayout({
               <Toaster position="bottom-right" />
               <Analytics />
               <SpeedInsights />
+              <ClarityProvider />
             </QueryProvider>
           </TooltipProvider>
         </ThemeProvider>
