@@ -148,6 +148,10 @@ export function ContactForm({
       );
 
       if (response.ok) {
+        // Facebook Pixel: Track Lead event after successful form submission
+        if (typeof window !== "undefined" && typeof window.fbq === "function") {
+          window.fbq("track", "Lead");
+        }
         if (compact) {
           setSuccess(true);
           setFormData({

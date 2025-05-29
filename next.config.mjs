@@ -17,6 +17,8 @@ const nextConfig = {
       "https://googleads.g.doubleclick.net",
       "https://www.clarity.ms",
       "https://*.clarity.ms",
+      "https://connect.facebook.net",
+      "https://www.facebook.com",
     ];
     if (isDevelopment) {
       scriptSrcDirectives.push("'unsafe-eval'");
@@ -47,6 +49,9 @@ const nextConfig = {
                 "https://*.clarity.ms",
                 "https://www.google.co.il",
                 "https://googleads.g.doubleclick.net",
+                "https://www.facebook.com",
+                "https://connect.facebook.net",
+                "https://*.facebook.com",
               ],
               connectSrc: [
                 "'self'",
@@ -66,6 +71,9 @@ const nextConfig = {
                 "wss://ws.hotjar.com",
                 "https://content.hotjar.io",
                 "https://*.hotjar.io",
+                "https://connect.facebook.net",
+                "https://www.facebook.com",
+                "https://*.facebook.com",
               ],
               fontSrc: ["'self'", "https://fonts.gstatic.com"],
               objectSrc: ["'none'"],

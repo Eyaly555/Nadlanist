@@ -11,6 +11,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ClarityProvider } from "@/components/shared/ClarityProvider";
 import Script from "next/script";
+import { FacebookPixel } from "@/lib/analytics/facebook-pixel";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -127,6 +128,8 @@ export default function RootLayout({
           })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
         `}
       </Script>
+      {/* Facebook Pixel */}
+      <FacebookPixel pixelId="1360594255175108" />
       {/* Google Analytics */}
       <Script
         strategy="afterInteractive"
